@@ -1,13 +1,14 @@
 import { Body, Controller, Delete, Get, Post, Put, ValidationPipe } from '@nestjs/common';
+import { UserService } from 'src/services/startup.service';
 import { RegisterStartupValidator } from '../validators/startup.validator';
 
-@Controller()
+@Controller('startup')
 export class StartupController {
-  constructor() {}
+  constructor(private readonly userService: UserService) {}
 
-  @Post()
-  createStartup(@Body(new ValidationPipe()) body: RegisterStartupValidator): string {
-    return 'Olá Mundo';
+  @Post('register')
+  async createStartup(@Body(new ValidationPipe()) body: RegisterStartupValidator): Promise<void> {
+    return await this.userService.createStartup(body);
   }
 
   @Get()
