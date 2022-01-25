@@ -15,16 +15,13 @@ export class StartupService {
       `${this.className} - ${this.createStartup.name}`,
     );
 
-    /* const [startupExists] = await Promise.all([
-      this.startupRepository.getStartupByUuid(startup.uuid),
-      this.startupRepository.getStartupByUuid(startup.email),
-    ]);
+    const startupExists = await this.startupRepository.getStartupByUuid(startup.uuid);
 
-    if (startupExists) {
+    if (startupExists && startup.uuid) {
       ErrorUtils.throwSpecificError(400);
-    } */
+    }
 
-    await this.startupRepository.registerStartup(startup);
+    return await this.startupRepository.registerStartup(startup);
   }
 
   public async getStartupInfos(uuid: string): Promise<Startup> {
