@@ -22,8 +22,8 @@ export class StartupController {
     return 'Olá Mundo';
   }
 
-  @Delete()
-  deleteStartup(): string {
-    return 'Olá Mundo';
+  @Delete('delete-startup/:identifier')
+  async deleteStartup(@Param('identifier') identifier: string): Promise<void> {
+    return await this.startupService.deleteStartup(identifier);
   }
 }

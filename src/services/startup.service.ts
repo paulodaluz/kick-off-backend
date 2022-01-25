@@ -15,9 +15,9 @@ export class StartupService {
       `${this.className} - ${this.createStartup.name}`,
     );
 
-    /*  const [startupExists] = await Promise.all([
-      this.userRepository.getUserByUid(startup.uuid),
-      this.userRepository.getUserByUid(startup.email),
+    /* const [startupExists] = await Promise.all([
+      this.startupRepository.getStartupByUuid(startup.uuid),
+      this.startupRepository.getStartupByUuid(startup.email),
     ]);
 
     if (startupExists) {
@@ -37,5 +37,11 @@ export class StartupService {
     }
 
     return user;
+  }
+
+  public async deleteStartup(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartup.name}`);
+
+    return await this.startupRepository.deleteStartupByUuid(uuid);
   }
 }
