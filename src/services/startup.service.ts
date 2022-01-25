@@ -4,8 +4,8 @@ import { Startup } from '../interfaces/startup.interface';
 import { ErrorUtils } from '../utils/error.utils';
 
 @Injectable()
-export class UserService {
-  private className = 'UserService';
+export class StartupService {
+  private className = 'StartupService';
 
   constructor(private readonly startupRepository: StartupRepository) {}
 
@@ -15,15 +15,30 @@ export class UserService {
       `${this.className} - ${this.createStartup.name}`,
     );
 
-    /*  const [startupExists] = await Promise.all([
-      this.userRepository.getUserByUid(startup.uuid),
-      this.userRepository.getUserByUid(startup.email),
-    ]);
+    const startupExists = await this.startupRepository.getStartupByUuid(startup.uuid);
 
-    if (startupExists) {
+    if (startupExists && startup.uuid) {
       ErrorUtils.throwSpecificError(400);
-    } */
+    }
 
-    await this.startupRepository.registerStartup(startup);
+    return await this.startupRepository.registerStartup(startup);
+  }
+
+  public async getStartupInfos(uuid: string): Promise<Startup> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getStartupInfos.name}`);
+
+    const user = await this.startupRepository.getStartupByUuid(uuid);
+
+    if (!user) {
+      ErrorUtils.throwSpecificError(404);
+    }
+
+    return user;
+  }
+
+  public async deleteStartup(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartup.name}`);
+
+    return await this.startupRepository.deleteStartupByUuid(uuid);
   }
 }

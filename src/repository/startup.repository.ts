@@ -35,4 +35,46 @@ export class StartupRepository {
       `${this.className} - ${this.registerStartup.name}`,
     );
   }
+
+  public async getStartupByUuid(uuid: string): Promise<Startup> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getStartupByUuid.name}`);
+
+    const user = await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .get()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.getStartupByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getStartupByUuid.name}`);
+
+    return user.data();
+  }
+
+  public async deleteStartupByUuid(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartupByUuid.name}`);
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .delete()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.deleteStartupByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.deleteStartupByUuid.name}`);
+  }
 }
