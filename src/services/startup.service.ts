@@ -4,8 +4,8 @@ import { Startup } from '../interfaces/startup.interface';
 import { ErrorUtils } from '../utils/error.utils';
 
 @Injectable()
-export class UserService {
-  private className = 'UserService';
+export class StartupService {
+  private className = 'StartupService';
 
   constructor(private readonly startupRepository: StartupRepository) {}
 
@@ -25,5 +25,17 @@ export class UserService {
     } */
 
     await this.startupRepository.registerStartup(startup);
+  }
+
+  public async getStartupInfos(uuid: string): Promise<Startup> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getStartupInfos.name}`);
+
+    const user = await this.startupRepository.getStartupByUuid(uuid);
+
+    if (!user) {
+      ErrorUtils.throwSpecificError(404);
+    }
+
+    return user;
   }
 }

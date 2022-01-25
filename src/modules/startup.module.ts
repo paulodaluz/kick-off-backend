@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { StartupRepository } from 'src/repository/startup.repository';
-import { UserService } from 'src/services/startup.service';
+import { StartupService } from 'src/services/startup.service';
 import { StartupController } from '../controllers/startup.controller';
 import { ConfigModule } from '@nestjs/config';
 
@@ -11,6 +11,6 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [StartupController],
-  providers: [UserService, StartupRepository],
+  providers: [StartupService, StartupRepository],
 })
 export class StartupModule {}
