@@ -35,4 +35,3 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .vscode
-*serviceAccountKey.json
