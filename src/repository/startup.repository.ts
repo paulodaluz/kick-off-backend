@@ -58,6 +58,29 @@ export class StartupRepository {
     return user.data();
   }
 
+  public async updateStartupInfo(uuid: String, startupInfo: Startup): Promise<void> {
+    Logger.log(
+      `uuid = ${uuid} - startupInfo = ${JSON.stringify(startupInfo)}`,
+      `${this.className} - ${this.updateStartupInfo.name}`,
+    );
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .update(startupInfo)
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.updateStartupInfo.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.updateStartupInfo.name}`);
+  }
+
   public async deleteStartupByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartupByUuid.name}`);
 
