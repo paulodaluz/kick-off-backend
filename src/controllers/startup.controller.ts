@@ -17,9 +17,12 @@ export class StartupController {
     return await this.startupService.getStartupInfos(identifier);
   }
 
-  @Put()
-  updateStartup(): string {
-    return 'Olá Mundo';
+  @Put('update-info/:identifier')
+  async updateStartup(
+    @Param('identifier') identifier: string,
+    @Body() body: Startup,
+  ): Promise<void> {
+    return await this.startupService.updateStartup(identifier, body);
   }
 
   @Delete('delete-startup/:identifier')
