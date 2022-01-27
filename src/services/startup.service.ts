@@ -27,21 +27,21 @@ export class StartupService {
   public async getStartupInfos(uuid: string): Promise<Startup> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getStartupInfos.name}`);
 
-    const user = await this.startupRepository.getStartupByUuid(uuid);
+    const startup = await this.startupRepository.getStartupByUuid(uuid);
 
-    if (!user) {
+    if (!startup) {
       ErrorUtils.throwSpecificError(404);
     }
 
-    return user;
+    return startup;
   }
 
   public async updateStartup(uuid: string, startupInfo: Startup): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateStartup.name}`);
 
-    const user = await this.startupRepository.getStartupByUuid(uuid);
+    const startup = await this.startupRepository.getStartupByUuid(uuid);
 
-    if (!user) {
+    if (!startup) {
       ErrorUtils.throwSpecificError(404);
     }
 
