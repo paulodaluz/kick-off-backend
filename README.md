@@ -1,6 +1,6 @@
 ![Screenshot_1](https://user-images.githubusercontent.com/47355769/151414315-fe3bf42a-dc70-438a-8df8-3b73ae6449b8.jpg)
 
-# KyckOffBackend
+# KickOffBackend
 A NodeJS backend application for investors to find and register startups.
 
 ## 🧪 Tecnologias
