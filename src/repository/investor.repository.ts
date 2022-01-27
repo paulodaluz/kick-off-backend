@@ -35,4 +35,26 @@ export class InvestorRepository {
       `${this.className} - ${this.registerInvestor.name}`,
     );
   }
+
+  public async getInvestorByUuid(uuid: string): Promise<Investor> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getInvestorByUuid.name}`);
+
+    const user = await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .get()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.getInvestorByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getInvestorByUuid.name}`);
+
+    return user.data();
+  }
 }
