@@ -15,11 +15,11 @@ export class InvestorService {
       `${this.className} - ${this.registerInvestor.name}`,
     );
 
-    /* const investorExists = await this.investorRepository.getInvestorByUuid(investor.uuid);
+    const investorExists = await this.investorRepository.getInvestorByUuid(investor.uuid);
 
     if (investorExists && investorExists.uuid) {
       ErrorUtils.throwSpecificError(400);
-    } */
+    }
 
     return await this.investorRepository.registerInvestor(investor);
   }
