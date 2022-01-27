@@ -9,10 +9,10 @@ export class StartupService {
 
   constructor(private readonly startupRepository: StartupRepository) {}
 
-  public async createStartup(startup: Startup): Promise<void> {
+  public async registerStartup(startup: Startup): Promise<void> {
     Logger.log(
       `startup = ${JSON.stringify(startup)}`,
-      `${this.className} - ${this.createStartup.name}`,
+      `${this.className} - ${this.registerStartup.name}`,
     );
 
     const startupExists = await this.startupRepository.getStartupByUuid(startup.uuid);

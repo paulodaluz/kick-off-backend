@@ -8,8 +8,8 @@ export class StartupController {
   constructor(private readonly startupService: StartupService) {}
 
   @Post('register')
-  async createStartup(@Body(new ValidationPipe()) body: RegisterStartupValidator): Promise<void> {
-    return await this.startupService.createStartup(body);
+  async registerStartup(@Body(new ValidationPipe()) body: RegisterStartupValidator): Promise<void> {
+    return await this.startupService.registerStartup(body);
   }
 
   @Get('get-infos/:identifier')
