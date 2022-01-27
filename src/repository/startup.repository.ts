@@ -58,7 +58,7 @@ export class StartupRepository {
     return user.data();
   }
 
-  public async updateStartupInfo(uuid: String, startupInfo: Startup): Promise<void> {
+  public async updateStartupInfo(uuid: string, startupInfo: Startup): Promise<void> {
     Logger.log(
       `uuid = ${uuid} - startupInfo = ${JSON.stringify(startupInfo)}`,
       `${this.className} - ${this.updateStartupInfo.name}`,
