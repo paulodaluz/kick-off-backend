@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { InvestorModule } from './modules/Investor.module';
 import { StartupModule } from './modules/startup.module';
 
 @Module({
@@ -8,6 +9,7 @@ import { StartupModule } from './modules/startup.module';
       envFilePath: '.env',
     }),
     StartupModule,
+    InvestorModule,
   ],
   controllers: [],
   providers: [],
