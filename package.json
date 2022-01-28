@@ -1,10 +1,10 @@
 {
   "name": "kick-off-backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "A NodeJS backend application for investors to find and register startups.",
+  "author": "Paulo da Luz",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "GNU Affero General Public License v3.0",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -25,6 +25,7 @@
     "@nestjs/config": "1.1.6",
     "@nestjs/core": "8.0.0",
     "@nestjs/platform-express": "8.0.0",
+    "@nestjs/terminus": "8.0.4",
     "class-transformer": "0.5.1",
     "class-validator": "0.13.2",
     "firebase": "9.6.4",
