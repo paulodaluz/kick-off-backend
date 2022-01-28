@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
 import { Investor } from 'src/interfaces/investor.interface';
 import { InvestorService } from 'src/services/investor.service';
 import { RegisterInvestorValidator } from 'src/validators/investor.validator';
@@ -17,6 +17,14 @@ export class InvestorController {
   @Get('get-infos/:identifier')
   async getInvestor(@Param('identifier') identifier: string): Promise<Investor> {
     return await this.investorService.getInvestor(identifier);
+  }
+
+  @Put('update-info/:identifier')
+  async updateInvestor(
+    @Param('identifier') identifier: string,
+    @Body() body: Investor,
+  ): Promise<void> {
+    return await this.investorService.updateInvestor(identifier, body);
   }
 
   @Delete('delete-investor/:identifier')

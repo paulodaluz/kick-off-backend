@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Investor } from 'src/interfaces/investor.interface';
 import { InvestorRepository } from 'src/repository/investor.repository';
 import { ErrorUtils } from 'src/utils/error.utils';
+import { Utils } from 'src/utils/utils.utils';
 
 @Injectable()
 export class InvestorService {
@@ -34,6 +35,24 @@ export class InvestorService {
     }
 
     return investor;
+  }
+
+  public async updateInvestor(uuid: string, investorInfo: Investor): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateInvestor.name}`);
+
+    const investor = await this.investorRepository.getInvestorByUuid(uuid);
+
+    if (!investor) {
+      ErrorUtils.throwSpecificError(404);
+    }
+
+    Utils.avoidIncorrectUpdate(investorInfo);
+
+    if (!Object.values(investorInfo).length) {
+      ErrorUtils.throwSpecificError(400);
+    }
+
+    await this.investorRepository.updateInvestorInfo(uuid, investorInfo);
   }
 
   public async deleteInvestor(uuid: string): Promise<void> {
