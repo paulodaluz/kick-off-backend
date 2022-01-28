@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { StartupRepository } from '../repository/startup.repository';
 import { Startup } from '../interfaces/startup.interface';
 import { ErrorUtils } from '../utils/error.utils';
+import { Utils } from 'src/utils/utils.utils';
 
 @Injectable()
 export class StartupService {
@@ -45,13 +46,7 @@ export class StartupService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    if (startupInfo.email) {
-      delete startupInfo.email;
-    }
-
-    if (startupInfo.uuid) {
-      delete startupInfo.uuid;
-    }
+    Utils.avoidIncorrectUpdate(startupInfo);
 
     if (!Object.values(startupInfo).length) {
       return;
