@@ -58,6 +58,29 @@ export class InvestorRepository {
     return user.data();
   }
 
+  public async updateInvestorInfo(uuid: string, investorInfo: Investor): Promise<void> {
+    Logger.log(
+      `uuid = ${uuid} - investorInfo = ${JSON.stringify(investorInfo)}`,
+      `${this.className} - ${this.updateInvestorInfo.name}`,
+    );
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .update(investorInfo)
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.updateInvestorInfo.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.updateInvestorInfo.name}`);
+  }
+
   public async deleteInvestorByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteInvestorByUuid.name}`);
 
