@@ -23,6 +23,12 @@ Para startar o projeto você pode digitar o comando `npm run start:dev` ou `yarn
 Após isso ele irá abrir na porta `3001` no seu localhost, ou seja, basta apenas entrar em `localhost:3001/kick-off/{ROTA_DESEJADA}`.
 
 
+## 🐋 Getting started with Docker
+Para buildar o projeto você pode digitar o comando ` docker build -t backend/kickoff .` no diretório do projeto. Para inciar o container basta executar o comando `docker run -p 3001:3001 -d backend/kickoff`.
+
+Após isso ele irá executar um container docker na porta `3001` no seu localhost, ou seja, basta apenas entrar em `localhost:3001/kick-off/{ROTA_DESEJADA}`.
+
+
 ## 📜 Licença
 Esse projeto está sob a licença GNU Affero General Public License v3.0. Veja o arquivo [LICENSE](https://github.com/paulodaluz/kick-off-backend/blob/main/LICENSE) para mais detalhes.
 
