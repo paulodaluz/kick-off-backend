@@ -1,5 +1,3 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
-
 export class Utils {
   public static avoidIncorrectUpdate(object: { email?: string; uuid?: string }): void {
     if (object.email) {

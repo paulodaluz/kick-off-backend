@@ -9,10 +9,7 @@ export class ErrorUtils {
           HttpStatus.BAD_REQUEST,
         );
       case 403:
-        throw new HttpException(
-          'Client does not have sufficient permission.',
-          HttpStatus.FORBIDDEN,
-        );
+        throw new HttpException('Client does not have permission.', HttpStatus.FORBIDDEN);
       case 404:
         throw new HttpException('The specified resource is not found.', HttpStatus.NOT_FOUND);
       case 504:
