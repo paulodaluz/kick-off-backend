@@ -35,4 +35,10 @@ export class InvestorService {
 
     return investor;
   }
+
+  public async deleteInvestor(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteInvestor.name}`);
+
+    return await this.investorRepository.deleteInvestorByUuid(uuid);
+  }
 }

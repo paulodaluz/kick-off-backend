@@ -57,4 +57,24 @@ export class InvestorRepository {
 
     return user.data();
   }
+
+  public async deleteInvestorByUuid(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteInvestorByUuid.name}`);
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .delete()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.deleteInvestorByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.deleteInvestorByUuid.name}`);
+  }
 }
