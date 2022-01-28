@@ -49,7 +49,7 @@ export class StartupService {
     Utils.avoidIncorrectUpdate(startupInfo);
 
     if (!Object.values(startupInfo).length) {
-      return;
+      ErrorUtils.throwSpecificError(400);
     }
 
     await this.startupRepository.updateStartupInfo(uuid, startupInfo);
