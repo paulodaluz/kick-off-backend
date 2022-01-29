@@ -15,11 +15,11 @@ export class DeveloperService {
       `${this.className} - ${this.registerDeveloper.name}`,
     );
 
-    /* const developerExists = await this.developerRepository.registerDeveloper(developer.uuid);
+    const developerExists = await this.developerRepository.getDeveloperByUuid(developer.uuid);
 
     if (developerExists && developerExists.uuid) {
       ErrorUtils.throwSpecificError(400);
-    } */
+    }
 
     return await this.developerRepository.registerDeveloper(developer);
   }
