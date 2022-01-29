@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.eslintrc.json
+.prettierrc
+package-lock.json
+.git
+.vscode
+dist
