@@ -27,7 +27,7 @@ export class InvestorController {
     return await this.investorService.updateInvestor(identifier, body);
   }
 
-  @Delete('delete-investor/:identifier')
+  @Delete('delete-user/:identifier')
   async deleteInvestor(@Param('identifier') identifier: string): Promise<void> {
     return await this.investorService.deleteInvestor(identifier);
   }
