@@ -61,6 +61,29 @@ export class DeveloperRepository {
     return user.data();
   }
 
+  public async updateDeveloperInfo(uuid: string, developerInfo: Developer): Promise<void> {
+    Logger.log(
+      `uuid = ${uuid} - developerInfo = ${JSON.stringify(developerInfo)}`,
+      `${this.className} - ${this.updateDeveloperInfo.name}`,
+    );
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .update(developerInfo)
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.updateDeveloperInfo.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.updateDeveloperInfo.name}`);
+  }
+
   public async deleteDeveloperByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteDeveloperByUuid.name}`);
 
