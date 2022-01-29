@@ -60,4 +60,27 @@ export class DeveloperRepository {
 
     return user.data();
   }
+
+  public async deleteDeveloperByUuid(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteDeveloperByUuid.name}`);
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .delete()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.deleteDeveloperByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(
+      `uuid = ${uuid} - SUCCESS`,
+      `${this.className} - ${this.deleteDeveloperByUuid.name}`,
+    );
+  }
 }

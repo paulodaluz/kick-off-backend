@@ -35,4 +35,10 @@ export class DeveloperService {
 
     return developer;
   }
+
+  public async deleteDeveloper(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteDeveloper.name}`);
+
+    return await this.developerRepository.deleteDeveloperByUuid(uuid);
+  }
 }
