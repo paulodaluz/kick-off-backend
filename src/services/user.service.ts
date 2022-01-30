@@ -34,19 +34,19 @@ export class UserService {
     return await this.userRepository.registerUser(user);
   }
 
-  /* public async getStartupInfos(uuid: string): Promise<Startup> {
-    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getStartupInfos.name}`);
+  public async getUserInfos(uuid: string): Promise<User> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getUserInfos.name}`);
 
-    const startup = await this.startupRepository.getStartupByUuid(uuid);
+    const user = await this.userRepository.getUserByUuid(uuid);
 
-    if (!startup) {
+    if (!user) {
       ErrorUtils.throwSpecificError(404);
     }
 
-    return startup;
+    return user;
   }
 
-  public async updateStartup(uuid: string, startupInfo: Startup): Promise<void> {
+  /*public async updateStartup(uuid: string, startupInfo: Startup): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateStartup.name}`);
 
     const startup = await this.startupRepository.getStartupByUuid(uuid);

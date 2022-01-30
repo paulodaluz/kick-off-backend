@@ -7,16 +7,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  async registerStartup(@Body(new ValidationPipe()) body: User): Promise<void> {
+  async registerUser(@Body(new ValidationPipe()) body: User): Promise<void> {
     return await this.userService.registerUser(body);
   }
 
-  /* @Get('get-infos/:identifier')
-  async getStartup(@Param('identifier') identifier: string): Promise<Startup> {
-    return await this.startupService.getStartupInfos(identifier);
+  @Get('get-infos/:identifier')
+  async getUser(@Param('identifier') identifier: string): Promise<User> {
+    return await this.userService.getUserInfos(identifier);
   }
 
-  @Put('update-info/:identifier')
+  /* @Put('update-info/:identifier')
   async updateStartup(
     @Param('identifier') identifier: string,
     @Body() body: Startup,
@@ -24,7 +24,7 @@ export class UserController {
     return await this.startupService.updateStartup(identifier, body);
   }
 
-  @Delete('delete-startup/:identifier')
+  @Delete('delete-infos/:identifier')
   async deleteStartup(@Param('identifier') identifier: string): Promise<void> {
     return await this.startupService.deleteStartup(identifier);
   } */
