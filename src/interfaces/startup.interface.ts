@@ -1,9 +1,7 @@
 export interface Startup {
-  uuid: string;
-  email: string;
-  name: string;
+  cnpj: string;
   description: string;
   workers: string;
-  requiredValue: number;
-  descriptionOfMonetaryReturn: string;
+  developerRequirements: Array<string>;
+  InvestRequirement: Array<string>;
 }

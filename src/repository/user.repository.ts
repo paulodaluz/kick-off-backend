@@ -1,43 +1,40 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Startup } from 'src/interfaces/startup.interface';
+import { User } from '../interfaces/user.interface';
 import { db } from '../database/configuration.database';
 import { ErrorUtils } from '../utils/error.utils';
 
 @Injectable()
-export class StartupRepository {
-  private className = 'StartupRepository';
+export class UserRepository {
+  private className = 'UserRepository';
 
   private databaseName: string;
 
   constructor() {
-    this.databaseName = 'startups';
+    this.databaseName = 'users';
   }
 
-  public async registerStartup(startup: Startup): Promise<void> {
-    Logger.log(`startup = ${startup.name}`, `${this.className} - ${this.registerStartup.name}`);
+  public async registerUser(user: User): Promise<void> {
+    Logger.log(`user = ${user.name}`, `${this.className} - ${this.registerUser.name}`);
 
     await db
       .collection(this.databaseName)
-      .doc(startup.uuid)
-      .set(startup)
+      .doc(user.uuid)
+      .set(user)
       .catch((error: any) => {
         Logger.error(
-          `startup = ${startup.name} - error = ${error}`,
+          `user = ${user.name} - error = ${error}`,
           '',
-          `${this.className} - ${this.registerStartup.name}`,
+          `${this.className} - ${this.registerUser.name}`,
         );
 
         ErrorUtils.throwSpecificError(500);
       });
 
-    Logger.log(
-      `startup = ${startup.name} - SUCCESS`,
-      `${this.className} - ${this.registerStartup.name}`,
-    );
+    Logger.log(`user = ${user.name} - SUCCESS`, `${this.className} - ${this.registerUser.name}`);
   }
 
-  public async getStartupByUuid(uuid: string): Promise<Startup> {
-    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getStartupByUuid.name}`);
+  public async getUserByUuid(uuid: string): Promise<User> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getUserByUuid.name}`);
 
     const user = await db
       .collection(this.databaseName)
@@ -47,18 +44,18 @@ export class StartupRepository {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
           '',
-          `${this.className} - ${this.getStartupByUuid.name}`,
+          `${this.className} - ${this.getUserByUuid.name}`,
         );
 
         ErrorUtils.throwSpecificError(500);
       });
 
-    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getStartupByUuid.name}`);
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getUserByUuid.name}`);
 
     return user.data();
   }
 
-  public async updateStartupInfo(uuid: string, startupInfo: Startup): Promise<void> {
+  /*public async updateStartupInfo(uuid: string, startupInfo: Startup): Promise<void> {
     Logger.log(
       `uuid = ${uuid} - startupInfo = ${JSON.stringify(startupInfo)}`,
       `${this.className} - ${this.updateStartupInfo.name}`,
@@ -99,5 +96,5 @@ export class StartupRepository {
       });
 
     Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.deleteStartupByUuid.name}`);
-  }
+  } */
 }
