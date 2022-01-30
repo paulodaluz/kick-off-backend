@@ -22,8 +22,8 @@ export class UserController {
     return await this.userService.updateStartup(identifier, body);
   }
 
-  /* @Delete('delete-infos/:identifier')
+  @Delete('delete-infos/:identifier')
   async deleteStartup(@Param('identifier') identifier: string): Promise<void> {
-    return await this.startupService.deleteStartup(identifier);
-  } */
+    return await this.userService.deleteStartup(identifier);
+  }
 }

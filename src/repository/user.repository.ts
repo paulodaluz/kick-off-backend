@@ -78,8 +78,8 @@ export class UserRepository {
     Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.updateUserInfo.name}`);
   }
 
-  /* public async deleteStartupByUuid(uuid: string): Promise<void> {
-    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartupByUuid.name}`);
+  public async deleteUserByUuid(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteUserByUuid.name}`);
 
     await db
       .collection(this.databaseName)
@@ -89,12 +89,12 @@ export class UserRepository {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
           '',
-          `${this.className} - ${this.deleteStartupByUuid.name}`,
+          `${this.className} - ${this.deleteUserByUuid.name}`,
         );
 
         ErrorUtils.throwSpecificError(500);
       });
 
-    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.deleteStartupByUuid.name}`);
-  } */
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.deleteUserByUuid.name}`);
+  }
 }

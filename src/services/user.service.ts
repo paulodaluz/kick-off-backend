@@ -64,11 +64,11 @@ export class UserService {
     await this.userRepository.updateUserInfo(uuid, userInfo);
   }
 
-  /*public async deleteStartup(uuid: string): Promise<void> {
+  public async deleteStartup(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartup.name}`);
 
-    return await this.startupRepository.deleteStartupByUuid(uuid);
-  } */
+    return await this.userRepository.deleteUserByUuid(uuid);
+  }
 
   private validateCompany(startup: Startup): void {
     if (!UtilsValidations.isCnpj(startup.cnpj)) {
