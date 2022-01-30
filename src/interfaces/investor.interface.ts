@@ -1,6 +1,4 @@
 export interface Investor {
-  uuid: string;
-  email: string;
-  name: string;
-  investedMoney?: number;
+  cpf: string;
+  investedStartups: Array<string>;
 }
