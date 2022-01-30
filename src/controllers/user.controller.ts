@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
-import { User } from 'src/interfaces/user.interface';
-import { UserService } from 'src/services/user.service';
-import { RegisterUserValidator } from 'src/validators/user.validator';
+import { User } from '../interfaces/user.interface';
+import { UserService } from '../services/user.service';
+import { RegisterUserValidator, UpdateUserValidator } from '../validators/user.validator';
 
 @Controller('user')
 export class UserController {
@@ -18,12 +18,15 @@ export class UserController {
   }
 
   @Put('update-info/:identifier')
-  async updateStartup(@Param('identifier') identifier: string, @Body() body: User): Promise<void> {
-    return await this.userService.updateStartup(identifier, body);
+  async updateUser(
+    @Param('identifier') identifier: string,
+    @Body(new ValidationPipe()) body: UpdateUserValidator,
+  ): Promise<void> {
+    return await this.userService.updateUser(identifier, body);
   }
 
   @Delete('delete-infos/:identifier')
-  async deleteStartup(@Param('identifier') identifier: string): Promise<void> {
-    return await this.userService.deleteStartup(identifier);
+  async deleteUser(@Param('identifier') identifier: string): Promise<void> {
+    return await this.userService.deleteUser(identifier);
   }
 }
