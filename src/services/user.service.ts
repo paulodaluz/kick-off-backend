@@ -46,25 +46,25 @@ export class UserService {
     return user;
   }
 
-  /*public async updateStartup(uuid: string, startupInfo: Startup): Promise<void> {
+  public async updateStartup(uuid: string, userInfo: User): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateStartup.name}`);
 
-    const startup = await this.startupRepository.getStartupByUuid(uuid);
+    const startup = await this.userRepository.getUserByUuid(uuid);
 
     if (!startup) {
       ErrorUtils.throwSpecificError(404);
     }
 
-    Utils.avoidIncorrectUpdate(startupInfo);
+    Utils.avoidIncorrectUpdate(userInfo);
 
-    if (!Object.values(startupInfo).length) {
+    if (!Object.values(userInfo).length) {
       ErrorUtils.throwSpecificError(400);
     }
 
-    await this.startupRepository.updateStartupInfo(uuid, startupInfo);
+    await this.userRepository.updateUserInfo(uuid, userInfo);
   }
 
-  public async deleteStartup(uuid: string): Promise<void> {
+  /*public async deleteStartup(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartup.name}`);
 
     return await this.startupRepository.deleteStartupByUuid(uuid);

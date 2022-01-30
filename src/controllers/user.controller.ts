@@ -17,15 +17,12 @@ export class UserController {
     return await this.userService.getUserInfos(identifier);
   }
 
-  /* @Put('update-info/:identifier')
-  async updateStartup(
-    @Param('identifier') identifier: string,
-    @Body() body: Startup,
-  ): Promise<void> {
-    return await this.startupService.updateStartup(identifier, body);
+  @Put('update-info/:identifier')
+  async updateStartup(@Param('identifier') identifier: string, @Body() body: User): Promise<void> {
+    return await this.userService.updateStartup(identifier, body);
   }
 
-  @Delete('delete-infos/:identifier')
+  /* @Delete('delete-infos/:identifier')
   async deleteStartup(@Param('identifier') identifier: string): Promise<void> {
     return await this.startupService.deleteStartup(identifier);
   } */

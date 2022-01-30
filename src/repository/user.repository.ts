@@ -55,30 +55,30 @@ export class UserRepository {
     return user.data();
   }
 
-  /*public async updateStartupInfo(uuid: string, startupInfo: Startup): Promise<void> {
+  public async updateUserInfo(uuid: string, userInfo: User): Promise<void> {
     Logger.log(
-      `uuid = ${uuid} - startupInfo = ${JSON.stringify(startupInfo)}`,
-      `${this.className} - ${this.updateStartupInfo.name}`,
+      `uuid = ${uuid} - userInfo = ${JSON.stringify(userInfo)}`,
+      `${this.className} - ${this.updateUserInfo.name}`,
     );
 
     await db
       .collection(this.databaseName)
       .doc(uuid)
-      .update(startupInfo)
+      .update(userInfo)
       .catch((error: any) => {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
           '',
-          `${this.className} - ${this.updateStartupInfo.name}`,
+          `${this.className} - ${this.updateUserInfo.name}`,
         );
 
         ErrorUtils.throwSpecificError(500);
       });
 
-    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.updateStartupInfo.name}`);
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.updateUserInfo.name}`);
   }
 
-  public async deleteStartupByUuid(uuid: string): Promise<void> {
+  /* public async deleteStartupByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartupByUuid.name}`);
 
     await db
