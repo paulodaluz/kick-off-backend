@@ -1,6 +1,13 @@
-import { IsString, IsEmail, IsUUID, IsNumber } from 'class-validator';
+import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum } from 'class-validator';
+import { User } from '../interfaces/user.interface';
 
-export class RegisterUserValidator {
+enum typeOfUserEnum {
+  startup,
+  developer,
+  investor,
+}
+
+export class RegisterUserValidator implements User {
   @IsUUID()
   uuid: string;
 
@@ -13,4 +20,39 @@ export class RegisterUserValidator {
 
   @IsString()
   phoneNumber: string;
+
+  @IsEnum(typeOfUserEnum)
+  typeOfUser: 'startup' | 'developer' | 'investor';
+
+  @IsString()
+  @IsOptional()
+  cnpj: string;
+
+  @IsString()
+  @IsOptional()
+  description: string;
+
+  @IsString()
+  @IsOptional()
+  workers: string;
+
+  @IsArray()
+  @IsOptional()
+  developerRequirements: Array<string>;
+
+  @IsArray()
+  @IsOptional()
+  InvestRequirement: Array<string>;
+
+  @IsString()
+  @IsOptional()
+  cpf: string;
+
+  @IsArray()
+  @IsOptional()
+  investedStartups: Array<string>;
+
+  @IsArray()
+  @IsOptional()
+  workInProgress: Array<string>;
 }
