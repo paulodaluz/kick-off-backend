@@ -46,8 +46,8 @@ export class UserService {
     return user;
   }
 
-  public async updateStartup(uuid: string, userInfo: User): Promise<void> {
-    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateStartup.name}`);
+  public async updateUser(uuid: string, userInfo: User): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateUser.name}`);
 
     const startup = await this.userRepository.getUserByUuid(uuid);
 
@@ -64,8 +64,8 @@ export class UserService {
     await this.userRepository.updateUserInfo(uuid, userInfo);
   }
 
-  public async deleteStartup(uuid: string): Promise<void> {
-    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteStartup.name}`);
+  public async deleteUser(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteUser.name}`);
 
     return await this.userRepository.deleteUserByUuid(uuid);
   }
