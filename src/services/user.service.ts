@@ -2,11 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
-import { User } from 'src/interfaces/user.interface';
-import { UtilsValidations } from 'src/utils/validation.utils';
-import { Startup } from 'src/interfaces/startup.interface';
-import { Investor } from 'src/interfaces/investor.interface';
-import { Developer } from 'src/interfaces/dev.interface';
+import { Developer, Investor, Startup, User } from '../interfaces/user.interface';
+import { UtilsValidations } from '../utils/validation.utils';
 
 @Injectable()
 export class UserService {
