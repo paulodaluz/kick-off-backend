@@ -26,12 +26,15 @@
     "no-empty-function": "off",
     "camelcase": [2, {"properties": "always"}],
     "import/prefer-default-export": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"]
   },
   "env": {
     "commonjs": true,
     "node": true,
-    "jest": true
+    "jest": true,
+    "jest/globals": true
   },
   "settings": {
     "import/resolver": {

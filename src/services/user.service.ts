@@ -28,7 +28,7 @@ export class UserService {
       this.validatePerson(user);
     }
 
-    return await this.userRepository.registerUser(user);
+    await this.userRepository.registerUser(user);
   }
 
   public async getUserInfos(uuid: string): Promise<User> {
@@ -64,7 +64,7 @@ export class UserService {
   public async deleteUser(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteUser.name}`);
 
-    return await this.userRepository.deleteUserByUuid(uuid);
+    await this.userRepository.deleteUserByUuid(uuid);
   }
 
   private validateCompany(startup: Startup): void {
