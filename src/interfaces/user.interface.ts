@@ -11,7 +11,7 @@ export interface Startup {
   description: string;
   workers: string;
   developerRequirements: Array<string>;
-  InvestRequirement: Array<string>;
+  investmentRequirements: Array<string>;
 }
 
 export interface Investor {

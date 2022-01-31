@@ -42,7 +42,7 @@ export class RegisterUserValidator implements User {
 
   @IsArray()
   @IsOptional()
-  InvestRequirement: Array<string>;
+  investmentRequirements: Array<string>;
 
   @IsString()
   @IsOptional()
@@ -97,7 +97,7 @@ export class UpdateUserValidator implements User {
 
   @IsArray()
   @IsOptional()
-  InvestRequirement: Array<string>;
+  investmentRequirements: Array<string>;
 
   @IsString()
   @IsOptional()
