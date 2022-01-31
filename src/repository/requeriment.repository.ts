@@ -51,8 +51,8 @@ export class RequirementRepository {
     const snapshot = await db
       .collection(this.databaseName)
       .where('typeOfRequirement', '==', typeOfRequirement)
-      .get();
-    /*. catch((error: any) => {
+      .get()
+      .catch((error: any) => {
         Logger.error(
           `typeOfRequirement = ${typeOfRequirement} - error = ${error}`,
           '',
@@ -60,7 +60,7 @@ export class RequirementRepository {
         );
 
         ErrorUtils.throwSpecificError(500);
-      }); */
+      });
 
     if (snapshot.empty) {
       Logger.log(
