@@ -22,9 +22,9 @@ export class RequirementController {
 
   @Get('active-requirements')
   async getRequirementsOpened(
-    @Headers('typeOfRequirement') typeOfRequirement: 'developer' | 'investor',
-  ): Promise<string> {
-    return typeOfRequirement;
+    @Headers('typeOfRequirement') typeOfRequirement: 'development' | 'investment',
+  ): Promise<Array<Requirement>> {
+    return this.requirementService.getRequirementsByType(typeOfRequirement);
   }
 
   @Patch('add-investment/:identifier')

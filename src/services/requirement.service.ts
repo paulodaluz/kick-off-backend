@@ -68,4 +68,12 @@ export class RequirementService {
       });
     }
   }
+
+  public async getRequirementsByType(typeOfRequirement): Promise<Array<Requirement>> {
+    if (typeOfRequirement !== 'development' && typeOfRequirement !== 'investment') {
+      ErrorUtils.throwSpecificError(400);
+    }
+
+    return await this.requirementRepository.getRequirementByType(typeOfRequirement);
+  }
 }

@@ -38,4 +38,47 @@ export class RequirementRepository {
       `${this.className} - ${this.registerRequirement.name}`,
     );
   }
+
+  public async getRequirementByType(
+    typeOfRequirement: 'development' | 'investment',
+  ): Promise<Array<Requirement>> {
+    const requirements = [];
+    Logger.log(
+      `typeOfRequirement = ${typeOfRequirement}`,
+      `${this.className} - ${this.registerRequirement.name}`,
+    );
+
+    const snapshot = await db
+      .collection(this.databaseName)
+      .where('typeOfRequirement', '==', typeOfRequirement)
+      .get();
+    /*. catch((error: any) => {
+        Logger.error(
+          `typeOfRequirement = ${typeOfRequirement} - error = ${error}`,
+          '',
+          `${this.className} - ${this.registerRequirement.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      }); */
+
+    if (snapshot.empty) {
+      Logger.log(
+        `typeOfRequirement = ${typeOfRequirement} - SUCCESS - NOT FOUND DATA`,
+        `${this.className} - ${this.registerRequirement.name}`,
+      );
+      return requirements;
+    }
+
+    Logger.log(
+      `typeOfRequirement = ${typeOfRequirement} - SUCCESS`,
+      `${this.className} - ${this.registerRequirement.name}`,
+    );
+
+    snapshot.forEach((doc) => {
+      requirements.push(Object.assign(doc.data(), { uuid: doc.id }));
+    });
+
+    return requirements;
+  }
 }
