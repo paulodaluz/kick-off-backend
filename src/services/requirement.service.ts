@@ -69,7 +69,9 @@ export class RequirementService {
     }
   }
 
-  public async getRequirementsByType(typeOfRequirement): Promise<Array<Requirement>> {
+  public async getRequirementsByType(
+    typeOfRequirement: 'development' | 'investment',
+  ): Promise<Array<Requirement>> {
     if (typeOfRequirement !== 'development' && typeOfRequirement !== 'investment') {
       ErrorUtils.throwSpecificError(400);
     }
