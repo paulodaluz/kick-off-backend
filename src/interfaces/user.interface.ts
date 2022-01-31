@@ -1,4 +1,5 @@
 export interface Startup {
+  uuid: string;
   cnpj: string;
   description: string;
   workers: string;

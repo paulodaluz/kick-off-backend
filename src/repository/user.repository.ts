@@ -55,7 +55,7 @@ export class UserRepository {
     return user.data();
   }
 
-  public async updateUserInfo(uuid: string, userInfo: User): Promise<void> {
+  public async updateUserInfo(uuid: string, userInfo: Partial<User>): Promise<void> {
     Logger.log(
       `uuid = ${uuid} - userInfo = ${JSON.stringify(userInfo)}`,
       `${this.className} - ${this.updateUserInfo.name}`,

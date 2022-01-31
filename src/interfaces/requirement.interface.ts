@@ -4,7 +4,6 @@ export interface DeveloperRequirement {
 }
 
 export interface InvestmentRequirement {
-  uuid: string;
   requiredMoney: number;
   obtainedMoney: string;
   descriptionOfMoneryReturn: string;

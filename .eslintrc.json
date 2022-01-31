@@ -33,7 +33,8 @@
   "env": {
     "commonjs": true,
     "node": true,
-    "jest": true
+    "jest": true,
+    "jest/globals": true
   },
   "settings": {
     "import/resolver": {
