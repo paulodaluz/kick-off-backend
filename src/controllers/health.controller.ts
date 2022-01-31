@@ -1,5 +1,6 @@
 import { Controller, Dependencies, Get } from '@nestjs/common';
 import { HealthCheckService, HttpHealthIndicator, HealthCheck } from '@nestjs/terminus';
+
 const { name, version } = require('../../package.json');
 
 @Controller('health')
