@@ -69,6 +69,18 @@ export class RequirementService {
     }
   }
 
+  public async getRequirementsByUuid(
+    uuidsByRequirements: Array<string>,
+  ): Promise<Array<Requirement>> {
+    const requirements = [];
+
+    uuidsByRequirements.map((uuid) => {
+      requirements.push(this.requirementRepository.getRequirementByUuid(uuid));
+    });
+
+    return await Promise.all(requirements);
+  }
+
   public async getRequirementsByType(
     typeOfRequirement: 'development' | 'investment',
   ): Promise<Array<Requirement>> {

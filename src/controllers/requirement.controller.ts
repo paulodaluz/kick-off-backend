@@ -26,10 +26,9 @@ export class RequirementController {
     return this.requirementService.registerRequirement(identifier, body);
   }
 
-  @Get('get-infos/:identifier')
-  async getRequirementsByUser(@Param('identifier') identifier: string): Promise<string> {
-    // Recebe um array com todos requerimentos
-    return identifier;
+  @Post('get-infos')
+  async getRequirementsByUser(@Body() body: Array<string>): Promise<Array<Requirement>> {
+    return await this.requirementService.getRequirementsByUuid(body);
   }
 
   @Get('active-requirements')
