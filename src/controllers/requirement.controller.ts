@@ -20,10 +20,10 @@ export class RequirementController {
 
   @Post('register')
   async registerRequirement(
-    @Headers('identifier') identifier: string,
+    @Headers('identifier') uuid: string,
     @Body(new ValidationPipe()) body: RegisterRequirementValidator,
   ): Promise<void> {
-    return this.requirementService.registerRequirement(identifier, body);
+    return this.requirementService.registerRequirement(uuid, body);
   }
 
   @Post('get-infos')
