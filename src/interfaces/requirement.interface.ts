@@ -9,6 +9,11 @@ export interface InvestmentRequirement {
   descriptionOfMoneryReturn: string;
 }
 
+export enum TypeOfRequirementEnum {
+  development,
+  investment,
+}
+
 export interface Requirement extends DeveloperRequirement, InvestmentRequirement {
   uuid: string;
   typeOfRequirement: 'development' | 'investment';
