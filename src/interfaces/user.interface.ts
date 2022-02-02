@@ -2,7 +2,8 @@ export interface Startup {
   uuid: string;
   cnpj: string;
   description: string;
-  workers: string;
+  managingPartners: string;
+  numberOfWorkers: number;
   developerRequirements: Array<string>;
   investmentRequirements: Array<string>;
 }

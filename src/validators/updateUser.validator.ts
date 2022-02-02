@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum } from 'class-validator';
+import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
 import { TypeOfUserEnum, User } from '../interfaces/user.interface';
 
 export class UpdateUserValidator implements User {
@@ -33,7 +33,11 @@ export class UpdateUserValidator implements User {
 
   @IsString()
   @IsOptional()
-  workers: string;
+  managingPartners: string;
+
+  @IsNumber()
+  @IsOptional()
+  numberOfWorkers: number;
 
   @IsArray()
   @IsOptional()
