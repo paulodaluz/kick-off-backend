@@ -5,7 +5,7 @@ export interface DeveloperRequirement {
 
 export interface InvestmentRequirement {
   requiredMoney: number;
-  obtainedMoney: string;
+  obtainedMoney: number;
   descriptionOfMoneryReturn: string;
 }
 

@@ -39,13 +39,35 @@ export class RequirementRepository {
     );
   }
 
+  public async getRequirementByUuid(uuid: string): Promise<Requirement> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getRequirementByUuid.name}`);
+
+    const user = await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .get()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.getRequirementByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getRequirementByUuid.name}`);
+
+    return user.data();
+  }
+
   public async getRequirementByType(
     typeOfRequirement: 'development' | 'investment',
   ): Promise<Array<Requirement>> {
     const requirements = [];
     Logger.log(
       `typeOfRequirement = ${typeOfRequirement}`,
-      `${this.className} - ${this.registerRequirement.name}`,
+      `${this.className} - ${this.getRequirementByType.name}`,
     );
 
     const snapshot = await db
@@ -56,7 +78,7 @@ export class RequirementRepository {
         Logger.error(
           `typeOfRequirement = ${typeOfRequirement} - error = ${error}`,
           '',
-          `${this.className} - ${this.registerRequirement.name}`,
+          `${this.className} - ${this.getRequirementByType.name}`,
         );
 
         ErrorUtils.throwSpecificError(500);
@@ -65,7 +87,7 @@ export class RequirementRepository {
     if (snapshot.empty) {
       Logger.log(
         `typeOfRequirement = ${typeOfRequirement} - SUCCESS - NOT FOUND DATA`,
-        `${this.className} - ${this.registerRequirement.name}`,
+        `${this.className} - ${this.getRequirementByType.name}`,
       );
       return requirements;
     }
@@ -80,5 +102,28 @@ export class RequirementRepository {
     });
 
     return requirements;
+  }
+
+  public async deleteRequirementByUuid(uuid: string): Promise<void> {
+    Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteRequirementByUuid.name}`);
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .delete()
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.deleteRequirementByUuid.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(
+      `uuid = ${uuid} - SUCCESS`,
+      `${this.className} - ${this.deleteRequirementByUuid.name}`,
+    );
   }
 }

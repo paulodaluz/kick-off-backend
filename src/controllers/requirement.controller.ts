@@ -35,8 +35,11 @@ export class RequirementController {
   @Put('update-info/:identifier')
   async updateRequirements(): Promise<void> {}
 
-  @Delete('delete-infos/:identifier')
-  async deletarRequerimento(@Param('identifier') identifier: string): Promise<void> {
-    console.log(identifier);
+  @Delete('delete-infos/requirement/:requirement/startup/:startup')
+  async deletarRequerimento(
+    @Param('requirement') uuidByRequirement: string,
+    @Param('startup') uuidByStatup: string,
+  ): Promise<void> {
+    return await this.requirementService.deleteRequirement(uuidByRequirement, uuidByStatup);
   }
 }
