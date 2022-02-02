@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Requirement } from 'src/interfaces/requirement.interface';
-import { Startup } from 'src/interfaces/user.interface';
-import { RequirementRepository } from 'src/repository/requeriment.repository';
-import { UserRepository } from 'src/repository/user.repository';
-import { ErrorUtils } from 'src/utils/error.utils';
+import { Requirement } from '../interfaces/requirement.interface';
+import { Startup } from '../interfaces/user.interface';
+import { RequirementRepository } from '../repository/requeriment.repository';
+import { UserRepository } from '../repository/user.repository';
+import { ErrorUtils } from '../utils/error.utils';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

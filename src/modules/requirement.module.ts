@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { RequirementRepository } from 'src/repository/requeriment.repository';
-import { UserRepository } from 'src/repository/user.repository';
-import { RequirementService } from 'src/services/requirement.service';
+import { RequirementRepository } from '../repository/requeriment.repository';
+import { UserRepository } from '../repository/user.repository';
+import { RequirementService } from '../services/requirement.service';
 import { RequirementController } from '../controllers/requirement.controller';
 
 @Module({
