@@ -14,20 +14,20 @@ export class UserController {
   }
 
   @Get('get-infos/:identifier')
-  async getUser(@Param('identifier') identifier: string): Promise<User> {
-    return this.userService.getUserInfos(identifier);
+  async getUser(@Param('identifier') uuid: string): Promise<User> {
+    return this.userService.getUserInfos(uuid);
   }
 
   @Put('update-info/:identifier')
   async updateUser(
-    @Param('identifier') identifier: string,
+    @Param('identifier') uuid: string,
     @Body(new ValidationPipe()) body: UpdateUserValidator,
   ): Promise<void> {
-    return this.userService.updateUser(identifier, body);
+    return this.userService.updateUser(uuid, body);
   }
 
   @Delete('delete-infos/:identifier')
-  async deleteUser(@Param('identifier') identifier: string): Promise<void> {
-    return this.userService.deleteUser(identifier);
+  async deleteUser(@Param('identifier') uuid: string): Promise<void> {
+    return this.userService.deleteUser(uuid);
   }
 }
