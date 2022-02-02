@@ -1,5 +1,17 @@
-import { Body, Controller, Delete, Get, Headers, Param, Patch, Post, Put } from '@nestjs/common';
-import { Requirement } from 'src/interfaces/requirement.interface';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Headers,
+  Param,
+  Patch,
+  Post,
+  Put,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Requirement } from '../interfaces/requirement.interface';
+import { RegisterRequirementValidator } from '../validators/registerRequirement.validator';
 import { RequirementService } from '../services/requirement.service';
 
 @Controller('requirement')
@@ -9,7 +21,7 @@ export class RequirementController {
   @Post('register')
   async registerRequirement(
     @Headers('identifier') identifier: string,
-    @Body() body: Requirement,
+    @Body(new ValidationPipe()) body: RegisterRequirementValidator,
   ): Promise<void> {
     return this.requirementService.registerRequirement(identifier, body);
   }
@@ -35,8 +47,11 @@ export class RequirementController {
   @Put('update-info/:identifier')
   async updateRequirements(): Promise<void> {}
 
-  @Delete('delete-infos/:identifier')
-  async deletarRequerimento(@Param('identifier') identifier: string): Promise<void> {
-    console.log(identifier);
+  @Delete('delete-infos/requirement/:requirement/startup/:startup')
+  async deletarRequerimento(
+    @Param('requirement') uuidByRequirement: string,
+    @Param('startup') uuidByStatup: string,
+  ): Promise<void> {
+    return await this.requirementService.deleteRequirement(uuidByRequirement, uuidByStatup);
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Requirement } from 'src/interfaces/requirement.interface';
-import { Startup } from 'src/interfaces/user.interface';
-import { RequirementRepository } from 'src/repository/requeriment.repository';
-import { UserRepository } from 'src/repository/user.repository';
-import { ErrorUtils } from 'src/utils/error.utils';
+import { Requirement } from '../interfaces/requirement.interface';
+import { Startup } from '../interfaces/user.interface';
+import { RequirementRepository } from '../repository/requeriment.repository';
+import { UserRepository } from '../repository/user.repository';
+import { ErrorUtils } from '../utils/error.utils';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
@@ -77,5 +77,62 @@ export class RequirementService {
     }
 
     return await this.requirementRepository.getRequirementByType(typeOfRequirement);
+  }
+
+  public async deleteRequirement(uuidByRequirement: string, uuidByStatup: string): Promise<void> {
+    const [requirement, startup] = await Promise.all([
+      this.requirementRepository.getRequirementByUuid(uuidByRequirement),
+      this.userRepository.getUserByUuid(uuidByStatup),
+    ]);
+
+    if (!requirement && !requirement.uuid && !startup && !startup.uuid) {
+      ErrorUtils.throwSpecificError(404);
+    }
+
+    if (requirement.typeOfRequirement === 'development') {
+      return await this.deleteRequirementOfDevelop(requirement, startup);
+    }
+
+    if (requirement.typeOfRequirement === 'investment') {
+      return await this.deleteRequirementOfInvestment(requirement, startup);
+    }
+  }
+
+  private async deleteRequirementOfInvestment(
+    requirement: Requirement,
+    startup: Startup,
+  ): Promise<void> {
+    if (requirement.obtainedMoney && requirement.obtainedMoney > 0) {
+      ErrorUtils.throwSpecificError(403);
+    }
+
+    const updatedReqInvest = startup.investmentRequirements.filter(
+      (reqInvest) => reqInvest != requirement.uuid,
+    );
+
+    await Promise.all([
+      this.userRepository.updateUserInfo(startup.uuid, {
+        investmentRequirements: updatedReqInvest,
+      }),
+      this.requirementRepository.deleteRequirementByUuid(requirement.uuid),
+    ]);
+
+    return;
+  }
+
+  private async deleteRequirementOfDevelop(
+    requirement: Requirement,
+    startup: Startup,
+  ): Promise<void> {
+    const updatedReqDev = startup.developerRequirements.filter(
+      (reqDev) => reqDev != requirement.uuid,
+    );
+
+    await Promise.all([
+      this.userRepository.updateUserInfo(startup.uuid, {
+        developerRequirements: updatedReqDev,
+      }),
+      this.requirementRepository.deleteRequirementByUuid(requirement.uuid),
+    ]);
   }
 }

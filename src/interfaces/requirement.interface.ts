@@ -5,8 +5,13 @@ export interface DeveloperRequirement {
 
 export interface InvestmentRequirement {
   requiredMoney: number;
-  obtainedMoney: string;
+  obtainedMoney: number;
   descriptionOfMoneryReturn: string;
+}
+
+export enum TypeOfRequirementEnum {
+  development,
+  investment,
 }
 
 export interface Requirement extends DeveloperRequirement, InvestmentRequirement {
