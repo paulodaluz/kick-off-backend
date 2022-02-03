@@ -52,7 +52,7 @@ export class UserService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    Utils.avoidIncorrectUpdate(userInfo);
+    Utils.avoidIncorrectUserUpdate(userInfo);
 
     if (!Object.values(userInfo).length) {
       ErrorUtils.throwSpecificError(400);
