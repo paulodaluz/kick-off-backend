@@ -1,61 +1,61 @@
 import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
 import { TypeOfUserEnum, User } from '../interfaces/user.interface';
 
-export class UpdateUserValidator implements User {
+export class UpdateUserValidator implements Partial<User> {
   @IsUUID()
   @IsOptional()
-  uuid: string;
+  uuid?: string;
 
   @IsString()
   @IsEmail()
   @IsOptional()
-  email: string;
+  email?: string;
 
   @IsString()
   @IsOptional()
-  name: string;
+  name?: string;
 
   @IsString()
   @IsOptional()
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @IsEnum(TypeOfUserEnum)
   @IsOptional()
-  typeOfUser: 'startup' | 'developer' | 'investor';
+  typeOfUser?: 'startup' | 'developer' | 'investor';
 
   @IsString()
   @IsOptional()
-  cnpj: string;
+  cnpj?: string;
 
   @IsString()
   @IsOptional()
-  description: string;
+  description?: string;
 
   @IsString()
   @IsOptional()
-  managingPartners: string;
+  managingPartners?: string;
 
   @IsNumber()
   @IsOptional()
-  numberOfWorkers: number;
+  numberOfWorkers?: number;
 
   @IsArray()
   @IsOptional()
-  developerRequirements: Array<string>;
+  developerRequirements?: Array<string>;
 
   @IsArray()
   @IsOptional()
-  investmentRequirements: Array<string>;
+  investmentRequirements?: Array<string>;
 
   @IsString()
   @IsOptional()
-  cpf: string;
+  cpf?: string;
 
   @IsArray()
   @IsOptional()
-  investedStartups: Array<string>;
+  investedStartups?: Array<string>;
 
   @IsArray()
   @IsOptional()
-  workInProgress: Array<string>;
+  workInProgress?: Array<string>;
 }

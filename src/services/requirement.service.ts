@@ -5,6 +5,7 @@ import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { v4 as uuidv4 } from 'uuid';
+import { Utils } from '../utils/utils.utils';
 
 @Injectable()
 export class RequirementService {
@@ -89,6 +90,33 @@ export class RequirementService {
     }
 
     return await this.requirementRepository.getRequirementByType(typeOfRequirement);
+  }
+
+  public async updateRequirement(
+    uuid: string,
+    requirementToUpdate: Partial<Requirement>,
+  ): Promise<void> {
+    const requirement = await this.requirementRepository.getRequirementByUuid(uuid);
+
+    if (!requirement && !requirement.uuid) {
+      ErrorUtils.throwSpecificError(404);
+    }
+
+    if (
+      requirement.obtainedMoney &&
+      requirement.obtainedMoney > 0 &&
+      requirementToUpdate.requiredMoney
+    ) {
+      ErrorUtils.throwSpecificError(403);
+    }
+
+    Utils.avoidIncorrectRequirementUpdate(requirementToUpdate);
+
+    if (!Object.values(requirementToUpdate).length) {
+      ErrorUtils.throwSpecificError(400);
+    }
+
+    await this.requirementRepository.updateRequirementInfo(uuid, requirementToUpdate);
   }
 
   public async deleteRequirement(uuidByRequirement: string, uuidByStatup: string): Promise<void> {

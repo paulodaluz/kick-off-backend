@@ -104,6 +104,35 @@ export class RequirementRepository {
     return requirements;
   }
 
+  public async updateRequirementInfo(
+    uuid: string,
+    requirementInfo: Partial<Requirement>,
+  ): Promise<void> {
+    Logger.log(
+      `uuid = ${uuid} - requirementInfo = ${JSON.stringify(requirementInfo)}`,
+      `${this.className} - ${this.updateRequirementInfo.name}`,
+    );
+
+    await db
+      .collection(this.databaseName)
+      .doc(uuid)
+      .update(requirementInfo)
+      .catch((error: any) => {
+        Logger.error(
+          `uuid = ${uuid} - error = ${error}`,
+          '',
+          `${this.className} - ${this.updateRequirementInfo.name}`,
+        );
+
+        ErrorUtils.throwSpecificError(500);
+      });
+
+    Logger.log(
+      `uuid = ${uuid} - SUCCESS`,
+      `${this.className} - ${this.updateRequirementInfo.name}`,
+    );
+  }
+
   public async deleteRequirementByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteRequirementByUuid.name}`);
 

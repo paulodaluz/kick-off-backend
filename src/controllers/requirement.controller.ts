@@ -13,6 +13,7 @@ import {
 import { Requirement } from '../interfaces/requirement.interface';
 import { RegisterRequirementValidator } from '../validators/registerRequirement.validator';
 import { RequirementService } from '../services/requirement.service';
+import { UpdateRequirementValidator } from '../validators/updateRequirement.validator';
 
 @Controller('requirement')
 export class RequirementController {
@@ -44,7 +45,12 @@ export class RequirementController {
   }
 
   @Put('update-info/:identifier')
-  async updateRequirements(): Promise<void> {}
+  async updateRequirements(
+    @Param('identifier') uuidByRequirement: string,
+    @Body(new ValidationPipe()) body: UpdateRequirementValidator,
+  ): Promise<void> {
+    return this.requirementService.updateRequirement(uuidByRequirement, body);
+  }
 
   @Delete('delete-infos/requirement/:requirement/startup/:startup')
   async deletarRequerimento(

@@ -43,7 +43,7 @@ export class UserService {
     return user;
   }
 
-  public async updateUser(uuid: string, userInfo: User): Promise<void> {
+  public async updateUser(uuid: string, userInfo: Partial<User>): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateUser.name}`);
 
     const startup = await this.userRepository.getUserByUuid(uuid);
@@ -52,7 +52,7 @@ export class UserService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    Utils.avoidIncorrectUpdate(userInfo);
+    Utils.avoidIncorrectUserUpdate(userInfo);
 
     if (!Object.values(userInfo).length) {
       ErrorUtils.throwSpecificError(400);

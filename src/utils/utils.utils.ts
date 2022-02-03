@@ -1,19 +1,32 @@
+import { User } from '../interfaces/user.interface';
+import { Requirement } from '../interfaces/requirement.interface';
+
 export class Utils {
-  public static avoidIncorrectUpdate(object: {
-    email?: string;
-    uuid?: string;
-    typeOfUser: string;
-  }): void {
-    if (object.email) {
-      delete object.email;
+  public static avoidIncorrectUserUpdate(user: Partial<User>): void {
+    if (user.email) {
+      delete user.email;
     }
 
-    if (object.uuid) {
-      delete object.uuid;
+    if (user.uuid) {
+      delete user.uuid;
     }
 
-    if (object.typeOfUser) {
-      delete object.typeOfUser;
+    if (user.typeOfUser) {
+      delete user.typeOfUser;
+    }
+  }
+
+  public static avoidIncorrectRequirementUpdate(requirement: Partial<Requirement>): void {
+    if (requirement.uuid) {
+      delete requirement.uuid;
+    }
+
+    if (requirement.typeOfRequirement) {
+      delete requirement.typeOfRequirement;
+    }
+
+    if (requirement.obtainedMoney) {
+      delete requirement.obtainedMoney;
     }
   }
 }
