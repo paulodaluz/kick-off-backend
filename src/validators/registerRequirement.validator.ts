@@ -3,7 +3,8 @@ import { Requirement } from '../interfaces/requirement.interface';
 import { TypeOfRequirementEnum } from '../interfaces/requirement.interface';
 
 export class RegisterRequirementValidator implements Requirement {
-  @IsUUID()
+  @IsOptional()
+  @IsString()
   uuid: string;
 
   @IsEnum(TypeOfRequirementEnum)
