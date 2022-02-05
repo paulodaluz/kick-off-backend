@@ -24,10 +24,6 @@ export class UserService {
       this.validateCompany(user);
     }
 
-    if (user.typeOfUser === 'investor' || user.typeOfUser === 'developer') {
-      this.validatePerson(user);
-    }
-
     await this.userRepository.registerUser(user);
   }
 
@@ -69,12 +65,6 @@ export class UserService {
 
   private validateCompany(startup: Startup): void {
     if (!UtilsValidations.isCnpj(startup.cnpj)) {
-      ErrorUtils.throwSpecificError(400);
-    }
-  }
-
-  private validatePerson(user: Developer | Investor) {
-    if (!UtilsValidations.isCpf(user.cpf)) {
       ErrorUtils.throwSpecificError(400);
     }
   }
