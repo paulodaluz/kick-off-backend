@@ -1,8 +1,8 @@
-import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
+import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum, IsNumber, isString } from 'class-validator';
 import { TypeOfUserEnum, User } from '../interfaces/user.interface';
 
 export class RegisterUserValidator implements User {
-  @IsUUID()
+  @IsString()
   uuid: string;
 
   @IsString()

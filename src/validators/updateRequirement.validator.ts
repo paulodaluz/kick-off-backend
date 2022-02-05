@@ -4,7 +4,7 @@ import { TypeOfRequirementEnum } from '../interfaces/requirement.interface';
 
 export class UpdateRequirementValidator implements Partial<Requirement> {
   @IsOptional()
-  @IsUUID()
+  @IsString()
   uuid?: string;
 
   @IsOptional()
