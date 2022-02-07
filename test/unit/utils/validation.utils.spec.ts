@@ -4,7 +4,7 @@ describe('Test UtilsValidations', () => {
   it('should return that CPF is valid', () => {
     const cpf = '658.009.180-07';
 
-    const isValidCPF = UtilsValidations.isCnpj(cpf);
+    const isValidCPF = UtilsValidations.isCpf(cpf);
 
     expect(isValidCPF).toBe(true);
   });
@@ -12,7 +12,7 @@ describe('Test UtilsValidations', () => {
   it('should return that CPF is invalid', () => {
     const cpf = 'xxx.xxx.xxx-xx';
 
-    const isValidCPF = UtilsValidations.isCnpj(cpf);
+    const isValidCPF = UtilsValidations.isCpf(cpf);
 
     expect(isValidCPF).toBe(false);
   });
