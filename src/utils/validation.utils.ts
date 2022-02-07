@@ -1,6 +1,6 @@
 export class UtilsValidations {
   public static isCpf(cpf: string): boolean {
-    const cpfRegex = new RegExp(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/);
+    const cpfRegex = new RegExp(/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/);
 
     return cpfRegex.test(cpf);
   }
