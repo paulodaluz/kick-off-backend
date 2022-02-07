@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run Compile TSC
-        run: npm run tsc
+        run: tsc
 
       - name: Run build
         run: npm run build
