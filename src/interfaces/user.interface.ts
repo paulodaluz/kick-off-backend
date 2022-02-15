@@ -30,4 +30,5 @@ export interface User extends Startup, Investor, Developer {
   name: string;
   phoneNumber: string;
   typeOfUser: 'startup' | 'developer' | 'investor';
+  password: string;
 }

@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum, IsNumber, isString } from 'class-validator';
+import { IsString, IsEmail, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
 import { TypeOfUserEnum, User } from '../interfaces/user.interface';
 
 export class UpdateUserValidator implements Partial<User> {
@@ -10,6 +10,10 @@ export class UpdateUserValidator implements Partial<User> {
   @IsEmail()
   @IsOptional()
   email?: string;
+
+  @IsString()
+  @IsOptional()
+  password?: string;
 
   @IsString()
   @IsOptional()

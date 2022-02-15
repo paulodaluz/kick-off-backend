@@ -9,7 +9,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  async registerUser(@Body(new ValidationPipe()) body: RegisterUserValidator): Promise<void> {
+  async registerUser(@Body(new ValidationPipe()) body: RegisterUserValidator): Promise<Object> {
     return this.userService.registerUser(body);
   }
 

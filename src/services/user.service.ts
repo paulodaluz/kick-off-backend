@@ -2,8 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
-import { Developer, Investor, Startup, User } from '../interfaces/user.interface';
+import { Startup, User } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
+import { auth } from '../database/configuration.database';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 @Injectable()
 export class UserService {
@@ -11,10 +13,9 @@ export class UserService {
 
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async registerUser(user: User): Promise<void> {
-    Logger.log(`user = ${JSON.stringify(user)}`, `${this.className} - ${this.registerUser.name}`);
-
-    const registerExists = await this.userRepository.getUserByUuid(user.uuid);
+  public async registerUser(user: User): Promise<Object> {
+    Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
+    const registerExists = await this.userRepository.getUserByEmail(user.email);
 
     if (registerExists && registerExists.uuid) {
       ErrorUtils.throwSpecificError(400);
@@ -24,7 +25,15 @@ export class UserService {
       this.validateCompany(user);
     }
 
+    const firebaseUser = await createUserWithEmailAndPassword(auth, user.email, user.password)
+
+    user.uuid = firebaseUser.user.uid;
+
+    delete user.password;
+
     await this.userRepository.registerUser(user);
+
+    return { uuid: user.uuid };
   }
 
   public async getUserInfos(uuid: string): Promise<User> {
