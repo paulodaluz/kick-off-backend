@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { User } from '../interfaces/user.interface';
 import { db } from '../database/configuration.database';
 import { ErrorUtils } from '../utils/error.utils';
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
 
 @Injectable()
 export class UserRepository {
@@ -115,10 +115,7 @@ export class UserRepository {
   public async deleteUserByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteUserByUuid.name}`);
 
-   /*  await db
-      .collection(this.databaseName)
-      .doc(uuid)
-      .delete()
+    await deleteDoc(doc(db, this.databaseName, uuid))
       .catch((error: any) => {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
@@ -128,7 +125,7 @@ export class UserRepository {
 
         ErrorUtils.throwSpecificError(500);
       });
- */
+
     Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.deleteUserByUuid.name}`);
   }
 }
