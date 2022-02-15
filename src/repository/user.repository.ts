@@ -56,8 +56,8 @@ export class UserRepository {
   }
 
   public async getUserByEmail(email: string): Promise<User> {
+    const user = [];
     Logger.log(`email = ${email}`, `${this.className} - ${this.getUserByEmail.name}`);
-    const user = []
 
     const userRef = collection(db, this.databaseName);
 
