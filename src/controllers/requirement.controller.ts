@@ -44,7 +44,7 @@ export class RequirementController {
     // Recebe um valor e qual o uuid do requerimento
   }
 
-  @Put('update-info/:identifier')
+  @Put('update-info/requirement/:identifier')
   async updateRequirements(
     @Param('identifier') uuidByRequirement: string,
     @Body(new ValidationPipe()) body: UpdateRequirementValidator,
