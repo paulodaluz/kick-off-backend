@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
-import { Startup, User, UserResponseInterface } from '../interfaces/user.interface';
+import { Startup, User, UserLogin, UuidUserResponseInterface } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,11 +12,15 @@ export class UserService {
 
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async registerUser(user: User): Promise<UserResponseInterface> {
+  public async registerUser(user: User): Promise<UuidUserResponseInterface> {
     Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
     const registerExists = await this.userRepository.getUserByEmail(user.email);
 
     if (registerExists && registerExists.uuid) {
+      Logger.error(`user = ${user.name} - ERROR = User already exists`,
+        `${this.className} - ${this.registerUser.name}`,
+      );
+
       ErrorUtils.throwSpecificError(400);
     }
 
@@ -26,9 +30,19 @@ export class UserService {
 
     user.uuid = uuidv4();
 
-    delete user.password;
-
     await this.userRepository.registerUser(user);
+
+    return { uuid: user.uuid };
+  }
+
+  public async login(userToAuth: UserLogin): Promise<UuidUserResponseInterface> {
+    Logger.log(`email = ${userToAuth.email}`, `${this.className} - ${this.login.name}`);
+
+    const user = await this.userRepository.getUserByEmail(userToAuth.email);
+
+    if (!user || user.password !== userToAuth.password) {
+      ErrorUtils.throwSpecificError(403);
+    }
 
     return { uuid: user.uuid };
   }
@@ -71,6 +85,10 @@ export class UserService {
 
   private validateCompany(startup: Startup): void {
     if (!UtilsValidations.isCnpj(startup.cnpj)) {
+      Logger.error(`startup = ${startup.name} - ERROR = Invalid CNPJ`,
+        `${this.className} - ${this.registerUser.name}`,
+      );
+
       ErrorUtils.throwSpecificError(400);
     }
   }

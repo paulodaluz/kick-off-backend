@@ -1,4 +1,3 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { User } from '../../../src/interfaces/user.interface';
 import { UserRepository } from '../../../src/repository/user.repository';
 import { UserService } from '../../../src/services/user.service';
@@ -26,5 +25,4 @@ describe('UserService test', () => {
 
     expect(typeof result.uuid).toBe('string');
   });
-
 });

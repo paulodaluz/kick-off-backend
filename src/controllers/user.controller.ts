@@ -1,16 +1,22 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
 import { UpdateUserValidator } from '../validators/updateUser.validator';
-import { User, UserResponseInterface } from '../interfaces/user.interface';
+import { User, UuidUserResponseInterface } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { RegisterUserValidator } from '../validators/registerUser.validator';
+import { LoginValidator } from 'src/validators/login.validator';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  async registerUser(@Body(new ValidationPipe()) body: RegisterUserValidator): Promise<UserResponseInterface> {
+  async registerUser(@Body(new ValidationPipe()) body: RegisterUserValidator): Promise<UuidUserResponseInterface> {
     return this.userService.registerUser(body);
+  }
+
+  @Post('login')
+  async loginUser(@Body(new ValidationPipe()) body: LoginValidator): Promise<UuidUserResponseInterface> {
+    return this.userService.login(body);
   }
 
   @Get('get-infos/:identifier')
