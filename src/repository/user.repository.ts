@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { User } from '../interfaces/user.interface';
 import { db } from '../database/configuration.database';
 import { ErrorUtils } from '../utils/error.utils';
-import { collection, deleteDoc, doc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
 
 @Injectable()
 export class UserRepository {
@@ -31,13 +31,11 @@ export class UserRepository {
     Logger.log(`user = ${user.name} - SUCCESS`, `${this.className} - ${this.registerUser.name}`);
   }
 
-  public async getUserByUuid(uuid: string): Promise<any> {
+  public async getUserByUuid(uuid: string): Promise<User> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getUserByUuid.name}`);
 
-    /* const user: any = await db
-      .collection(this.databaseName)
-      .doc(uuid)
-      .get()
+    const docRef = doc(db, this.databaseName, uuid);
+    const user = await getDoc(docRef)
       .catch((error: any) => {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
@@ -50,17 +48,22 @@ export class UserRepository {
 
     Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getUserByUuid.name}`);
 
-    return user.data(); */
+    if (!user.exists()) {
+      return null;
+    }
+
+    return user.data() as User;
   }
 
-  public async getUserByEmail(email: string): Promise<any> {
+  public async getUserByEmail(email: string): Promise<User> {
     Logger.log(`email = ${email}`, `${this.className} - ${this.getUserByEmail.name}`);
+    const user = []
 
-    /* const snapshot = await db
-      .collection(this.databaseName)
-      .where('email', '==', email)
-      .get()
-      .catch((error: any) => {
+    const userRef = collection(db, this.databaseName);
+
+    const queryToSearch = query(userRef, where("email", "==", email));
+
+    const snapshot = await getDocs(queryToSearch).catch((error: any) => {
         Logger.error(
           `email = ${email} - error = ${error}`,
           '',
@@ -84,9 +87,10 @@ export class UserRepository {
     );
 
     snapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-  }); */
+      user.push(Object.assign(doc.data(), { uuid: doc.id }));
+    });
+
+    return user[0];
   }
 
   public async updateUserInfo(uuid: string, userInfo: Partial<User>): Promise<void> {
