@@ -13,9 +13,9 @@ export class RegisterRequirementValidator implements Requirement {
   @IsString()
   description: string;
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  languagesOfDevelop: Array<string>;
+  languagesOfDevelop: string;
 
   @IsNumber()
   @IsOptional()
