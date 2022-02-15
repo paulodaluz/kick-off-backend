@@ -56,6 +56,8 @@ export class UserService {
       ErrorUtils.throwSpecificError(404);
     }
 
+    delete user.password;
+
     return user;
   }
 
