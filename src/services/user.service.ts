@@ -2,10 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
-import { Startup, User } from '../interfaces/user.interface';
+import { Startup, User, UserResponseInterface } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
-import { auth } from '../database/configuration.database';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class UserService {
@@ -13,7 +12,7 @@ export class UserService {
 
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async registerUser(user: User): Promise<Object> {
+  public async registerUser(user: User): Promise<UserResponseInterface> {
     Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
     const registerExists = await this.userRepository.getUserByEmail(user.email);
 
@@ -25,9 +24,7 @@ export class UserService {
       this.validateCompany(user);
     }
 
-    const firebaseUser = await createUserWithEmailAndPassword(auth, user.email, user.password)
-
-    user.uuid = firebaseUser.user.uid;
+    user.uuid = uuidv4();
 
     delete user.password;
 

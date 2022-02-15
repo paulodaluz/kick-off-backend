@@ -32,3 +32,7 @@ export interface User extends Startup, Investor, Developer {
   typeOfUser: 'startup' | 'developer' | 'investor';
   password: string;
 }
+
+export interface UserResponseInterface {
+  uuid: string
+}
