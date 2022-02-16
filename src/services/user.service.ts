@@ -16,7 +16,7 @@ export class UserService {
     Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
     const registerExists = await this.userRepository.getUserByEmail(user.email);
 
-    if (registerExists && registerExists.uuid) {
+    if (!registerExists || !registerExists.uuid) {
       Logger.error(`user = ${user.name} - ERROR = User already exists`,
         `${this.className} - ${this.registerUser.name}`,
       );
@@ -56,7 +56,7 @@ export class UserService {
 
     const user = await this.userRepository.getUserByUuid(uuid);
 
-    if (!user) {
+    if (!user || !user.uuid) {
       Logger.error(`uuid = ${uuid} - ERROR = User not found`,
         `${this.className} - ${this.getUserInfos.name}`,
       );
@@ -74,7 +74,7 @@ export class UserService {
 
     const startup = await this.userRepository.getUserByUuid(uuid);
 
-    if (!startup) {
+    if (!startup || !startup.uuid) {
       Logger.error(`uuid = ${uuid} - ERROR = User not found`,
         `${this.className} - ${this.updateUser.name}`,
       );
