@@ -53,6 +53,10 @@ export class UserService {
     const user = await this.userRepository.getUserByUuid(uuid);
 
     if (!user) {
+      Logger.error(`uuid = ${uuid} - ERROR = User not found`,
+        `${this.className} - ${this.getUserInfos.name}`,
+      );
+
       ErrorUtils.throwSpecificError(404);
     }
 

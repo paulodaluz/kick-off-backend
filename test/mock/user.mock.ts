@@ -1,7 +1,7 @@
 export default {
   userToCreate: {
     "email": "test@email.com",
-    "name": "Falcão",
+    "name": "Carlos",
     "managingPartners": "Paulo da Luz e Leonardo",
     "numberOfWorkers": 33,
     "typeOfUser": "startup",
@@ -12,7 +12,7 @@ export default {
   userCreated: {
     "uuid": "10611d0d-93d3-414f-8a39-af350f54315f",
     "email": "test@email.com",
-    "name": "Falcão",
+    "name": "Carlos",
     "managingPartners": "Paulo da Luz e Leonardo",
     "numberOfWorkers": 33,
     "typeOfUser": "startup",
