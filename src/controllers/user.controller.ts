@@ -3,7 +3,7 @@ import { UpdateUserValidator } from '../validators/updateUser.validator';
 import { User, UuidUserResponseInterface } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';
 import { RegisterUserValidator } from '../validators/registerUser.validator';
-import { LoginValidator } from 'src/validators/login.validator';
+import { LoginValidator } from '../validators/login.validator';
 
 @Controller('user')
 export class UserController {
