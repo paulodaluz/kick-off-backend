@@ -79,9 +79,15 @@ export class RequirementService {
       requirements.push(this.requirementRepository.getRequirementByUuid(uuid));
     });
 
-    const requirementsResolver = await Promise.all(requirements);
+    const requirementsResolved = await Promise.all(requirements);
 
-    return requirementsResolver.filter(r => r);
+    const removingNullReqs = requirementsResolved.filter(r => r);
+
+    if(!removingNullReqs.length) {
+      ErrorUtils.throwSpecificError(400);
+    }
+
+    return removingNullReqs;
   }
 
   public async getRequirementsByType(
