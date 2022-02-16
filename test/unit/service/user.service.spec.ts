@@ -16,11 +16,14 @@ describe('UserService test', () => {
     expect(typeof result.uuid).toBe('string');
   });
 
-  it('should return error on CPF validation, on operation registerUser', async () => {
+  it('should return error on CNPJ validation, on operation registerUser', async () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
 
+    const user = mock.userToCreate;
+    user.cnpj = 'xxxx';
+
     try {
-      await userService.registerUser(mock.userToCreate as User);
+      await userService.registerUser(user as User);
     } catch (error) {
       expect(error.status).toBe(400);
       expect(error.message).toBe(
@@ -60,5 +63,17 @@ describe('UserService test', () => {
       expect(error.status).toBe(404);
       expect(error.response).toBe('The specified resource is not found.');
     }
+  });
+
+  it('should return success on operation deleteUser', async () => {
+    userRepository.deleteUserByUuid = jest.fn().mockImplementation();
+
+    const spy = jest
+      .spyOn(userRepository, 'deleteUserByUuid')
+      .mockReturnValueOnce({} as any);
+
+    await userService.deleteUser(mock.userCreated.uuid);
+
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
