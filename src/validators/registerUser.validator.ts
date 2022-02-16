@@ -1,13 +1,17 @@
-import { IsString, IsEmail, IsUUID, IsOptional, IsArray, IsEnum, IsNumber, isString } from 'class-validator';
+import { IsString, IsEmail, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
 import { TypeOfUserEnum, User } from '../interfaces/user.interface';
 
 export class RegisterUserValidator implements User {
   @IsString()
+  @IsOptional()
   uuid: string;
 
   @IsString()
   @IsEmail()
   email: string;
+
+  @IsString()
+  password: string;
 
   @IsString()
   name: string;

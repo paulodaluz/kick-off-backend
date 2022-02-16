@@ -15,9 +15,9 @@ export class UpdateRequirementValidator implements Partial<Requirement> {
   @IsString()
   description?: string;
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  languagesOfDevelop?: Array<string>;
+  languagesOfDevelop: string;
 
   @IsNumber()
   @IsOptional()

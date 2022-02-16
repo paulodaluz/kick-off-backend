@@ -1,0 +1,407 @@
+{
+	"info": {
+		"_postman_id": "0d03358e-c8f7-4a1f-8d57-64558955adb3",
+		"name": "Kick-Off",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"paulo.daluzjr@gmail.com\",\r\n    \"password\": \"senha123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Startup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"paulo.daluzjr@gmail.com\",\n    \"name\": \"Falcão\",\n    \"managingPartners\": \"Paulo da Luz e Leonardo\",\n    \"numberOfWorkers\": 33,\n    \"typeOfUser\": \"startup\",\n    \"phoneNumber\": \"(54) 99108-3039\",\n    \"cnpj\": \"98.828.768/0001-52\",\n    \"password\": \"senha123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Investidor/Dev",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"paulo.daluzjr@gmail.com\",\n    \"name\": \"Falcão\",\n    \"typeOfUser\": \"developer\",\n    \"phoneNumber\": \"(54) 99108-3039\",\n    \"password\": \"senha123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pegar usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/user/get-infos/:uuid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"user",
+								"get-infos",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "10611d0d-93d3-414f-8a39-af350f54315f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Usuário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"phoneNumber\": \"99999999\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/user/update-info/:uuid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"user",
+								"update-info",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "317fb9f8-1e64-4218-afe9-7e5c3c8c87cc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/user/delete-infos/:uuid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"user",
+								"delete-infos",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "317fb9f8-1e64-4218-afe9-7e5c3c8c87cc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requirement",
+			"item": [
+				{
+					"name": "Criar Requerimento de Dev",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "identifier",
+								"value": "10611d0d-93d3-414f-8a39-af350f54315f"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"typeOfRequirement\": \"development\",\n\t\"description\": \"Desenvolver um aplicativo\",\n\t\"languagesOfDevelop\": \"NodeJS e React Native\",\n\t\"payment\": 5000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/requirement/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"requirement",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pegar Requerimentos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  \"1629c157-fde5-483a-9d18-5160c98df223\"\n]"
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/requirement/get-infos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"requirement",
+								"get-infos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pegar Requerimento por Tipo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "typeOfRequirement",
+								"value": "development"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/requirement/active-requirements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"requirement",
+								"active-requirements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Requerimento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/requirement/delete-infos/requirement/1629c157-fde5-483a-9d18-5160c98df223/startup/10611d0d-93d3-414f-8a39-af350f54315f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"requirement",
+								"delete-infos",
+								"requirement",
+								"1629c157-fde5-483a-9d18-5160c98df223",
+								"startup",
+								"10611d0d-93d3-414f-8a39-af350f54315f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Requerimento",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "identifier",
+								"value": "23e62def-ae5c-438a-b526-b482f537aae0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"description\": \"Desenvolver um aplicativo mobile com firebase\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3001/kick-off/v1/requirement/update-info/requirement/9114197b-dbac-42bf-9a9c-a7f197d0e360",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"kick-off",
+								"v1",
+								"requirement",
+								"update-info",
+								"requirement",
+								"9114197b-dbac-42bf-9a9c-a7f197d0e360"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Version",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/kick-off/v1/health/version",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"kick-off",
+						"v1",
+						"health",
+						"version"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Helth Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/kick-off/v1/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"kick-off",
+						"v1",
+						"health"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Requirement } from '../interfaces/requirement.interface';
-import { db } from '../database/configuration.database';
 import { ErrorUtils } from '../utils/error.utils';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { db } from '../database/configuration.database';
 
 @Injectable()
 export class RequirementRepository {
@@ -19,10 +20,7 @@ export class RequirementRepository {
       `${this.className} - ${this.registerRequirement.name}`,
     );
 
-    await db
-      .collection(this.databaseName)
-      .doc(requirement.uuid)
-      .set(requirement)
+    await setDoc(doc(db, this.databaseName, requirement.uuid), requirement)
       .catch((error: any) => {
         Logger.error(
           `user = ${requirement.uuid} - error = ${error}`,
@@ -42,10 +40,8 @@ export class RequirementRepository {
   public async getRequirementByUuid(uuid: string): Promise<Requirement> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getRequirementByUuid.name}`);
 
-    const user = await db
-      .collection(this.databaseName)
-      .doc(uuid)
-      .get()
+    const reqRef = doc(db, this.databaseName, uuid);
+    const requirement = await getDoc(reqRef)
       .catch((error: any) => {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
@@ -58,7 +54,7 @@ export class RequirementRepository {
 
     Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getRequirementByUuid.name}`);
 
-    return user.data();
+    return requirement.data() as Requirement;
   }
 
   public async getRequirementByType(
@@ -70,11 +66,11 @@ export class RequirementRepository {
       `${this.className} - ${this.getRequirementByType.name}`,
     );
 
-    const snapshot = await db
-      .collection(this.databaseName)
-      .where('typeOfRequirement', '==', typeOfRequirement)
-      .get()
-      .catch((error: any) => {
+    const requirementRef = collection(db, this.databaseName);
+
+    const queryToSearch = query(requirementRef, where("typeOfRequirement", "==", typeOfRequirement));
+
+    const snapshot = await getDocs(queryToSearch).catch((error: any) => {
         Logger.error(
           `typeOfRequirement = ${typeOfRequirement} - error = ${error}`,
           '',
@@ -82,14 +78,14 @@ export class RequirementRepository {
         );
 
         ErrorUtils.throwSpecificError(500);
-      });
+    });
 
     if (snapshot.empty) {
       Logger.log(
         `typeOfRequirement = ${typeOfRequirement} - SUCCESS - NOT FOUND DATA`,
         `${this.className} - ${this.getRequirementByType.name}`,
       );
-      return requirements;
+      return null;
     }
 
     Logger.log(
@@ -113,10 +109,9 @@ export class RequirementRepository {
       `${this.className} - ${this.updateRequirementInfo.name}`,
     );
 
-    await db
-      .collection(this.databaseName)
-      .doc(uuid)
-      .update(requirementInfo)
+    const requirementRef = doc(db, this.databaseName, uuid);
+
+    await updateDoc(requirementRef, requirementInfo)
       .catch((error: any) => {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,
@@ -136,10 +131,7 @@ export class RequirementRepository {
   public async deleteRequirementByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteRequirementByUuid.name}`);
 
-    await db
-      .collection(this.databaseName)
-      .doc(uuid)
-      .delete()
+    await deleteDoc(doc(db, this.databaseName, uuid))
       .catch((error: any) => {
         Logger.error(
           `uuid = ${uuid} - error = ${error}`,

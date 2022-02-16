@@ -1,5 +1,5 @@
 export interface DeveloperRequirement {
-  languagesOfDevelop: Array<string>;
+  languagesOfDevelop: string;
   payment: number;
 }
 

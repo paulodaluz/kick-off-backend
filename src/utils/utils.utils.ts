@@ -14,6 +14,10 @@ export class Utils {
     if (user.typeOfUser) {
       delete user.typeOfUser;
     }
+
+    if (user.password) {
+      delete user.password;
+    }
   }
 
   public static avoidIncorrectRequirementUpdate(requirement: Partial<Requirement>): void {

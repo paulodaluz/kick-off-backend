@@ -1,6 +1,7 @@
 export interface Startup {
   uuid: string;
   cnpj: string;
+  name: string;
   description: string;
   managingPartners: string;
   numberOfWorkers: number;
@@ -30,4 +31,14 @@ export interface User extends Startup, Investor, Developer {
   name: string;
   phoneNumber: string;
   typeOfUser: 'startup' | 'developer' | 'investor';
+  password: string;
+}
+
+export interface UuidUserResponseInterface {
+  uuid: string
+}
+
+export interface UserLogin {
+  email: string;
+  password: string;
 }
