@@ -106,7 +106,7 @@ export class RequirementService {
   ): Promise<void> {
     const requirement = await this.requirementRepository.getRequirementByUuid(uuid);
 
-    if (!requirement && !requirement.uuid) {
+    if (!requirement || !requirement.uuid) {
       ErrorUtils.throwSpecificError(404);
     }
 
@@ -133,7 +133,7 @@ export class RequirementService {
       this.userRepository.getUserByUuid(uuidByStatup),
     ]);
 
-    if (!requirement && !requirement.uuid && !startup && !startup.uuid) {
+    if (!requirement || !requirement.uuid || !startup || !startup.uuid) {
       ErrorUtils.throwSpecificError(404);
     }
 

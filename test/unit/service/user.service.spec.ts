@@ -9,6 +9,8 @@ const userService = new UserService(userRepository);
 describe('UserService test', () => {
   beforeAll(async () => {
     jest.fn().mockClear();
+    jest.clearAllMocks();
+    jest.resetModules();
   });
 
   it('should return success by service UserService on operation registerUser', async () => {
@@ -112,7 +114,7 @@ describe('UserService test', () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(null);
 
     try {
-      await userService.updateUser(mock.userStartupCreated.uuid, mock.userStartupCreated as User);
+      await userService.updateUser(mock.userStartupCreatedResponse.uuid, mock.userStartupCreatedResponse as User);
     } catch (error) {
       expect(error.status).toBe(404);
       expect(error.response).toBe('The specified resource is not found.');
@@ -120,10 +122,10 @@ describe('UserService test', () => {
   });
 
   it('should return error no information to update, on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreatedResponse);
 
     try {
-      await userService.updateUser(mock.userStartupCreated.uuid, {} as User);
+      await userService.updateUser(mock.userStartupCreatedResponse.uuid, {} as User);
     } catch (error) {
       expect(error.status).toBe(400);
       expect(error.response).toBe('Client specified an invalid argument, request body or query param.');
@@ -137,7 +139,7 @@ describe('UserService test', () => {
       .spyOn(userRepository, 'deleteUserByUuid')
       .mockReturnValueOnce({} as any);
 
-    await userService.deleteUser(mock.userStartupCreated.uuid);
+    await userService.deleteUser(mock.userStartupCreatedResponse.uuid);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
