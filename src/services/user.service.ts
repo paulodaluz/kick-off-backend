@@ -41,6 +41,10 @@ export class UserService {
     const user = await this.userRepository.getUserByEmail(userToAuth.email);
 
     if (!user || user.password !== userToAuth.password) {
+      Logger.error(`email = ${userToAuth.email} - ERROR = User not found`,
+        `${this.className} - ${this.login.name}`,
+      );
+
       ErrorUtils.throwSpecificError(403);
     }
 
@@ -53,6 +57,10 @@ export class UserService {
     const user = await this.userRepository.getUserByUuid(uuid);
 
     if (!user) {
+      Logger.error(`uuid = ${uuid} - ERROR = User not found`,
+        `${this.className} - ${this.getUserInfos.name}`,
+      );
+
       ErrorUtils.throwSpecificError(404);
     }
 
@@ -67,6 +75,10 @@ export class UserService {
     const startup = await this.userRepository.getUserByUuid(uuid);
 
     if (!startup) {
+      Logger.error(`uuid = ${uuid} - ERROR = User not found`,
+        `${this.className} - ${this.updateUser.name}`,
+      );
+
       ErrorUtils.throwSpecificError(404);
     }
 
@@ -88,7 +100,7 @@ export class UserService {
   private validateCompany(startup: Startup): void {
     if (!UtilsValidations.isCnpj(startup.cnpj)) {
       Logger.error(`startup = ${startup.name} - ERROR = Invalid CNPJ`,
-        `${this.className} - ${this.registerUser.name}`,
+        `${this.className} - ${this.validateCompany.name}`,
       );
 
       ErrorUtils.throwSpecificError(400);
