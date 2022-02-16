@@ -15,7 +15,7 @@ describe('UserService test', () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
     userRepository.registerUser = jest.fn().mockImplementation();
 
-    const result = await userService.registerUser(mock.userToCreate as User);
+    const result = await userService.registerUser(mock.userToCreateStartup as User);
 
     expect(typeof result.uuid).toBe('string');
   });
@@ -23,7 +23,7 @@ describe('UserService test', () => {
   it('should return error on CNPJ validation, on operation registerUser', async () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
 
-    const user = mock.userToCreate;
+    const user = mock.userToCreateStartup;
     user.cnpj = 'xxxx';
 
     try {
@@ -37,10 +37,10 @@ describe('UserService test', () => {
   });
 
   it('should return error User already exists, on operation registerUser', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userCreated);
+    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
 
     try {
-      await userService.registerUser(mock.userToCreate as User);
+      await userService.registerUser(mock.userToCreateStartup as User);
     } catch (error) {
       expect(error.status).toBe(400);
       expect(error.message).toBe(
@@ -50,18 +50,18 @@ describe('UserService test', () => {
   });
 
   it('should return success by service UserService on operation login', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userCreated);
+    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
 
-    const result = await userService.login(mock.userToCreate as User);
+    const result = await userService.login(mock.userToCreateStartup as User);
 
-    expect(result.uuid).toBe(mock.userCreated.uuid);
+    expect(result.uuid).toBe(mock.userStartupCreated.uuid);
   });
 
   it('should return error not found, on operation login', async () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
 
     try {
-      await userService.login({email: mock.userToCreate.email, password: mock.userToCreate.password});
+      await userService.login({email: mock.userToCreateStartup.email, password: mock.userToCreateStartup.password});
     } catch (error) {
       expect(error.status).toBe(403);
       expect(error.response).toBe('Client does not have permission.');
@@ -69,19 +69,26 @@ describe('UserService test', () => {
   });
 
   it('should return success on operation getUserInfos', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
 
-    const result = await userService.getUserInfos(mock.userCreated.uuid);
+    const result = await userService.getUserInfos(mock.userStartupCreated.uuid);
 
-    expect(result).toBe(mock.userCreated);
+    expect(result).toBe(mock.userStartupCreated);
     expect(result.password).toBe(undefined);
+    expect(result.uuid).toBe("10611d0d-93d3-414f-8a39-af350f54315f");
+    expect(result.name).toBe("Carlos Gas");
+    expect(result.managingPartners).toBe("Paulo da Luz e Leonardo");
+    expect(result.numberOfWorkers).toBe(33);
+    expect(result.typeOfUser).toBe("startup");
+    expect(result.phoneNumber).toBe("(54) 99108-3039");
+    expect(result.cnpj).toBe("98.828.768/0001-52");
   });
 
   it('should return error User not found, on operation getUserInfos', async () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(null);
 
     try {
-      await userService.getUserInfos(mock.userCreated.uuid);
+      await userService.getUserInfos(mock.userStartupCreated.uuid);
     } catch (error) {
       expect(error.status).toBe(404);
       expect(error.response).toBe('The specified resource is not found.');
@@ -89,14 +96,14 @@ describe('UserService test', () => {
   });
 
   it('should return success by service UserService on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
 
     const spy = jest
       .spyOn(userRepository, 'updateUserInfo')
       .mockReturnValueOnce({} as any);
 
-    await userService.updateUser(mock.userCreated.uuid, mock.userCreated as User);
+    await userService.updateUser(mock.userStartupCreated.uuid, mock.userStartupCreated as User);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
@@ -105,7 +112,7 @@ describe('UserService test', () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(null);
 
     try {
-      await userService.updateUser(mock.userCreated.uuid, mock.userCreated as User);
+      await userService.updateUser(mock.userStartupCreated.uuid, mock.userStartupCreated as User);
     } catch (error) {
       expect(error.status).toBe(404);
       expect(error.response).toBe('The specified resource is not found.');
@@ -113,10 +120,10 @@ describe('UserService test', () => {
   });
 
   it('should return error no information to update, on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
 
     try {
-      await userService.updateUser(mock.userCreated.uuid, {} as User);
+      await userService.updateUser(mock.userStartupCreated.uuid, {} as User);
     } catch (error) {
       expect(error.status).toBe(400);
       expect(error.response).toBe('Client specified an invalid argument, request body or query param.');
@@ -130,7 +137,7 @@ describe('UserService test', () => {
       .spyOn(userRepository, 'deleteUserByUuid')
       .mockReturnValueOnce({} as any);
 
-    await userService.deleteUser(mock.userCreated.uuid);
+    await userService.deleteUser(mock.userStartupCreated.uuid);
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
