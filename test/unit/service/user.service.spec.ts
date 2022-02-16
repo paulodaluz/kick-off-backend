@@ -7,6 +7,10 @@ const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 
 describe('UserService test', () => {
+  beforeAll(async () => {
+    jest.fn().mockClear();
+  });
+
   it('should return success by service UserService on operation registerUser', async () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
     userRepository.registerUser = jest.fn().mockImplementation();
@@ -17,7 +21,7 @@ describe('UserService test', () => {
   });
 
   it('should return error on CNPJ validation, on operation registerUser', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
+    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
 
     const user = mock.userToCreate;
     user.cnpj = 'xxxx';
@@ -33,7 +37,7 @@ describe('UserService test', () => {
   });
 
   it('should return error User already exists, on operation registerUser', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValue(mock.userCreated);
+    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userCreated);
 
     try {
       await userService.registerUser(mock.userToCreate as User);
@@ -45,8 +49,27 @@ describe('UserService test', () => {
     }
   });
 
+  it('should return success by service UserService on operation login', async () => {
+    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userCreated);
+
+    const result = await userService.login(mock.userToCreate as User);
+
+    expect(result.uuid).toBe(mock.userCreated.uuid);
+  });
+
+  it('should return error not found, on operation login', async () => {
+    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
+
+    try {
+      await userService.login({email: mock.userToCreate.email, password: mock.userToCreate.password});
+    } catch (error) {
+      expect(error.status).toBe(403);
+      expect(error.response).toBe('Client does not have permission.');
+    }
+  });
+
   it('should return success on operation getUserInfos', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValue(mock.userCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userCreated);
 
     const result = await userService.getUserInfos(mock.userCreated.uuid);
 
@@ -55,7 +78,7 @@ describe('UserService test', () => {
   });
 
   it('should return error User not found, on operation getUserInfos', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValue(null);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(null);
 
     try {
       await userService.getUserInfos(mock.userCreated.uuid);
@@ -66,7 +89,7 @@ describe('UserService test', () => {
   });
 
   it('should return success by service UserService on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValue(mock.userCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userCreated);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
 
     const spy = jest
@@ -79,7 +102,7 @@ describe('UserService test', () => {
   });
 
   it('should return error User not found, on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValue(null);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(null);
 
     try {
       await userService.updateUser(mock.userCreated.uuid, mock.userCreated as User);
@@ -90,7 +113,7 @@ describe('UserService test', () => {
   });
 
   it('should return error no information to update, on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValue(mock.userCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userCreated);
 
     try {
       await userService.updateUser(mock.userCreated.uuid, {} as User);
