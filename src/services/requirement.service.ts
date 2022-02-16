@@ -79,7 +79,9 @@ export class RequirementService {
       requirements.push(this.requirementRepository.getRequirementByUuid(uuid));
     });
 
-    return await Promise.all(requirements);
+    const requirementsResolver = await Promise.all(requirements);
+
+    return requirementsResolver.filter(r => r);
   }
 
   public async getRequirementsByType(
