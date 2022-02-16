@@ -85,7 +85,7 @@ export class RequirementRepository {
         `typeOfRequirement = ${typeOfRequirement} - SUCCESS - NOT FOUND DATA`,
         `${this.className} - ${this.getRequirementByType.name}`,
       );
-      return null;
+      return [];
     }
 
     Logger.log(
