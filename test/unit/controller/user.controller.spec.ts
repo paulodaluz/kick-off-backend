@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { UserService } from '../../../src/services/user.service';
 import { AppModule } from '../../../src/app.module';
 import MockData from '../../mock/user.mock';
+const jwt = require('jsonwebtoken');
 
 describe('UserController test', () => {
   let app: INestApplication;
@@ -19,40 +20,13 @@ describe('UserController test', () => {
     await app.init();
   });
 
-  it('/POST registerUser of a startup with 201 ok', async () => {
-    userService.registerUser = jest.fn().mockResolvedValueOnce({ uuid: MockData.userStartupCreatedResponse.uuid });
-
-    return request(app.getHttpServer())
-      .post(`/user/register`)
-      .send(MockData.userToCreateStartup)
-      .expect(201)
-      .expect((response) => {
-        expect(typeof response.body.uuid).toBe('string');
-        expect(response.body.uuid).toBe(MockData.userStartupCreatedResponse.uuid);
-      });
-  });
-
-  it('/POST loginUser of a startup with 201 ok', async () => {
-    userService.login = jest.fn().mockResolvedValueOnce({ uuid: MockData.userStartupCreatedResponse.uuid });
-
-    return request(app.getHttpServer())
-      .post(`/user/login`)
-      .send({
-        email: 'teste@email.com',
-        password: 'senha123'
-      })
-      .expect(201)
-      .expect((response) => {
-        expect(typeof response.body.uuid).toBe('string');
-        expect(response.body.uuid).toBe(MockData.userStartupCreatedResponse.uuid);
-      });
-  });
-
   it('/GET getUserInfos of a startup with 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.getUserInfos = jest.fn().mockResolvedValueOnce(MockData.userStartupCreatedResponse);
 
     return request(app.getHttpServer())
       .get(`/user/get-infos/${MockData.userStartupCreated.uuid}`)
+      .set({authorization: MockData.token})
       .expect(200)
       .expect((response) => {
         expect(response.body.password).toBe(undefined);
@@ -67,18 +41,24 @@ describe('UserController test', () => {
   });
 
   it('/PUT updateUser 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.updateUser = jest.fn().mockImplementation();
 
     return request(app.getHttpServer())
       .put(`/user/update-info/${MockData.userStartupCreated.uuid}`)
       .set('Content-type', 'application/json')
+      .set({authorization: MockData.token})
       .send(MockData.userStartupCreated)
       .expect(200);
   });
 
   it('/DELETE deleteUser 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.deleteUser = jest.fn().mockImplementation();
 
-    return request(app.getHttpServer()).delete(`/user/delete-infos/${MockData.userStartupCreated.uuid}`).expect(200);
+    return request(app.getHttpServer())
+    .delete(`/user/delete-infos/${MockData.userStartupCreated.uuid}`)
+    .set({authorization: MockData.token})
+    .expect(200);
   });
 });

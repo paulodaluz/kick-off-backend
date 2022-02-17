@@ -13,63 +13,6 @@ describe('UserService test', () => {
     jest.resetModules();
   });
 
-  it('should return success by service UserService on operation registerUser', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
-    userRepository.registerUser = jest.fn().mockImplementation();
-
-    const result = await userService.registerUser(mock.userToCreateStartup as User);
-
-    expect(typeof result.uuid).toBe('string');
-  });
-
-  it('should return error on CNPJ validation, on operation registerUser', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
-
-    const user = mock.userToCreateStartup;
-    user.cnpj = 'xxxx';
-
-    try {
-      await userService.registerUser(user as User);
-    } catch (error) {
-      expect(error.status).toBe(400);
-      expect(error.message).toBe(
-        'Client specified an invalid argument, request body or query param.',
-      );
-    }
-  });
-
-  it('should return error User already exists, on operation registerUser', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
-
-    try {
-      await userService.registerUser(mock.userToCreateStartup as User);
-    } catch (error) {
-      expect(error.status).toBe(400);
-      expect(error.message).toBe(
-        'Client specified an invalid argument, request body or query param.',
-      );
-    }
-  });
-
-  it('should return success by service UserService on operation login', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
-
-    const result = await userService.login(mock.userToCreateStartup as User);
-
-    expect(result.uuid).toBe(mock.userStartupCreated.uuid);
-  });
-
-  it('should return error not found, on operation login', async () => {
-    userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
-
-    try {
-      await userService.login({email: mock.userToCreateStartup.email, password: mock.userToCreateStartup.password});
-    } catch (error) {
-      expect(error.status).toBe(403);
-      expect(error.response).toBe('Client does not have permission.');
-    }
-  });
-
   it('should return success on operation getUserInfos', async () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
 
