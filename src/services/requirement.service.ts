@@ -24,24 +24,24 @@ export class RequirementService {
 
     requirement.uuid = uuidv4();
 
+    const startup = await this.userRepository.getUserByUuid(uuidByStatup);
+
+    if (!startup || !startup.uuid) {
+      ErrorUtils.throwSpecificError(404);
+    }
+
     await this.requirementRepository.registerRequirement(requirement);
-    await this.linkRequirementToAStartup(uuidByStatup, requirement);
+    await this.linkRequirementToAStartup(startup, requirement);
   }
 
   private async linkRequirementToAStartup(
-    uuidByStatup: string,
+    startup: Startup,
     requirement: Requirement,
   ): Promise<void> {
     Logger.log(
       `requirement = ${JSON.stringify(requirement)}`,
       `${this.className} - ${this.linkRequirementToAStartup.name}`,
     );
-
-    const startup: Startup = await this.userRepository.getUserByUuid(uuidByStatup);
-
-    if (!startup && !startup.uuid) {
-      ErrorUtils.throwSpecificError(404);
-    }
 
     if (requirement.typeOfRequirement === 'investment') {
       if (!startup.investmentRequirements) {
@@ -52,7 +52,7 @@ export class RequirementService {
         requirement.uuid,
       );
 
-      await this.userRepository.updateUserInfo(uuidByStatup, {
+      await this.userRepository.updateUserInfo(startup.uuid, {
         investmentRequirements: investRequiremntsRequirementsUpdated,
       });
     }
@@ -64,7 +64,7 @@ export class RequirementService {
 
       const developerRequirementsUpdated = startup.developerRequirements.concat(requirement.uuid);
 
-      await this.userRepository.updateUserInfo(uuidByStatup, {
+      await this.userRepository.updateUserInfo(startup.uuid, {
         developerRequirements: developerRequirementsUpdated,
       });
     }
