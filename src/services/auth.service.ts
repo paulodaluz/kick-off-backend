@@ -52,7 +52,7 @@ export class AuthService {
 
     const token = this.privateGenerateToken(user.uuid, userToAuth.email);
 
-    return { uuid: user.uuid, token };
+    return { uuid: user.uuid, token, typeOfUser: user.typeOfUser };
   }
 
   private validateCompany(startup: Startup): void {
