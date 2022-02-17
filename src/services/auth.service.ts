@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
-import { Startup, User, UserLogin, AuthResponseInterface } from '../interfaces/user.interface';
+import { Startup, User, UserLogin, AuthResponseInterface, Developer } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
 import { v4 as uuidv4 } from 'uuid';
 const jwt = require('jsonwebtoken');
@@ -24,9 +24,14 @@ export class AuthService {
       ErrorUtils.throwSpecificError(400);
     }
 
-    if (user.typeOfUser === 'startup') {
-      this.validateCompany(user);
-    }
+    switch (user.typeOfUser) {
+			case 'startup':
+				this.validateStartup(user);
+			case 'investor':
+				this.validateInvestor(user);
+			case 'developer':
+				this.validateDeveloper(user);
+		}
 
     user.uuid = uuidv4();
 
@@ -55,14 +60,25 @@ export class AuthService {
     return { uuid: user.uuid, token, typeOfUser: user.typeOfUser };
   }
 
-  private validateCompany(startup: Startup): void {
+  private validateStartup(startup: Startup): void {
     if (!UtilsValidations.isCnpj(startup.cnpj)) {
       Logger.error(`startup = ${startup.name} - ERROR = Invalid CNPJ`,
-        `${this.className} - ${this.validateCompany.name}`,
+        `${this.className} - ${this.validateStartup.name}`,
       );
 
       ErrorUtils.throwSpecificError(400);
     }
+
+    startup.developerRequirements = [];
+    startup.investmentRequirements = [];
+  }
+
+  private validateDeveloper(developer: Developer): void {
+    developer.workInProgress = [];
+  }
+
+  private validateInvestor(developer: Developer): void {
+    developer.workInProgress = [];
   }
 
   privateGenerateToken(uuid: string, email: string): string {
