@@ -37,6 +37,7 @@ export interface User extends Startup, Investor, Developer {
 export interface AuthResponseInterface {
   uuid: string;
   token: string;
+  typeOfUser?: 'startup' | 'developer' | 'investor';
 }
 
 export interface UserLogin {
