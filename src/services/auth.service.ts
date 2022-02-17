@@ -32,7 +32,7 @@ export class AuthService {
 
     await this.userRepository.registerUser(user);
 
-    const token = this.privateGenerateToken(user.uuid);
+    const token = this.privateGenerateToken(user.uuid, user.email);
 
     return { uuid: user.uuid, token };
   }
@@ -50,7 +50,7 @@ export class AuthService {
       ErrorUtils.throwSpecificError(403);
     }
 
-    const token = this.privateGenerateToken(user.uuid);
+    const token = this.privateGenerateToken(user.uuid, userToAuth.email);
 
     return { uuid: user.uuid, token };
   }
@@ -65,10 +65,11 @@ export class AuthService {
     }
   }
 
-  privateGenerateToken(uuid: string): string {
+  privateGenerateToken(uuid: string, email: string): string {
     return jwt.sign({
         uuid,
-      }, process.env.SECRET_KEY_TO_JWT_TOKEN, { expiresIn: '1h', algorithm: 'HS512' }
+        email
+      }, process.env.SECRET_KEY_TO_JWT_TOKEN, { algorithm: 'HS512' }
     );
   }
 }
