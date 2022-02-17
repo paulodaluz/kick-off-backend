@@ -7,7 +7,7 @@ const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 
 describe('UserService test', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     jest.fn().mockClear();
     jest.clearAllMocks();
     jest.resetModules();
