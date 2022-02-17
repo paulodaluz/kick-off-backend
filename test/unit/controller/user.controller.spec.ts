@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { UserService } from '../../../src/services/user.service';
 import { AppModule } from '../../../src/app.module';
 import MockData from '../../mock/user.mock';
+const jwt = require('jsonwebtoken');
 
 describe('UserController test', () => {
   let app: INestApplication;
@@ -20,6 +21,7 @@ describe('UserController test', () => {
   });
 
   it('/GET getUserInfos of a startup with 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.getUserInfos = jest.fn().mockResolvedValueOnce(MockData.userStartupCreatedResponse);
 
     return request(app.getHttpServer())
@@ -39,6 +41,7 @@ describe('UserController test', () => {
   });
 
   it('/PUT updateUser 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.updateUser = jest.fn().mockImplementation();
 
     return request(app.getHttpServer())
@@ -50,6 +53,7 @@ describe('UserController test', () => {
   });
 
   it('/DELETE deleteUser 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.deleteUser = jest.fn().mockImplementation();
 
     return request(app.getHttpServer())
