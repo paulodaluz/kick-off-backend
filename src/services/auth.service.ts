@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
-import { Startup, User, UserLogin, UuidUserResponseInterface } from '../interfaces/user.interface';
+import { Startup, User, UserLogin, AuthResponseInterface } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
 import { v4 as uuidv4 } from 'uuid';
+const jwt = require('jsonwebtoken');
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
 
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async registerUser(user: User): Promise<UuidUserResponseInterface> {
+  public async registerUser(user: User): Promise<AuthResponseInterface> {
     Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
     const registerExists = await this.userRepository.getUserByEmail(user.email);
 
@@ -31,10 +32,12 @@ export class AuthService {
 
     await this.userRepository.registerUser(user);
 
-    return { uuid: user.uuid };
+    const token = this.privateGenerateToken(user.uuid);
+
+    return { uuid: user.uuid, token };
   }
 
-  public async login(userToAuth: UserLogin): Promise<UuidUserResponseInterface> {
+  public async login(userToAuth: UserLogin): Promise<AuthResponseInterface> {
     Logger.log(`email = ${userToAuth.email}`, `${this.className} - ${this.login.name}`);
 
     const user = await this.userRepository.getUserByEmail(userToAuth.email);
@@ -47,7 +50,9 @@ export class AuthService {
       ErrorUtils.throwSpecificError(403);
     }
 
-    return { uuid: user.uuid };
+    const token = this.privateGenerateToken(user.uuid);
+
+    return { uuid: user.uuid, token };
   }
 
   private validateCompany(startup: Startup): void {
@@ -58,5 +63,12 @@ export class AuthService {
 
       ErrorUtils.throwSpecificError(400);
     }
+  }
+
+  privateGenerateToken(uuid: string): string {
+    return jwt.sign({
+        uuid,
+      }, process.env.SECRET_KEY_TO_JWT_TOKEN, { expiresIn: '1h', algorithm: 'HS512' }
+    );
   }
 }
