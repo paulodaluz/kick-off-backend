@@ -24,6 +24,7 @@ describe('UserController test', () => {
 
     return request(app.getHttpServer())
       .get(`/user/get-infos/${MockData.userStartupCreated.uuid}`)
+      .set({authorization: MockData.token})
       .expect(200)
       .expect((response) => {
         expect(response.body.password).toBe(undefined);
@@ -43,6 +44,7 @@ describe('UserController test', () => {
     return request(app.getHttpServer())
       .put(`/user/update-info/${MockData.userStartupCreated.uuid}`)
       .set('Content-type', 'application/json')
+      .set({authorization: MockData.token})
       .send(MockData.userStartupCreated)
       .expect(200);
   });
@@ -50,6 +52,9 @@ describe('UserController test', () => {
   it('/DELETE deleteUser 200 ok', async () => {
     userService.deleteUser = jest.fn().mockImplementation();
 
-    return request(app.getHttpServer()).delete(`/user/delete-infos/${MockData.userStartupCreated.uuid}`).expect(200);
+    return request(app.getHttpServer())
+    .delete(`/user/delete-infos/${MockData.userStartupCreated.uuid}`)
+    .set({authorization: MockData.token})
+    .expect(200);
   });
 });

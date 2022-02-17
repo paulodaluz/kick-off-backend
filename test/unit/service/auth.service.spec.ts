@@ -7,6 +7,8 @@ const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);
 
 describe('AuthService test', () => {
+  process.env.SECRET_KEY_TO_JWT_TOKEN = 'UNIT_TEST_KEY';
+
   beforeEach(async () => {
     jest.fn().mockClear();
     jest.clearAllMocks();
@@ -20,6 +22,7 @@ describe('AuthService test', () => {
     const result = await authService.registerUser(mock.userToCreateStartup as User);
 
     expect(typeof result.uuid).toBe('string');
+    expect(typeof result.token).toBe('string');
   });
 
   it('should return error on CNPJ validation, on operation registerUser', async () => {
@@ -57,6 +60,7 @@ describe('AuthService test', () => {
     const result = await authService.login(mock.userToCreateStartup as User);
 
     expect(result.uuid).toBe(mock.userStartupCreated.uuid);
+    expect(typeof result.token).toBe('string');
   });
 
   it('should return error not found, on operation login', async () => {

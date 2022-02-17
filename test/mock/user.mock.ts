@@ -30,4 +30,5 @@ export default {
     "phoneNumber": "(54) 99108-3039",
     "cnpj": "98.828.768/0001-52"
   },
+  token: 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTA2MTFkMGQtOTNkMy00MTRmLThhMzktYWYzNTBmNTQzMTVmIiwiaWF0IjoxNjQ1MTE2NjM5LCJleHAiOjE2NDUxMjAyMzl9.7dqemgPdoc6Rwzr35cda7Rx-yHedJyFabP-f-2o-vv2Rp5M9kBuaQ4qZDMJjicksrjdVUWBNFNEq-W6NdsCjwQ'
 }
