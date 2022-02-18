@@ -1,3 +1,5 @@
+import { Requirement } from "./requirement.interface";
+
 export interface Startup {
   uuid: string;
   cnpj: string;
@@ -5,8 +7,9 @@ export interface Startup {
   description: string;
   managingPartners: string;
   numberOfWorkers: number;
-  developerRequirements: Array<string>;
-  investmentRequirements: Array<string>;
+  developerRequirements?: Array<string|Requirement>;
+  investmentRequirements?: Array<string|Requirement>;
+  investmentRaised?: number;
 }
 
 export interface Investor {

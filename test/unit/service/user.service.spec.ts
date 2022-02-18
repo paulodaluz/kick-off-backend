@@ -1,10 +1,12 @@
 import { User } from '../../../src/interfaces/user.interface';
 import { UserRepository } from '../../../src/repository/user.repository';
+import { RequirementRepository } from '../../../src/repository/requeriment.repository';
 import { UserService } from '../../../src/services/user.service';
 import mock from '../../mock/user.mock';
 
 const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
+const requirementRepository = new RequirementRepository();
+const userService = new UserService(userRepository, requirementRepository);
 
 describe('UserService test', () => {
   beforeEach(async () => {
@@ -27,6 +29,30 @@ describe('UserService test', () => {
     expect(result.typeOfUser).toBe("startup");
     expect(result.phoneNumber).toBe("(54) 99108-3039");
     expect(result.cnpj).toBe("98.828.768/0001-52");
+  });
+
+  it('should return success on operation getUserInfos with requirements details', async () => {
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.completeUserStartup);
+    requirementRepository.getRequirementByUuid = jest.fn()
+      .mockResolvedValueOnce(mock.devRequirement)
+      .mockResolvedValueOnce(mock.investRequirementOne)
+      .mockResolvedValueOnce(mock.investRequirementTwo);
+
+    const result = await userService.getUserInfos(mock.completeUserStartup.uuid);
+
+    expect(result.password).toBe(undefined);
+    expect(result.uuid).toBe("10611d0d-93d3-414f-8a39-af350f54315f");
+    expect(result.name).toBe("Startup Name");
+    expect(result.email).toBe("email@gmail.com");
+    expect(result.managingPartners).toBe("Paulo da Luz e Leonardo");
+    expect(result.numberOfWorkers).toBe(33);
+    expect(result.typeOfUser).toBe("startup");
+    expect(result.developerRequirements.length).toBe(1);
+    expect(result.investmentRequirements.length).toBe(2);
+    expect(result.phoneNumber).toBe("(54) 99108-3039");
+    expect(result.cnpj).toBe("98.828.768/0001-52");
+    expect(result.investmentRaised).toBe(45000);
+    expect(result.description).toBe('A good startup');
   });
 
   it('should return error User not found, on operation getUserInfos', async () => {

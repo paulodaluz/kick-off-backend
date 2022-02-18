@@ -30,6 +30,10 @@ export class RequirementService {
       ErrorUtils.throwSpecificError(404);
     }
 
+    if(requirement.typeOfRequirement === 'investment') {
+      requirement.obtainedMoney = 0;
+    }
+
     await this.requirementRepository.registerRequirement(requirement);
     await this.linkRequirementToAStartup(startup, requirement);
   }
@@ -44,10 +48,6 @@ export class RequirementService {
     );
 
     if (requirement.typeOfRequirement === 'investment') {
-      if (!startup.investmentRequirements) {
-        startup.investmentRequirements = [];
-      }
-
       const investRequiremntsRequirementsUpdated = startup.investmentRequirements.concat(
         requirement.uuid,
       );
@@ -55,19 +55,15 @@ export class RequirementService {
       await this.userRepository.updateUserInfo(startup.uuid, {
         investmentRequirements: investRequiremntsRequirementsUpdated,
       });
+
+      return;
     }
 
-    if (requirement.typeOfRequirement === 'development') {
-      if (!startup.developerRequirements) {
-        startup.developerRequirements = [];
-      }
+    const developerRequirementsUpdated = startup.developerRequirements.concat(requirement.uuid);
 
-      const developerRequirementsUpdated = startup.developerRequirements.concat(requirement.uuid);
-
-      await this.userRepository.updateUserInfo(startup.uuid, {
-        developerRequirements: developerRequirementsUpdated,
-      });
-    }
+    await this.userRepository.updateUserInfo(startup.uuid, {
+      developerRequirements: developerRequirementsUpdated,
+    });
   }
 
   public async getRequirementsByUuid(
@@ -111,7 +107,6 @@ export class RequirementService {
     }
 
     if (
-      requirement.obtainedMoney &&
       requirement.obtainedMoney > 0 &&
       requirementToUpdate.requiredMoney
     ) {
@@ -137,20 +132,18 @@ export class RequirementService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    if (requirement.typeOfRequirement === 'development') {
-      return await this.deleteRequirementOfDevelop(requirement, startup);
-    }
-
     if (requirement.typeOfRequirement === 'investment') {
       return await this.deleteRequirementOfInvestment(requirement, startup);
     }
+
+    return await this.deleteRequirementOfDevelop(requirement, startup);
   }
 
   private async deleteRequirementOfInvestment(
     requirement: Requirement,
     startup: Startup,
   ): Promise<void> {
-    if (requirement.obtainedMoney && requirement.obtainedMoney > 0) {
+    if (requirement.obtainedMoney > 0) {
       ErrorUtils.throwSpecificError(403);
     }
 
@@ -164,8 +157,6 @@ export class RequirementService {
       }),
       this.requirementRepository.deleteRequirementByUuid(requirement.uuid),
     ]);
-
-    return;
   }
 
   private async deleteRequirementOfDevelop(

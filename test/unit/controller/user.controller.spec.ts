@@ -40,6 +40,15 @@ describe('UserController test', () => {
       });
   });
 
+  it('/GET getUserInfos should return erro on jwt', async () => {
+    userService.getUserInfos = jest.fn().mockResolvedValueOnce(MockData.userStartupCreatedResponse);
+
+    return request(app.getHttpServer())
+      .get(`/user/get-infos/${MockData.userStartupCreated.uuid}`)
+      .set({authorization: ''})
+      .expect(403)
+  });
+
   it('/PUT updateUser 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     userService.updateUser = jest.fn().mockImplementation();
