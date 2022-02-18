@@ -24,9 +24,5 @@ export class Utils {
     if (requirement.typeOfRequirement) {
       delete requirement.typeOfRequirement;
     }
-
-    if (requirement.obtainedMoney) {
-      delete requirement.obtainedMoney;
-    }
   }
 }
