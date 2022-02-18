@@ -1,14 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
+import { RequirementRepository } from '../repository/requeriment.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
 import { User } from '../interfaces/user.interface';
+import { Requirement } from 'src/interfaces/requirement.interface';
 
 @Injectable()
 export class UserService {
   private className = 'UserService';
 
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly requirementRepository: RequirementRepository
+  ) {}
 
   public async getUserInfos(uuid: string): Promise<User> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getUserInfos.name}`);
@@ -24,6 +29,18 @@ export class UserService {
     }
 
     delete user.password;
+
+    if(user.typeOfUser === 'startup') {
+      const [requirementsDetailsDev, requirementsDetailsInvest] = await Promise.all([
+        this.getRequirementsDetails(user.developerRequirements as Array<string>),
+        this.getRequirementsDetails(user.investmentRequirements as Array<string>)
+      ]);
+
+      user.developerRequirements = requirementsDetailsDev;
+      user.investmentRequirements = requirementsDetailsInvest;
+
+      user.investmentRaised = requirementsDetailsInvest.reduce((sum, invest) => sum + invest.obtainedMoney, 0);
+    }
 
     return user;
   }
@@ -54,5 +71,17 @@ export class UserService {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteUser.name}`);
 
     await this.userRepository.deleteUserByUuid(uuid);
+  }
+
+  private async getRequirementsDetails(uuidsByRequirements: Array<string>): Promise<Array<Requirement>> {
+    const requirements = [];
+
+    uuidsByRequirements.map((uuid: string) => {
+      requirements.push(this.requirementRepository.getRequirementByUuid(uuid));
+    });
+
+    const requirementsResolved = await Promise.all(requirements);
+
+   return requirementsResolved.filter(r => r);
   }
 }
