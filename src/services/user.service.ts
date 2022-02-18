@@ -28,7 +28,7 @@ export class UserService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    delete user.password;
+    Reflect.deleteProperty(user, 'password')
 
     if(user.typeOfUser === 'startup') {
       const [requirementsDetailsDev, requirementsDetailsInvest] = await Promise.all([

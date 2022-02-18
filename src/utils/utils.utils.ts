@@ -4,25 +4,25 @@ import { Requirement } from '../interfaces/requirement.interface';
 export class Utils {
   public static avoidIncorrectUserUpdate(user: Partial<User>): void {
     if (user.email) {
-      delete user.email;
+      Reflect.deleteProperty(user, 'email');
     }
 
     if (user.uuid) {
-      delete user.uuid;
+      Reflect.deleteProperty(user, 'uuid');
     }
 
     if (user.typeOfUser) {
-      delete user.typeOfUser;
+      Reflect.deleteProperty(user, 'typeOfUser');
     }
   }
 
   public static avoidIncorrectRequirementUpdate(requirement: Partial<Requirement>): void {
     if (requirement.uuid) {
-      delete requirement.uuid;
+      Reflect.deleteProperty(requirement, 'uuid');
     }
 
     if (requirement.typeOfRequirement) {
-      delete requirement.typeOfRequirement;
+      Reflect.deleteProperty(requirement, 'typeOfRequirement');
     }
   }
 }
