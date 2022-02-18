@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
-import { Startup, User, UserLogin, AuthResponseInterface, Developer } from '../interfaces/user.interface';
+import { Startup, User, UserLogin, AuthResponseInterface, Developer, Investor } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
 import { v4 as uuidv4 } from 'uuid';
 const jwt = require('jsonwebtoken');
@@ -14,6 +14,7 @@ export class AuthService {
 
   public async registerUser(user: User): Promise<AuthResponseInterface> {
     Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
+
     const registerExists = await this.userRepository.getUserByEmail(user.email);
 
     if (registerExists && registerExists.uuid) {
@@ -77,8 +78,8 @@ export class AuthService {
     developer.workInProgress = [];
   }
 
-  private validateInvestor(developer: Developer): void {
-    developer.workInProgress = [];
+  private validateInvestor(investor: Investor): void {
+    investor.investedStartups = [];
   }
 
   privateGenerateToken(uuid: string, email: string): string {
