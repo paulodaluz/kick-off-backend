@@ -1,6 +1,6 @@
-import { IsString, IsUUID, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
-import { Requirement } from '../interfaces/requirement.interface';
-import { TypeOfRequirementEnum } from '../interfaces/requirement.interface';
+import { IsString, IsOptional, IsEnum, IsNumber } from 'class-validator';
+import { Requirement , TypeOfRequirementEnum } from '../interfaces/requirement.interface';
+
 
 export class RegisterRequirementValidator implements Requirement {
   @IsOptional()

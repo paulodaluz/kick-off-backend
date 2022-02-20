@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export default {
   userToCreateStartup: {
     "email": "test@email.com",
@@ -7,6 +8,27 @@ export default {
     "typeOfUser": "startup",
     "phoneNumber": "(54) 99108-3039",
     "cnpj": "98.828.768/0001-52",
+    "password": "senha123"
+  },
+  userToCreateInvestor: {
+    "email": "test@email.com",
+    "name": "Carlos",
+    "typeOfUser": "investor",
+    "phoneNumber": "(54) 99108-3039",
+    "password": "senha123"
+  },
+  userToCreateDeveloper: {
+    "email": "test@email.com",
+    "name": "Carlos",
+    "typeOfUser": "developer",
+    "phoneNumber": "(54) 99108-3039",
+    "password": "senha123"
+  },
+  userToCreateIncorrectType: {
+    "email": "test@email.com",
+    "name": "Carlos",
+    "typeOfUser": "xxx",
+    "phoneNumber": "(54) 99108-3039",
     "password": "senha123"
   },
   userStartupCreated: {

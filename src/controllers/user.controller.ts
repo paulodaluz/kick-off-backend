@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, ValidationPipe } from '@nestjs/common';
 import { UpdateUserValidator } from '../validators/updateUser.validator';
 import { User } from '../interfaces/user.interface';
 import { UserService } from '../services/user.service';

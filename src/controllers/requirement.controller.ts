@@ -29,7 +29,7 @@ export class RequirementController {
 
   @Post('get-infos')
   async getRequirementsByUser(@Body() body: Array<string>): Promise<Array<Requirement>> {
-    return await this.requirementService.getRequirementsByUuid(body);
+    return this.requirementService.getRequirementsByUuid(body);
   }
 
   @Get('active-requirements')
@@ -57,6 +57,6 @@ export class RequirementController {
     @Param('requirement') uuidByRequirement: string,
     @Param('startup') uuidByStatup: string,
   ): Promise<void> {
-    return await this.requirementService.deleteRequirement(uuidByRequirement, uuidByStatup);
+    return this.requirementService.deleteRequirement(uuidByRequirement, uuidByStatup);
   }
 }

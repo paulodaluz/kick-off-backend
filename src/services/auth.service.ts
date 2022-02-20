@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Startup, User, UserLogin, AuthResponseInterface, Developer, Investor } from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
-import { v4 as uuidv4 } from 'uuid';
+
 const jwt = require('jsonwebtoken');
 
 @Injectable()
@@ -28,10 +29,15 @@ export class AuthService {
     switch (user.typeOfUser) {
 			case 'startup':
 				this.validateStartup(user);
+        break;
 			case 'investor':
 				this.validateInvestor(user);
+        break;
 			case 'developer':
 				this.validateDeveloper(user);
+        break;
+      default:
+        ErrorUtils.throwSpecificError(400);
 		}
 
     user.uuid = uuidv4();

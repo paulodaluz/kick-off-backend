@@ -15,7 +15,7 @@ describe('AuthService test', () => {
     jest.resetModules();
   });
 
-  it('should return success by service AuthService on operation registerUser', async () => {
+  it('should return success by service AuthService on operation registerUser STARTUP', async () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
     userRepository.registerUser = jest.fn().mockImplementation();
 
@@ -23,6 +23,39 @@ describe('AuthService test', () => {
 
     expect(typeof result.uuid).toBe('string');
     expect(typeof result.token).toBe('string');
+  });
+
+  it('should return success by service AuthService on operation registerUser INVESTOR', async () => {
+    userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
+    userRepository.registerUser = jest.fn().mockImplementation();
+
+    const result = await authService.registerUser(mock.userToCreateInvestor as User);
+
+    expect(typeof result.uuid).toBe('string');
+    expect(typeof result.token).toBe('string');
+  });
+
+  it('should return success by service AuthService on operation registerUser Developer', async () => {
+    userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
+    userRepository.registerUser = jest.fn().mockImplementation();
+
+    const result = await authService.registerUser(mock.userToCreateDeveloper as User);
+
+    expect(typeof result.uuid).toBe('string');
+    expect(typeof result.token).toBe('string');
+  });
+
+  it('should return error by service AuthService on operation registerUser IncorrectType', async () => {
+    userRepository.getUserByEmail = jest.fn().mockResolvedValue(null);
+
+    try {
+      await authService.registerUser(mock.userToCreateIncorrectType as User);
+    } catch (error) {
+      expect(error.status).toBe(400);
+      expect(error.message).toBe(
+        'Client specified an invalid argument, request body or query param.',
+      );
+    }
   });
 
   it('should return error on CNPJ validation, on operation registerUser', async () => {

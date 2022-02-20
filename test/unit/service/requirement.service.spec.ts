@@ -130,7 +130,8 @@ describe('RequirementService test', () => {
     }
   });
 
-  it('should return error on operation updateRequirement(403) because requirement aleary received investment', async () => {
+  it(`should return error on operation updateRequirement(403)
+      because requirement aleary received investment`, async () => {
     requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.inevestmentRequirementWithInvest);
 
     try {
@@ -156,7 +157,10 @@ describe('RequirementService test', () => {
     requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.inevestmentRequirementTwo);
     requirementRepository.updateRequirementInfo = jest.fn().mockImplementation();
 
-    await requirementService.updateRequirement(Mock.inevestmentRequirementTwo.uuid, Mock.inevestmentRequirementTwo as Requirement);
+    await requirementService.updateRequirement(
+      Mock.inevestmentRequirementTwo.uuid,
+      Mock.inevestmentRequirementTwo as Requirement
+    );
 
     const spyUpdateReq = jest
       .spyOn(requirementRepository, 'updateRequirementInfo')

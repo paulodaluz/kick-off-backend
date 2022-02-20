@@ -4,6 +4,7 @@ import * as request from 'supertest';
 import { UserService } from '../../../src/services/user.service';
 import { AppModule } from '../../../src/app.module';
 import MockData from '../../mock/user.mock';
+
 const jwt = require('jsonwebtoken');
 
 describe('UserController test', () => {

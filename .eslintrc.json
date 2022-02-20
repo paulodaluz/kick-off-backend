@@ -1,15 +1,35 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "extends": ["airbnb", "airbnb-base", "prettier"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "airbnb",
+    "airbnb-base",
+    "prettier"
+  ],
   "rules": {
     "linebreak-style": 0,
     "global-require ": 0,
-    "eslint linebreak-style ": [0," error "," windows "],
+    "eslint linebreak-style ": [
+      0,
+      " error ",
+      " windows "
+    ],
     "import/no-unresolved": "off",
     "import/no-dynamic-require": "off",
-    "@typescript-eslint/no-unused-vars": [2, { "args": "none" }],
-    "max-len": ["error", {"code": 120}],
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "args": "none"
+      }
+    ],
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ],
     "semi": "off",
     "import/extensions": [
       "error",
@@ -24,25 +44,33 @@
     "class-methods-use-this": 0,
     "no-useless-constructor": "off",
     "no-empty-function": "off",
-    "camelcase": [2, {"properties": "always"}],
+    "camelcase": [
+      2,
+      {
+        "properties": "always"
+      }
+    ],
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["error"]
+    "@typescript-eslint/no-shadow": [
+      "error"
+    ]
   },
   "env": {
     "commonjs": true,
     "node": true,
-    "jest": true,
-    "jest/globals": true
+    "jest": true
   },
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      },
-      "jest": {
-        "jestConfigFile": "./jest.conf.js"
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
       }
     }
   }
