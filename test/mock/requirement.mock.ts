@@ -25,5 +25,21 @@ export default {
     obtainedMoney: 0,
     descriptionOfMoneryReturn: 'Vai ser retornado a partir de ações na empresa',
     typeOfRequirement: 'investment'
-  }
+  },
+  inevestmentRequirementWithInvest: {
+    uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e361',
+    description: 'Dinheiro para comprar Macs',
+    requiredMoney: 10000,
+    obtainedMoney: 10000,
+    descriptionOfMoneryReturn: 'Vai ser retornado a partir de ações na empresa',
+    typeOfRequirement: 'investment'
+  },
+  inevestmentRequirementTwo: {
+    uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e361',
+    description: 'Dinheiro para comprar Macs',
+    requiredMoney: 10000,
+    obtainedMoney: 0,
+    descriptionOfMoneryReturn: 'Vai ser retornado a partir de ações na empresa',
+    typeOfRequirement: 'investment'
+  },
 }
