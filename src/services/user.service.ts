@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Requirement } from 'src/interfaces/requirement.interface';
 import { UserRepository } from '../repository/user.repository';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
 import { User } from '../interfaces/user.interface';
-import { Requirement } from 'src/interfaces/requirement.interface';
 
 @Injectable()
 export class UserService {
@@ -76,7 +76,7 @@ export class UserService {
   private async getRequirementsDetails(uuidsByRequirements: Array<string>): Promise<Array<Requirement>> {
     const requirements = [];
 
-    uuidsByRequirements.map((uuid: string) => {
+    uuidsByRequirements.forEach((uuid: string) => {
       requirements.push(this.requirementRepository.getRequirementByUuid(uuid));
     });
 

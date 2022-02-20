@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { ErrorUtils } from '../utils/error.utils';
+
 const jwt = require('jsonwebtoken');
 
 export function JWTValidation(req: Request, res: Response, next: NextFunction) {

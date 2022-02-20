@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 import { Requirement } from '../interfaces/requirement.interface';
 import { Startup } from '../interfaces/user.interface';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
-import { v4 as uuidv4 } from 'uuid';
 import { Utils } from '../utils/utils.utils';
 
 @Injectable()
@@ -71,7 +71,7 @@ export class RequirementService {
   ): Promise<Array<Requirement>> {
     const requirements = [];
 
-    uuidsByRequirements.map((uuid) => {
+    uuidsByRequirements.forEach((uuid) => {
       requirements.push(this.requirementRepository.getRequirementByUuid(uuid));
     });
 
@@ -93,7 +93,7 @@ export class RequirementService {
       ErrorUtils.throwSpecificError(400);
     }
 
-    return await this.requirementRepository.getRequirementByType(typeOfRequirement);
+    return this.requirementRepository.getRequirementByType(typeOfRequirement);
   }
 
   public async updateRequirement(
@@ -133,10 +133,10 @@ export class RequirementService {
     }
 
     if (requirement.typeOfRequirement === 'investment') {
-      return await this.deleteRequirementOfInvestment(requirement, startup);
+      return this.deleteRequirementOfInvestment(requirement, startup);
     }
 
-    return await this.deleteRequirementOfDevelop(requirement, startup);
+    return this.deleteRequirementOfDevelop(requirement, startup);
   }
 
   private async deleteRequirementOfInvestment(
@@ -148,7 +148,7 @@ export class RequirementService {
     }
 
     const updatedReqInvest = startup.investmentRequirements.filter(
-      (reqInvest) => reqInvest != requirement.uuid,
+      (reqInvest) => reqInvest !== requirement.uuid,
     );
 
     await Promise.all([
@@ -164,7 +164,7 @@ export class RequirementService {
     startup: Startup,
   ): Promise<void> {
     const updatedReqDev = startup.developerRequirements.filter(
-      (reqDev) => reqDev != requirement.uuid,
+      (reqDev) => reqDev !== requirement.uuid,
     );
 
     await Promise.all([

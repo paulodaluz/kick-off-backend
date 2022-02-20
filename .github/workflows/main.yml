@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: main
+    branches: [main]
 
   workflow_dispatch:
 
@@ -29,3 +29,6 @@ jobs:
 
       - name: Run tests
         run: npm run test
+
+      - name: Run Lint
+        run: npm run lint

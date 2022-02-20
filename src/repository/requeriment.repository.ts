@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { Requirement } from '../interfaces/requirement.interface';
 import { ErrorUtils } from '../utils/error.utils';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { db } from '../database/configuration.database';
 
 @Injectable()

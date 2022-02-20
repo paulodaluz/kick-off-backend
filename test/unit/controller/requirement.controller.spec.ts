@@ -4,7 +4,7 @@ import * as request from 'supertest';
 import { AppModule } from '../../../src/app.module';
 import MockData from '../../mock/requirement.mock';
 import { RequirementService } from '../../../src/services/requirement.service';
-import requirementMock from '../../mock/requirement.mock';
+
 const jwt = require('jsonwebtoken');
 
 describe('UserController test', () => {
@@ -33,22 +33,22 @@ describe('UserController test', () => {
 
   it('/POST getRequirementsByUser with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
-    requirementService.getRequirementsByUuid = jest.fn().mockResolvedValue([requirementMock.developerRequirement]);
+    requirementService.getRequirementsByUuid = jest.fn().mockResolvedValue([MockData.developerRequirement]);
 
     return request(app.getHttpServer())
       .post(`/requirement/get-infos`)
-      .send([requirementMock.developerRequirement.uuid])
+      .send([MockData.developerRequirement.uuid])
       .expect(201)
       .expect((response) => {
         expect(Array.isArray(response.body)).toBe(true)
         expect(response.body.length).toBe(1)
-        expect(response.body).toStrictEqual([requirementMock.developerRequirement])
+        expect(response.body).toStrictEqual([MockData.developerRequirement])
       })
   });
 
   it('/POST getRequirementsOpened with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
-    requirementService.getRequirementsByType = jest.fn().mockResolvedValue([requirementMock.developerRequirement]);
+    requirementService.getRequirementsByType = jest.fn().mockResolvedValue([MockData.developerRequirement]);
 
     return request(app.getHttpServer())
       .get(`/requirement/active-requirements`)
@@ -57,7 +57,7 @@ describe('UserController test', () => {
       .expect((response) => {
         expect(Array.isArray(response.body)).toBe(true)
         expect(response.body.length).toBe(1)
-        expect(response.body).toStrictEqual([requirementMock.developerRequirement])
+        expect(response.body).toStrictEqual([MockData.developerRequirement])
       })
   });
 

@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { User } from '../interfaces/user.interface';
 import { db } from '../database/configuration.database';
 import { ErrorUtils } from '../utils/error.utils';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 
 @Injectable()
 export class UserRepository {
