@@ -50,6 +50,10 @@ describe('UserService test', () => {
     expect(result.developerRequirements).toBe(undefined);
     expect(result.investmentRequirements).toBe(undefined);
     expect(result.requirements.length).toBe(3);
+    expect(result.requirements[0].creationDate).toBe('Fri Feb 21 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)');
+    expect(result.requirements[1].creationDate).toBe('Fri Feb 22 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)');
+    expect(result.requirements[2].creationDate).toBe('Fri Feb 23 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)');
+    expect(result.requirements[1].partnerParticipation).toBe('5,2%');
     expect(result.phoneNumber).toBe("(54) 99108-3039");
     expect(result.cnpj).toBe("98.828.768/0001-52");
     expect(result.investmentRaised).toBe(45000);

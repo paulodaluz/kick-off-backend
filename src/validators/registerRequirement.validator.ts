@@ -33,7 +33,7 @@ export class RegisterRequirementValidator implements Requirement {
   @IsOptional()
   obtainedMoney: number;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  partnerparticipation: number;
+  partnerParticipation: string;
 }
