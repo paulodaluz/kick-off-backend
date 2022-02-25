@@ -40,7 +40,10 @@ export class UserService {
       Reflect.deleteProperty(user, 'developerRequirements');
 
       user.investmentRaised = requirementsDetailsInvest.reduce((sum, invest) => sum + invest.obtainedMoney, 0);
-      user.requirements = requirementsDetailsInvest.concat(requirementsDetailsDev);
+
+      const allReq = requirementsDetailsInvest.concat(requirementsDetailsDev);
+      user.requirements = allReq.sort((reqOne, reqTwo) =>
+        new Date(reqOne.creationDate).getTime() - new Date(reqTwo.creationDate).getTime());
     }
 
     return user;
