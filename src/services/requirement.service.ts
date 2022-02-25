@@ -34,6 +34,8 @@ export class RequirementService {
       requirement.obtainedMoney = 0;
     }
 
+    requirement.creationDate = new Date().toString();
+
     await this.requirementRepository.registerRequirement(requirement);
     await this.linkRequirementToAStartup(startup, requirement);
   }
