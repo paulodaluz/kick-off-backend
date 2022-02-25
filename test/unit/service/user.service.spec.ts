@@ -47,8 +47,9 @@ describe('UserService test', () => {
     expect(result.managingPartners).toBe("Paulo da Luz e Leonardo");
     expect(result.numberOfWorkers).toBe(33);
     expect(result.typeOfUser).toBe("startup");
-    expect(result.developerRequirements.length).toBe(1);
-    expect(result.investmentRequirements.length).toBe(2);
+    expect(result.developerRequirements).toBe(undefined);
+    expect(result.investmentRequirements).toBe(undefined);
+    expect(result.requirements.length).toBe(3);
     expect(result.phoneNumber).toBe("(54) 99108-3039");
     expect(result.cnpj).toBe("98.828.768/0001-52");
     expect(result.investmentRaised).toBe(45000);
