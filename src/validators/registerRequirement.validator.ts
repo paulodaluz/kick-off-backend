@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsEnum, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsEnum, IsNumber, IsDate } from 'class-validator';
 import { Requirement , TypeOfRequirementEnum } from '../interfaces/requirement.interface';
 
 
@@ -21,6 +21,10 @@ export class RegisterRequirementValidator implements Requirement {
   @IsOptional()
   payment: number;
 
+  @IsDate()
+  @IsOptional()
+  creationDate: string;
+
   @IsNumber()
   @IsOptional()
   requiredMoney: number;
@@ -29,7 +33,7 @@ export class RegisterRequirementValidator implements Requirement {
   @IsOptional()
   obtainedMoney: number;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  descriptionOfMoneryReturn: string;
+  partnerparticipation: number;
 }
