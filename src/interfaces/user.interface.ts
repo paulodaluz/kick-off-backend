@@ -7,8 +7,9 @@ export interface Startup {
   description: string;
   managingPartners: string;
   numberOfWorkers: number;
-  developerRequirements?: Array<string|Requirement>;
-  investmentRequirements?: Array<string|Requirement>;
+  developerRequirements: Array<string>;
+  investmentRequirements: Array<string>;
+  requirements?: Array<Requirement>;
   investmentRaised?: number;
 }
 

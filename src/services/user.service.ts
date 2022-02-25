@@ -36,10 +36,11 @@ export class UserService {
         this.getRequirementsDetails(user.investmentRequirements as Array<string>)
       ]);
 
-      user.developerRequirements = requirementsDetailsDev;
-      user.investmentRequirements = requirementsDetailsInvest;
+      Reflect.deleteProperty(user, 'investmentRequirements');
+      Reflect.deleteProperty(user, 'developerRequirements');
 
       user.investmentRaised = requirementsDetailsInvest.reduce((sum, invest) => sum + invest.obtainedMoney, 0);
+      user.requirements = requirementsDetailsInvest.concat(requirementsDetailsDev);
     }
 
     return user;
