@@ -34,8 +34,12 @@ export class RequirementService {
       requirement.obtainedMoney = 0;
     }
 
-    await this.requirementRepository.registerRequirement(requirement);
-    await this.linkRequirementToAStartup(startup, requirement);
+    requirement.creationDate = new Date().toString();
+
+    await Promise.all([
+      this.requirementRepository.registerRequirement(requirement),
+      this.linkRequirementToAStartup(startup, requirement)
+    ]);
   }
 
   private async linkRequirementToAStartup(

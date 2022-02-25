@@ -76,26 +76,29 @@ export default {
     "description": "A good startup"
   },
   devRequirement: {
-    "uuid": "9114197b-dbac-42bf-9a9c-a7f197d0e360",
-    "typeOfRequirement": "development",
-    "languagesOfDevelop": "NodeJS e React Native",
-    "payment": 5000,
-    "description": "Desenvolver um aplicativo mobile com firebase"
+    uuid: "9114197b-dbac-42bf-9a9c-a7f197d0e360",
+    typeOfRequirement: "development",
+    languagesOfDevelop: "NodeJS e React Native",
+    payment: 5000,
+    description: "Desenvolver um aplicativo mobile com firebase",
+    creationDate: 'Fri Feb 21 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
   },
   investRequirementOne: {
-    "obtainedMoney": 40000,
-    "typeOfRequirement": "investment",
-    "uuid": "8d0da819-ec17-4ef1-a2ab-863cfd06c485",
-    "description": "Pagar desenvolvedores",
-    "descriptionOfMoneryReturn": "O dinheiro aportado será direcionado 50% para o caixa da empresa e 50% para o marketing",
-    "requiredMoney": 60000
+    obtainedMoney: 40000,
+    typeOfRequirement: "investment",
+    uuid: "8d0da819-ec17-4ef1-a2ab-863cfd06c485",
+    description: "Pagar desenvolvedores",
+    partnerParticipation: '5,2%',
+    requiredMoney: 60000,
+    creationDate: 'Fri Feb 22 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
   },
   investRequirementTwo: {
-    "typeOfRequirement": "investment",
-    "description": "A Seed Smart disponibiliza diagnóstico, monitoramento e gestão remota aos produtores do campo. O foco são pequenos e médios produtores que buscam uma solução para auxiliar na gestão e controle da sua produção com melhoria de processos e redução de custos.",
-    "requiredMoney": 60000,
-    "obtainedMoney": 5000,
-    "uuid": "7ecc6794-5014-40d1-8388-6b43cf69dfdd",
-    "descriptionOfMoneryReturn": "O dinheiro aportado será direcionado 50% para o caixa da empresa e 50% para o marketing"
+    typeOfRequirement: "investment",
+    description: "A Seed Smart disponibiliza diagnóstico, monitoramento e gestão remota aos produtores do campo. O foco são pequenos e médios produtores que buscam uma solução para auxiliar na gestão e controle da sua produção com melhoria de processos e redução de custos.",
+    requiredMoney: 60000,
+    obtainedMoney: 5000,
+    uuid: "7ecc6794-5014-40d1-8388-6b43cf69dfdd",
+    partnerParticipation: '5,2%',
+    creationDate: 'Fri Feb 23 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
 }
 }

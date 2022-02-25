@@ -6,7 +6,7 @@ export interface DeveloperRequirement {
 export interface InvestmentRequirement {
   requiredMoney: number;
   obtainedMoney: number;
-  descriptionOfMoneryReturn: string;
+  partnerParticipation: string;
 }
 
 export enum TypeOfRequirementEnum {
@@ -18,4 +18,5 @@ export interface Requirement extends DeveloperRequirement, InvestmentRequirement
   uuid: string;
   typeOfRequirement: 'development' | 'investment';
   description: string;
+  creationDate: string;
 }
