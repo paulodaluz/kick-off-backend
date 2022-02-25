@@ -42,8 +42,7 @@ export class UserService {
       user.investmentRaised = requirementsDetailsInvest.reduce((sum, invest) => sum + invest.obtainedMoney, 0);
 
       const allReq = requirementsDetailsInvest.concat(requirementsDetailsDev);
-      user.requirements = allReq.sort((reqOne, reqTwo) =>
-        new Date(reqOne.creationDate).getTime() - new Date(reqTwo.creationDate).getTime());
+      user.requirements = Utils.orderRequirementsByDate(allReq);
     }
 
     return user;

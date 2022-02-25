@@ -25,4 +25,9 @@ export class Utils {
       Reflect.deleteProperty(requirement, 'typeOfRequirement');
     }
   }
+
+  public static orderRequirementsByDate(requirements: Array<Requirement>): Array<Requirement> {
+    return requirements.sort((reqOne, reqTwo) =>
+        new Date(reqOne.creationDate).getTime() - new Date(reqTwo.creationDate).getTime());
+  }
 }
