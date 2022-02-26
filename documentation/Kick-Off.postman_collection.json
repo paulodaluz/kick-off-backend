@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"paulo.daluzjr@gmail.com\",\r\n    \"password\": \"senha123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"paulo.daluzjr@gmail.com\",\r\n    \"password\": \"135791\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,8 +23,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/kick-off/v1/user/login",
-							"protocol": "http",
+							"raw": "localhost:3001/kick-off/v1/auth/login",
 							"host": [
 								"localhost"
 							],
@@ -32,7 +31,7 @@
 							"path": [
 								"kick-off",
 								"v1",
-								"user",
+								"auth",
 								"login"
 							]
 						}
@@ -54,7 +53,7 @@
 							"raw": "{\n    \"email\": \"paulo.daluzjr@gmail.com\",\n    \"name\": \"Falcão\",\n    \"managingPartners\": \"Paulo da Luz e Leonardo\",\n    \"numberOfWorkers\": 33,\n    \"typeOfUser\": \"startup\",\n    \"phoneNumber\": \"(54) 99108-3039\",\n    \"cnpj\": \"98.828.768/0001-52\",\n    \"password\": \"senha123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/kick-off/v1/user/register",
+							"raw": "http://localhost:3001/kick-off/v1/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -63,7 +62,7 @@
 							"path": [
 								"kick-off",
 								"v1",
-								"user",
+								"auth",
 								"register"
 							]
 						}
@@ -85,7 +84,7 @@
 							"raw": "{\n    \"email\": \"paulo.daluzjr@gmail.com\",\n    \"name\": \"Falcão\",\n    \"typeOfUser\": \"developer\",\n    \"phoneNumber\": \"(54) 99108-3039\",\n    \"password\": \"senha123\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/kick-off/v1/user/register",
+							"raw": "http://localhost:3001/kick-off/v1/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -94,7 +93,7 @@
 							"path": [
 								"kick-off",
 								"v1",
-								"user",
+								"auth",
 								"register"
 							]
 						}
@@ -105,14 +104,21 @@
 					"name": "Pegar usuário",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTA2MTFkMGQtOTNkMy00MTRmLThhMzktYWYzNTBmNTQzMTVmIiwiZW1haWwiOiJwYXVsby5kYWx1empyQGdtYWlsLmNvbSIsImlhdCI6MTY0NTcyNzg3Mn0.FlKNN1KW42dLXnPS6lmyAiJMJNDSep-GGSqgCXRhSHQJoKzBNk-HVR4dXmhso0RM8aeuT5kE6Mo_Ij-_FLyKvA",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:3001/kick-off/v1/user/get-infos/:uuid",
-							"protocol": "http",
+							"raw": "https://kick-off-backend.herokuapp.com/kick-off/v1/user/get-infos/:uuid",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"kick-off-backend",
+								"herokuapp",
+								"com"
 							],
-							"port": "3001",
 							"path": [
 								"kick-off",
 								"v1",
@@ -208,25 +214,80 @@
 						"method": "POST",
 						"header": [
 							{
+								"key": "identifier",
+								"value": "10611d0d-93d3-414f-8a39-af350f54315f",
+								"type": "text"
+							},
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTA2MTFkMGQtOTNkMy00MTRmLThhMzktYWYzNTBmNTQzMTVmIiwiZW1haWwiOiJwYXVsby5kYWx1empyQGdtYWlsLmNvbSIsImlhdCI6MTY0NTgzMTc5OH0.4cmteyW15rgDPlzKrEQdyU7YISk-XjszN3uI1sL3ALxvRGYb8q-3jqTGh3jLZYbPxT8PnCaiJ5xr1PK1AoBU_Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"typeOfRequirement\": \"development\",\r\n    \"description\": \"Desenvolver CRUD no backend consumindo firebase\",\r\n    \"languagesOfDevelop\": \"Python\",\r\n    \"payment\": 20000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kick-off-backend.herokuapp.com/kick-off/v1/requirement/register",
+							"protocol": "https",
+							"host": [
+								"kick-off-backend",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"kick-off",
+								"v1",
+								"requirement",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Requerimento de Invest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
 								"key": "Content-Type",
 								"value": "application/json"
 							},
 							{
 								"key": "identifier",
 								"value": "10611d0d-93d3-414f-8a39-af350f54315f"
+							},
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTA2MTFkMGQtOTNkMy00MTRmLThhMzktYWYzNTBmNTQzMTVmIiwiZW1haWwiOiJwYXVsby5kYWx1empyQGdtYWlsLmNvbSIsImlhdCI6MTY0NTcyNzg3Mn0.FlKNN1KW42dLXnPS6lmyAiJMJNDSep-GGSqgCXRhSHQJoKzBNk-HVR4dXmhso0RM8aeuT5kE6Mo_Ij-_FLyKvA",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"typeOfRequirement\": \"development\",\n\t\"description\": \"Desenvolver um aplicativo\",\n\t\"languagesOfDevelop\": \"NodeJS e React Native\",\n\t\"payment\": 5000\n}"
+							"raw": "{\n    \"typeOfRequirement\": \"investment\",\n    \"description\": \"Executar eventos de negociações\",\n    \"requiredMoney\": 90000,\n    \"partnerParticipation\": \"3,90%\"\n}"
 						},
 						"url": {
-							"raw": "http://localhost:3001/kick-off/v1/requirement/register",
-							"protocol": "http",
+							"raw": "https://kick-off-backend.herokuapp.com/kick-off/v1/requirement/register",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"kick-off-backend",
+								"herokuapp",
+								"com"
 							],
-							"port": "3001",
 							"path": [
 								"kick-off",
 								"v1",
