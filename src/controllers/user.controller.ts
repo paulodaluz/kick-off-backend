@@ -17,11 +17,11 @@ export class UserController {
     @Param('identifier') uuid: string,
     @Body(new ValidationPipe()) body: UpdateUserValidator,
   ): Promise<void> {
-    return this.userService.updateUser(uuid, body);
+    await this.userService.updateUser(uuid, body);
   }
 
   @Delete('delete-infos/:identifier')
   async deleteUser(@Param('identifier') uuid: string): Promise<void> {
-    return this.userService.deleteUser(uuid);
+    await this.userService.deleteUser(uuid);
   }
 }

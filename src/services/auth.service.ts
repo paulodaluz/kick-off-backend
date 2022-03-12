@@ -44,7 +44,7 @@ export class AuthService {
 
     await this.userRepository.registerUser(user);
 
-    const token = this.privateGenerateToken(user.uuid, user.email);
+    const token = this.generateToken(user.uuid, user.email);
 
     return { uuid: user.uuid, token };
   }
@@ -62,7 +62,7 @@ export class AuthService {
       ErrorUtils.throwSpecificError(403);
     }
 
-    const token = this.privateGenerateToken(user.uuid, userToAuth.email);
+    const token = this.generateToken(user.uuid, userToAuth.email);
 
     return { uuid: user.uuid, token, typeOfUser: user.typeOfUser };
   }
@@ -88,7 +88,7 @@ export class AuthService {
     investor.investedStartups = [];
   }
 
-  privateGenerateToken(uuid: string, email: string): string {
+  private generateToken(uuid: string, email: string): string {
     return jwt.sign({
         uuid,
         email

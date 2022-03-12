@@ -24,7 +24,7 @@ export class RequirementController {
     @Headers('identifier') uuid: string,
     @Body(new ValidationPipe()) body: RegisterRequirementValidator,
   ): Promise<void> {
-    return this.requirementService.registerRequirement(uuid, body);
+    await this.requirementService.registerRequirement(uuid, body);
   }
 
   @Post('get-infos')
@@ -49,7 +49,7 @@ export class RequirementController {
     @Param('identifier') uuidByRequirement: string,
     @Body(new ValidationPipe()) body: UpdateRequirementValidator,
   ): Promise<void> {
-    return this.requirementService.updateRequirement(uuidByRequirement, body);
+    await this.requirementService.updateRequirement(uuidByRequirement, body);
   }
 
   @Delete('delete-infos/requirement/:requirement/startup/:startup')
@@ -57,6 +57,6 @@ export class RequirementController {
     @Param('requirement') uuidByRequirement: string,
     @Param('startup') uuidByStatup: string,
   ): Promise<void> {
-    return this.requirementService.deleteRequirement(uuidByRequirement, uuidByStatup);
+    await this.requirementService.deleteRequirement(uuidByRequirement, uuidByStatup);
   }
 }
