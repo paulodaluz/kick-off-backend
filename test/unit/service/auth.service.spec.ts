@@ -21,7 +21,7 @@ describe('AuthService test', () => {
 
     const result = await authService.registerUser(mock.userToCreateStartup as User);
 
-    expect(typeof result.uuid).toBe('string');
+    expect(result.uuid).not.toBeNull();
     expect(typeof result.token).toBe('string');
   });
 
@@ -31,7 +31,7 @@ describe('AuthService test', () => {
 
     const result = await authService.registerUser(mock.userToCreateInvestor as User);
 
-    expect(typeof result.uuid).toBe('string');
+    expect(result.uuid).not.toBeNull();
     expect(typeof result.token).toBe('string');
   });
 
@@ -41,7 +41,7 @@ describe('AuthService test', () => {
 
     const result = await authService.registerUser(mock.userToCreateDeveloper as User);
 
-    expect(typeof result.uuid).toBe('string');
+    expect(result.uuid).not.toBeNull();
     expect(typeof result.token).toBe('string');
   });
 

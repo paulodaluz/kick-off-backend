@@ -27,7 +27,7 @@ describe('UserController test', () => {
       .send(MockData.userToCreateStartup)
       .expect(201)
       .expect((response) => {
-        expect(typeof response.body.uuid).toBe('string');
+        expect(response.body.uuid).not.toBeNull();
         expect(response.body.uuid).toBe(MockData.userStartupCreatedResponse.uuid);
       });
   });
@@ -43,7 +43,7 @@ describe('UserController test', () => {
       })
       .expect(201)
       .expect((response) => {
-        expect(typeof response.body.uuid).toBe('string');
+        expect(response.body.uuid).not.toBeNull();
         expect(response.body.uuid).toBe(MockData.userStartupCreatedResponse.uuid);
       });
   });
