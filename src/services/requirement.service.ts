@@ -34,6 +34,7 @@ export class RequirementService {
       requirement.obtainedMoney = 0;
     }
 
+    requirement.status = 'opened';
     requirement.creationDate = new Date().toString();
 
     await Promise.all([
@@ -111,8 +112,8 @@ export class RequirementService {
     }
 
     if (
-      requirement.obtainedMoney > 0 &&
-      requirementToUpdate.requiredMoney
+      (requirement.obtainedMoney > 0 && requirementToUpdate.requiredMoney)
+      || requirement.status === 'concluded'
     ) {
       ErrorUtils.throwSpecificError(403);
     }
@@ -134,6 +135,10 @@ export class RequirementService {
 
     if (!requirement || !requirement.uuid || !startup || !startup.uuid) {
       ErrorUtils.throwSpecificError(404);
+    }
+
+    if (requirement.status === 'concluded') {
+      ErrorUtils.throwSpecificError(403);
     }
 
     if (requirement.typeOfRequirement === 'investment') {

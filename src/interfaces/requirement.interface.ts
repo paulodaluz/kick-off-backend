@@ -19,4 +19,5 @@ export interface Requirement extends DeveloperRequirement, InvestmentRequirement
   typeOfRequirement: 'development' | 'investment';
   description: string;
   creationDate: string;
+  status: 'opened' | 'concluded';
 }
