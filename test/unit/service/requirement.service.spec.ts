@@ -74,6 +74,7 @@ describe('RequirementService test', () => {
     expect(resonse[0].languagesOfDevelop).toBe('NodeJS e React Native')
     expect(resonse[0].payment).toBe(5000)
     expect(resonse[0].typeOfRequirement).toBe('development')
+    expect(resonse[0].status).toBe('opened')
   });
 
   it('should return error on operation getRequirementsByUuid(400)', async () => {
@@ -224,6 +225,23 @@ describe('RequirementService test', () => {
   it('should return error on operation deleteRequirement to investor(403)', async () => {
     const investorModified = Mock.inevestmentRequirement;
     investorModified.obtainedMoney = 1000;
+
+    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(investorModified);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValue(Mock.userStartup);
+    userRepository.updateUserInfo = jest.fn().mockImplementation();
+    requirementRepository.deleteRequirementByUuid = jest.fn().mockImplementation();
+
+    try {
+      await requirementService.deleteRequirement('xxxx', 'xxxxx');
+    } catch (error) {
+      expect(error.status).toBe(403);
+      expect(error.message).toBe('Client does not have permission.');
+    }
+  });
+
+  it('should return error on operation deleteRequirement to developer(403) because is concluded', async () => {
+    const investorModified = Mock.inevestmentRequirement;
+    investorModified.status = 'concluded';
 
     requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(investorModified);
     userRepository.getUserByUuid = jest.fn().mockResolvedValue(Mock.userStartup);

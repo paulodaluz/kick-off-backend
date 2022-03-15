@@ -16,13 +16,15 @@ export default {
     description: 'Desenvolver um aplicativo mobile com firebase',
     languagesOfDevelop: 'NodeJS e React Native',
     payment: 5000,
-    typeOfRequirement: 'development'
+    typeOfRequirement: 'development',
+    status: 'opened'
   },
   inevestmentRequirement: {
     uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e361',
     description: 'Dinheiro para comprar Macs',
     requiredMoney: 10000,
     obtainedMoney: 0,
+    status: 'opened',
     partnerParticipation: '5,2%',
     typeOfRequirement: 'investment',
     creationDate: 'Fri Feb 21 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
@@ -31,7 +33,8 @@ export default {
     uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e361',
     description: 'Dinheiro para comprar Macs',
     requiredMoney: 10000,
-    obtainedMoney: 10000,
+    obtainedMoney: 9000,
+    status: 'opened',
     partnerParticipation: '5,2%',
     typeOfRequirement: 'investment',
     creationDate: 'Fri Feb 23 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
@@ -41,6 +44,7 @@ export default {
     description: 'Dinheiro para comprar Macs',
     requiredMoney: 10000,
     obtainedMoney: 0,
+    status: 'opened',
     partnerParticipation: '5,2%',
     typeOfRequirement: 'investment',
     creationDate: 'Fri Feb 25 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
