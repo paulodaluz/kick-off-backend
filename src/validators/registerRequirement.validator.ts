@@ -36,4 +36,8 @@ export class RegisterRequirementValidator implements Requirement {
   @IsString()
   @IsOptional()
   partnerParticipation: string;
+
+  @IsString()
+  @IsOptional()
+  status: 'opened' | 'concluded';
 }

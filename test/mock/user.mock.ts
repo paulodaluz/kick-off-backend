@@ -80,6 +80,7 @@ export default {
     typeOfRequirement: "development",
     languagesOfDevelop: "NodeJS e React Native",
     payment: 5000,
+    status: 'opened',
     description: "Desenvolver um aplicativo mobile com firebase",
     creationDate: 'Fri Feb 21 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
   },
@@ -89,6 +90,7 @@ export default {
     uuid: "8d0da819-ec17-4ef1-a2ab-863cfd06c485",
     description: "Pagar desenvolvedores",
     partnerParticipation: '5,2%',
+    status: 'opened',
     requiredMoney: 60000,
     creationDate: 'Fri Feb 22 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)'
   },
@@ -96,6 +98,7 @@ export default {
     typeOfRequirement: "investment",
     description: "A Seed Smart disponibiliza diagnóstico, monitoramento e gestão remota aos produtores do campo. O foco são pequenos e médios produtores que buscam uma solução para auxiliar na gestão e controle da sua produção com melhoria de processos e redução de custos.",
     requiredMoney: 60000,
+    status: 'opened',
     obtainedMoney: 5000,
     uuid: "7ecc6794-5014-40d1-8388-6b43cf69dfdd",
     partnerParticipation: '5,2%',
