@@ -3,10 +3,6 @@ import { Requirement } from '../interfaces/requirement.interface';
 
 export class Utils {
   public static avoidIncorrectUserUpdate(user: Partial<User>): void {
-    if (user.email) {
-      Reflect.deleteProperty(user, 'email');
-    }
-
     if (user.uuid) {
       Reflect.deleteProperty(user, 'uuid');
     }
@@ -27,7 +23,9 @@ export class Utils {
   }
 
   public static orderRequirementsByDate(requirements: Array<Requirement>): Array<Requirement> {
-    return requirements.sort((reqOne, reqTwo) =>
-        new Date(reqOne.creationDate).getTime() - new Date(reqTwo.creationDate).getTime());
+    return requirements.sort(
+      (reqOne, reqTwo) =>
+        new Date(reqOne.creationDate).getTime() - new Date(reqTwo.creationDate).getTime(),
+    );
   }
 }
