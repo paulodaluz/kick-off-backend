@@ -28,45 +28,47 @@ describe('UserController test', () => {
     return request(app.getHttpServer())
       .post(`/requirement/register`)
       .send(MockData.developerRequirement)
-      .expect(201)
+      .expect(201);
   });
 
   it('/POST getRequirementsByUser with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
-    requirementService.getRequirementsByUuid = jest.fn().mockResolvedValue([MockData.developerRequirement]);
+    requirementService.getRequirementsByUuid = jest
+      .fn()
+      .mockResolvedValue([MockData.developerRequirement]);
 
     return request(app.getHttpServer())
       .post(`/requirement/get-infos`)
       .send([MockData.developerRequirement.uuid])
       .expect(201)
       .expect((response) => {
-        expect(Array.isArray(response.body)).toBe(true)
-        expect(response.body.length).toBe(1)
-        expect(response.body).toStrictEqual([MockData.developerRequirement])
-      })
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBe(1);
+        expect(response.body).toStrictEqual([MockData.developerRequirement]);
+      });
   });
 
   it('/POST getRequirementsOpened with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
-    requirementService.getRequirementsByType = jest.fn().mockResolvedValue([MockData.developerRequirement]);
+    requirementService.getRequirementsByType = jest
+      .fn()
+      .mockResolvedValue([MockData.developerRequirement]);
 
     return request(app.getHttpServer())
       .get(`/requirement/active-requirements`)
-      .set({typeOfRequirement: 'development'})
+      .set({ typeOfRequirement: 'development' })
       .expect(200)
       .expect((response) => {
-        expect(Array.isArray(response.body)).toBe(true)
-        expect(response.body.length).toBe(1)
-        expect(response.body).toStrictEqual([MockData.developerRequirement])
-      })
+        expect(Array.isArray(response.body)).toBe(true);
+        expect(response.body.length).toBe(1);
+        expect(response.body).toStrictEqual([MockData.developerRequirement]);
+      });
   });
 
   it('/PATCH deletarRequerimento with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
 
-    return request(app.getHttpServer())
-      .patch(`/requirement/add-investment/XXX`)
-      .expect(200)
+    return request(app.getHttpServer()).patch(`/requirement/add-investment/XXX`).expect(200);
   });
 
   it('/PUT updateRequirements with 200 ok', async () => {
@@ -76,7 +78,7 @@ describe('UserController test', () => {
     return request(app.getHttpServer())
       .put(`/requirement/update-info/requirement/XXX`)
       .send(MockData.developerRequirement)
-      .expect(200)
+      .expect(200);
   });
 
   it('/DELETE deletarRequerimento with 201 ok', async () => {
@@ -85,6 +87,6 @@ describe('UserController test', () => {
 
     return request(app.getHttpServer())
       .delete(`/requirement/delete-infos/requirement/xxxx/startup/xxx`)
-      .expect(200)
+      .expect(200);
   });
 });

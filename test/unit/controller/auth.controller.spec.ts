@@ -20,7 +20,9 @@ describe('UserController test', () => {
   });
 
   it('/POST registerUser of a startup with 201 ok', async () => {
-    authService.registerUser = jest.fn().mockResolvedValueOnce({ uuid: MockData.userStartupCreatedResponse.uuid });
+    authService.registerUser = jest
+      .fn()
+      .mockResolvedValueOnce({ uuid: MockData.userStartupCreatedResponse.uuid });
 
     return request(app.getHttpServer())
       .post(`/auth/register`)
@@ -33,13 +35,15 @@ describe('UserController test', () => {
   });
 
   it('/POST loginUser of a startup with 201 ok', async () => {
-    authService.login = jest.fn().mockResolvedValueOnce({ uuid: MockData.userStartupCreatedResponse.uuid });
+    authService.login = jest
+      .fn()
+      .mockResolvedValueOnce({ uuid: MockData.userStartupCreatedResponse.uuid });
 
     return request(app.getHttpServer())
       .post(`/auth/login`)
       .send({
         email: 'teste@email.com',
-        password: 'senha123'
+        password: 'senha123',
       })
       .expect(201)
       .expect((response) => {

@@ -16,7 +16,7 @@ export class HealthController {
 
   @Get('version')
   @HealthCheck()
-  healthCheckVersion(): { name: string, version: string } {
+  healthCheckVersion(): { name: string; version: string } {
     return { name, version };
   }
 }

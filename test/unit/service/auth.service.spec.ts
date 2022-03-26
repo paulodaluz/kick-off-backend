@@ -100,7 +100,10 @@ describe('AuthService test', () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(null);
 
     try {
-      await authService.login({email: mock.userToCreateStartup.email, password: mock.userToCreateStartup.password});
+      await authService.login({
+        email: mock.userToCreateStartup.email,
+        password: mock.userToCreateStartup.password,
+      });
     } catch (error) {
       expect(error.status).toBe(403);
       expect(error.response).toBe('Client does not have permission.');

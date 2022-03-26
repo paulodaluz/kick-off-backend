@@ -1,6 +1,5 @@
 import { IsString, IsOptional, IsEnum, IsNumber } from 'class-validator';
-import { Requirement , TypeOfRequirementEnum } from '../interfaces/requirement.interface';
-
+import { Requirement, TypeOfRequirementEnum } from '../interfaces/requirement.interface';
 
 export class UpdateRequirementValidator implements Partial<Requirement> {
   @IsOptional()

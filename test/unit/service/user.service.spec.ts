@@ -22,18 +22,19 @@ describe('UserService test', () => {
 
     expect(result).toBe(mock.userStartupCreated);
     expect(result.password).toBe(undefined);
-    expect(result.uuid).toBe("10611d0d-93d3-414f-8a39-af350f54315f");
-    expect(result.name).toBe("Carlos Gas");
-    expect(result.managingPartners).toBe("Paulo da Luz e Leonardo");
+    expect(result.uuid).toBe('10611d0d-93d3-414f-8a39-af350f54315f');
+    expect(result.name).toBe('Carlos Gas');
+    expect(result.managingPartners).toBe('Paulo da Luz e Leonardo');
     expect(result.numberOfWorkers).toBe(33);
-    expect(result.typeOfUser).toBe("startup");
-    expect(result.phoneNumber).toBe("(54) 99108-3039");
-    expect(result.cnpj).toBe("98.828.768/0001-52");
+    expect(result.typeOfUser).toBe('startup');
+    expect(result.phoneNumber).toBe('(54) 99108-3039');
+    expect(result.cnpj).toBe('98.828.768/0001-52');
   });
 
   it('should return success on operation getUserInfos with requirements details', async () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.completeUserStartup);
-    requirementRepository.getRequirementByUuid = jest.fn()
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
       .mockResolvedValueOnce(mock.devRequirement)
       .mockResolvedValueOnce(mock.investRequirementOne)
       .mockResolvedValueOnce(mock.investRequirementTwo);
@@ -41,21 +42,27 @@ describe('UserService test', () => {
     const result = await userService.getUserInfos(mock.completeUserStartup.uuid);
 
     expect(result.password).toBe(undefined);
-    expect(result.uuid).toBe("10611d0d-93d3-414f-8a39-af350f54315f");
-    expect(result.name).toBe("Startup Name");
-    expect(result.email).toBe("email@gmail.com");
-    expect(result.managingPartners).toBe("Paulo da Luz e Leonardo");
+    expect(result.uuid).toBe('10611d0d-93d3-414f-8a39-af350f54315f');
+    expect(result.name).toBe('Startup Name');
+    expect(result.email).toBe('email@gmail.com');
+    expect(result.managingPartners).toBe('Paulo da Luz e Leonardo');
     expect(result.numberOfWorkers).toBe(33);
-    expect(result.typeOfUser).toBe("startup");
+    expect(result.typeOfUser).toBe('startup');
     expect(result.developerRequirements).toBe(undefined);
     expect(result.investmentRequirements).toBe(undefined);
     expect(result.requirements.length).toBe(3);
-    expect(result.requirements[0].creationDate).toBe('Fri Feb 21 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)');
-    expect(result.requirements[1].creationDate).toBe('Fri Feb 22 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)');
-    expect(result.requirements[2].creationDate).toBe('Fri Feb 23 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)');
+    expect(result.requirements[0].creationDate).toBe(
+      'Fri Feb 21 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)',
+    );
+    expect(result.requirements[1].creationDate).toBe(
+      'Fri Feb 22 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)',
+    );
+    expect(result.requirements[2].creationDate).toBe(
+      'Fri Feb 23 2022 00:05:07 GMT-0300 (Horário Padrão de Brasília)',
+    );
     expect(result.requirements[1].partnerParticipation).toBe('5,2%');
-    expect(result.phoneNumber).toBe("(54) 99108-3039");
-    expect(result.cnpj).toBe("98.828.768/0001-52");
+    expect(result.phoneNumber).toBe('(54) 99108-3039');
+    expect(result.cnpj).toBe('98.828.768/0001-52');
     expect(result.investmentRaised).toBe(45000);
     expect(result.description).toBe('A good startup');
   });
@@ -75,9 +82,7 @@ describe('UserService test', () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
 
-    const spy = jest
-      .spyOn(userRepository, 'updateUserInfo')
-      .mockReturnValueOnce({} as any);
+    const spy = jest.spyOn(userRepository, 'updateUserInfo').mockReturnValueOnce({} as any);
 
     await userService.updateUser(mock.userStartupCreated.uuid, mock.userStartupCreated as User);
 
@@ -88,7 +93,10 @@ describe('UserService test', () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(null);
 
     try {
-      await userService.updateUser(mock.userStartupCreatedResponse.uuid, mock.userStartupCreatedResponse as User);
+      await userService.updateUser(
+        mock.userStartupCreatedResponse.uuid,
+        mock.userStartupCreatedResponse as User,
+      );
     } catch (error) {
       expect(error.status).toBe(404);
       expect(error.response).toBe('The specified resource is not found.');
@@ -102,16 +110,16 @@ describe('UserService test', () => {
       await userService.updateUser(mock.userStartupCreatedResponse.uuid, {} as User);
     } catch (error) {
       expect(error.status).toBe(400);
-      expect(error.response).toBe('Client specified an invalid argument, request body or query param.');
+      expect(error.response).toBe(
+        'Client specified an invalid argument, request body or query param.',
+      );
     }
   });
 
   it('should return success on operation deleteUser', async () => {
     userRepository.deleteUserByUuid = jest.fn().mockImplementation();
 
-    const spy = jest
-      .spyOn(userRepository, 'deleteUserByUuid')
-      .mockReturnValueOnce({} as any);
+    const spy = jest.spyOn(userRepository, 'deleteUserByUuid').mockReturnValueOnce({} as any);
 
     await userService.deleteUser(mock.userStartupCreatedResponse.uuid);
 

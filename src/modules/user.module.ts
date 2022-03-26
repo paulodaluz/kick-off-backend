@@ -12,8 +12,6 @@ import { RequirementRepository } from '../repository/requeriment.repository';
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(JWTValidation)
-      .forRoutes(UserController);
+    consumer.apply(JWTValidation).forRoutes(UserController);
   }
 }

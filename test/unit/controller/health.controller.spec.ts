@@ -17,14 +17,16 @@ describe('HealthController test', () => {
     await app.init();
   });
 
-  it('/GET healthCheck with 200 ok', async () => request(app.getHttpServer())
+  it('/GET healthCheck with 200 ok', async () =>
+    request(app.getHttpServer())
       .get(`/health`)
       .expect(200)
       .expect((response) => {
         expect(response.body.status).toBe('UP');
       }));
 
-  it('/GET healthCheckVersion with 200 ok', async () => request(app.getHttpServer())
+  it('/GET healthCheckVersion with 200 ok', async () =>
+    request(app.getHttpServer())
       .get(`/health/version`)
       .expect(200)
       .expect((response) => {

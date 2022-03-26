@@ -10,12 +10,8 @@ import { JWTValidation } from '../middlewares/jwt.middleware';
   controllers: [RequirementController],
   providers: [RequirementService, RequirementRepository, UserRepository],
 })
-
 export class RequirementModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(JWTValidation)
-      .forRoutes(RequirementController);
+    consumer.apply(JWTValidation).forRoutes(RequirementController);
   }
 }
-

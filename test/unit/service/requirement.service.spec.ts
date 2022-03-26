@@ -20,7 +20,10 @@ describe('RequirementService test', () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValue(Mock.userStartup);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
 
-    await requirementService.registerRequirement(Mock.userStartup.uuid, Mock.developerRequirement as Requirement);
+    await requirementService.registerRequirement(
+      Mock.userStartup.uuid,
+      Mock.developerRequirement as Requirement,
+    );
 
     const spyRegisterReq = jest
       .spyOn(requirementRepository, 'registerRequirement')
@@ -39,7 +42,10 @@ describe('RequirementService test', () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValue(Mock.userStartup);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
 
-    await requirementService.registerRequirement(Mock.userStartup.uuid, Mock.inevestmentRequirement as Requirement);
+    await requirementService.registerRequirement(
+      Mock.userStartup.uuid,
+      Mock.inevestmentRequirement as Requirement,
+    );
 
     const spyRegisterReq = jest
       .spyOn(requirementRepository, 'registerRequirement')
@@ -65,16 +71,20 @@ describe('RequirementService test', () => {
   });
 
   it('should return success by service RequirementService on operation getRequirementsByUuid', async () => {
-    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.developerRequirement);
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValue(Mock.developerRequirement);
 
-    const resonse = await requirementService.getRequirementsByUuid([Mock.developerRequirement.uuid]);
+    const resonse = await requirementService.getRequirementsByUuid([
+      Mock.developerRequirement.uuid,
+    ]);
 
-    expect(typeof resonse[0].uuid).toBe('string')
-    expect(resonse[0].description).toBe('Desenvolver um aplicativo mobile com firebase')
-    expect(resonse[0].languagesOfDevelop).toBe('NodeJS e React Native')
-    expect(resonse[0].payment).toBe(5000)
-    expect(resonse[0].typeOfRequirement).toBe('development')
-    expect(resonse[0].status).toBe('opened')
+    expect(typeof resonse[0].uuid).toBe('string');
+    expect(resonse[0].description).toBe('Desenvolver um aplicativo mobile com firebase');
+    expect(resonse[0].languagesOfDevelop).toBe('NodeJS e React Native');
+    expect(resonse[0].payment).toBe(5000);
+    expect(resonse[0].typeOfRequirement).toBe('development');
+    expect(resonse[0].status).toBe('opened');
   });
 
   it('should return error on operation getRequirementsByUuid(400)', async () => {
@@ -84,7 +94,9 @@ describe('RequirementService test', () => {
       await requirementService.getRequirementsByUuid([Mock.developerRequirement.uuid]);
     } catch (error) {
       expect(error.status).toBe(400);
-      expect(error.message).toBe('Client specified an invalid argument, request body or query param.');
+      expect(error.message).toBe(
+        'Client specified an invalid argument, request body or query param.',
+      );
     }
   });
 
@@ -93,20 +105,24 @@ describe('RequirementService test', () => {
       await requirementService.getRequirementsByType('xxx' as any);
     } catch (error) {
       expect(error.status).toBe(400);
-      expect(error.message).toBe('Client specified an invalid argument, request body or query param.');
+      expect(error.message).toBe(
+        'Client specified an invalid argument, request body or query param.',
+      );
     }
   });
 
   it('should return success by service RequirementService on operation getRequirementsByType', async () => {
-    requirementRepository.getRequirementByType = jest.fn().mockResolvedValue([Mock.developerRequirement]);
+    requirementRepository.getRequirementByType = jest
+      .fn()
+      .mockResolvedValue([Mock.developerRequirement]);
 
     const resonse = await requirementService.getRequirementsByType('development');
 
-    expect(typeof resonse[0].uuid).toBe('string')
-    expect(resonse[0].description).toBe('Desenvolver um aplicativo mobile com firebase')
-    expect(resonse[0].languagesOfDevelop).toBe('NodeJS e React Native')
-    expect(resonse[0].payment).toBe(5000)
-    expect(resonse[0].typeOfRequirement).toBe('development')
+    expect(typeof resonse[0].uuid).toBe('string');
+    expect(resonse[0].description).toBe('Desenvolver um aplicativo mobile com firebase');
+    expect(resonse[0].languagesOfDevelop).toBe('NodeJS e React Native');
+    expect(resonse[0].payment).toBe(5000);
+    expect(resonse[0].typeOfRequirement).toBe('development');
   });
 
   it('should return error on operation updateRequirement(404)', async () => {
@@ -133,10 +149,15 @@ describe('RequirementService test', () => {
 
   it(`should return error on operation updateRequirement(403)
       because requirement aleary received investment`, async () => {
-    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.inevestmentRequirementWithInvest);
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValue(Mock.inevestmentRequirementWithInvest);
 
     try {
-      await requirementService.updateRequirement('xxx', Mock.inevestmentRequirementWithInvest as Requirement);
+      await requirementService.updateRequirement(
+        'xxx',
+        Mock.inevestmentRequirementWithInvest as Requirement,
+      );
     } catch (error) {
       expect(error.status).toBe(403);
       expect(error.message).toBe('Client does not have permission.');
@@ -144,23 +165,29 @@ describe('RequirementService test', () => {
   });
 
   it('should return error on operation updateRequirement(400) because dont have things to update', async () => {
-    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.inevestmentRequirementWithInvest);
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValue(Mock.inevestmentRequirementWithInvest);
 
     try {
       await requirementService.updateRequirement('xxx', {});
     } catch (error) {
       expect(error.status).toBe(400);
-      expect(error.message).toBe('Client specified an invalid argument, request body or query param.');
+      expect(error.message).toBe(
+        'Client specified an invalid argument, request body or query param.',
+      );
     }
   });
 
   it('should return success by service RequirementService on operation updateRequirement', async () => {
-    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.inevestmentRequirementTwo);
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValue(Mock.inevestmentRequirementTwo);
     requirementRepository.updateRequirementInfo = jest.fn().mockImplementation();
 
     await requirementService.updateRequirement(
       Mock.inevestmentRequirementTwo.uuid,
-      Mock.inevestmentRequirementTwo as Requirement
+      Mock.inevestmentRequirementTwo as Requirement,
     );
 
     const spyUpdateReq = jest
@@ -171,7 +198,9 @@ describe('RequirementService test', () => {
   });
 
   it('should return success on operation deleteRequirement to developerRequirement', async () => {
-    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.developerRequirement);
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValue(Mock.developerRequirement);
     userRepository.getUserByUuid = jest.fn().mockResolvedValue(Mock.userStartup);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
     requirementRepository.deleteRequirementByUuid = jest.fn().mockImplementation();
@@ -184,14 +213,19 @@ describe('RequirementService test', () => {
       .spyOn(requirementRepository, 'deleteRequirementByUuid')
       .mockReturnValueOnce({} as any);
 
-    await requirementService.deleteRequirement(Mock.developerRequirement.uuid, Mock.userStartup.uuid);
+    await requirementService.deleteRequirement(
+      Mock.developerRequirement.uuid,
+      Mock.userStartup.uuid,
+    );
 
     expect(spyUpdateUser).toHaveBeenCalledTimes(1);
     expect(spyDeleteReq).toHaveBeenCalledTimes(1);
   });
 
   it('should return success on operation deleteRequirement to InvestmentRequirement', async () => {
-    requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(Mock.inevestmentRequirement);
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValue(Mock.inevestmentRequirement);
     userRepository.getUserByUuid = jest.fn().mockResolvedValue(Mock.userStartup);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
     requirementRepository.deleteRequirementByUuid = jest.fn().mockImplementation();
@@ -204,7 +238,10 @@ describe('RequirementService test', () => {
       .spyOn(requirementRepository, 'deleteRequirementByUuid')
       .mockReturnValueOnce({} as any);
 
-    await requirementService.deleteRequirement(Mock.inevestmentRequirement.uuid, Mock.userStartup.uuid);
+    await requirementService.deleteRequirement(
+      Mock.inevestmentRequirement.uuid,
+      Mock.userStartup.uuid,
+    );
 
     expect(spyUpdateUser).toHaveBeenCalledTimes(1);
     expect(spyDeleteReq).toHaveBeenCalledTimes(1);
