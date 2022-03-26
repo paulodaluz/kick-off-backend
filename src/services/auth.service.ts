@@ -2,7 +2,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
-import { Startup, User, UserLogin, AuthResponseInterface, Developer, Investor } from '../interfaces/user.interface';
+import {
+  Startup,
+  User,
+  UserLogin,
+  AuthResponseInterface,
+  Developer,
+  Investor,
+} from '../interfaces/user.interface';
 import { UtilsValidations } from '../utils/validation.utils';
 
 const jwt = require('jsonwebtoken');
@@ -14,12 +21,16 @@ export class AuthService {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async registerUser(user: User): Promise<AuthResponseInterface> {
-    Logger.log(`user = ${JSON.stringify(user.name)}`, `${this.className} - ${this.registerUser.name}`);
+    Logger.log(
+      `user = ${JSON.stringify(user.name)}`,
+      `${this.className} - ${this.registerUser.name}`,
+    );
 
     const registerExists = await this.userRepository.getUserByEmail(user.email);
 
     if (registerExists && registerExists.uuid) {
-      Logger.error(`user = ${user.name} - ERROR = User already exists`,
+      Logger.error(
+        `user = ${user.name} - ERROR = User already exists`,
         `${this.className} - ${this.registerUser.name}`,
       );
 
@@ -27,18 +38,18 @@ export class AuthService {
     }
 
     switch (user.typeOfUser) {
-			case 'startup':
-				this.validateStartup(user);
+      case 'startup':
+        this.validateStartup(user);
         break;
-			case 'investor':
-				this.validateInvestor(user);
+      case 'investor':
+        this.validateInvestor(user);
         break;
-			case 'developer':
-				this.validateDeveloper(user);
+      case 'developer':
+        this.validateDeveloper(user);
         break;
       default:
         ErrorUtils.throwSpecificError(400);
-		}
+    }
 
     user.uuid = uuidv4();
 
@@ -55,7 +66,8 @@ export class AuthService {
     const user = await this.userRepository.getUserByEmail(userToAuth.email);
 
     if (!user || user.password !== userToAuth.password) {
-      Logger.error(`email = ${userToAuth.email} - ERROR = User not found`,
+      Logger.error(
+        `email = ${userToAuth.email} - ERROR = User not found`,
         `${this.className} - ${this.login.name}`,
       );
 
@@ -69,7 +81,8 @@ export class AuthService {
 
   private validateStartup(startup: Startup): void {
     if (!UtilsValidations.isCnpj(startup.cnpj)) {
-      Logger.error(`startup = ${startup.name} - ERROR = Invalid CNPJ`,
+      Logger.error(
+        `startup = ${startup.name} - ERROR = Invalid CNPJ`,
         `${this.className} - ${this.validateStartup.name}`,
       );
 
@@ -89,10 +102,13 @@ export class AuthService {
   }
 
   private generateToken(uuid: string, email: string): string {
-    return jwt.sign({
+    return jwt.sign(
+      {
         uuid,
-        email
-      }, process.env.SECRET_KEY_TO_JWT_TOKEN, { algorithm: 'HS512' }
+        email,
+      },
+      process.env.SECRET_KEY_TO_JWT_TOKEN,
+      { algorithm: 'HS512' },
     );
   }
 }

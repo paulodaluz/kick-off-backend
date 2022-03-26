@@ -1,4 +1,4 @@
-import { Requirement } from "./requirement.interface";
+import { Requirement } from './requirement.interface';
 
 export interface Startup {
   uuid: string;

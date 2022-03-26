@@ -9,12 +9,16 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  async registerUser(@Body(new ValidationPipe()) body: RegisterUserValidator): Promise<AuthResponseInterface> {
+  async registerUser(
+    @Body(new ValidationPipe()) body: RegisterUserValidator,
+  ): Promise<AuthResponseInterface> {
     return this.authService.registerUser(body);
   }
 
   @Post('login')
-  async loginUser(@Body(new ValidationPipe()) body: LoginValidator): Promise<AuthResponseInterface> {
+  async loginUser(
+    @Body(new ValidationPipe()) body: LoginValidator,
+  ): Promise<AuthResponseInterface> {
     return this.authService.login(body);
   }
 }

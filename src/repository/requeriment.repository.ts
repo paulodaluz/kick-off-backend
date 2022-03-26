@@ -1,5 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { Requirement } from '../interfaces/requirement.interface';
 import { ErrorUtils } from '../utils/error.utils';
 import { db } from '../database/configuration.database';
@@ -20,16 +30,15 @@ export class RequirementRepository {
       `${this.className} - ${this.registerRequirement.name}`,
     );
 
-    await setDoc(doc(db, this.databaseName, requirement.uuid), requirement)
-      .catch((error: any) => {
-        Logger.error(
-          `user = ${requirement.uuid} - error = ${error}`,
-          '',
-          `${this.className} - ${this.registerRequirement.name}`,
-        );
+    await setDoc(doc(db, this.databaseName, requirement.uuid), requirement).catch((error: any) => {
+      Logger.error(
+        `user = ${requirement.uuid} - error = ${error}`,
+        '',
+        `${this.className} - ${this.registerRequirement.name}`,
+      );
 
-        ErrorUtils.throwSpecificError(500);
-      });
+      ErrorUtils.throwSpecificError(500);
+    });
 
     Logger.log(
       `requirement = ${requirement.uuid} - SUCCESS`,
@@ -41,16 +50,15 @@ export class RequirementRepository {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.getRequirementByUuid.name}`);
 
     const reqRef = doc(db, this.databaseName, uuid);
-    const requirement = await getDoc(reqRef)
-      .catch((error: any) => {
-        Logger.error(
-          `uuid = ${uuid} - error = ${error}`,
-          '',
-          `${this.className} - ${this.getRequirementByUuid.name}`,
-        );
+    const requirement = await getDoc(reqRef).catch((error: any) => {
+      Logger.error(
+        `uuid = ${uuid} - error = ${error}`,
+        '',
+        `${this.className} - ${this.getRequirementByUuid.name}`,
+      );
 
-        ErrorUtils.throwSpecificError(500);
-      });
+      ErrorUtils.throwSpecificError(500);
+    });
 
     Logger.log(`uuid = ${uuid} - SUCCESS`, `${this.className} - ${this.getRequirementByUuid.name}`);
 
@@ -68,16 +76,19 @@ export class RequirementRepository {
 
     const requirementRef = collection(db, this.databaseName);
 
-    const queryToSearch = query(requirementRef, where("typeOfRequirement", "==", typeOfRequirement));
+    const queryToSearch = query(
+      requirementRef,
+      where('typeOfRequirement', '==', typeOfRequirement),
+    );
 
     const snapshot = await getDocs(queryToSearch).catch((error: any) => {
-        Logger.error(
-          `typeOfRequirement = ${typeOfRequirement} - error = ${error}`,
-          '',
-          `${this.className} - ${this.getRequirementByType.name}`,
-        );
+      Logger.error(
+        `typeOfRequirement = ${typeOfRequirement} - error = ${error}`,
+        '',
+        `${this.className} - ${this.getRequirementByType.name}`,
+      );
 
-        ErrorUtils.throwSpecificError(500);
+      ErrorUtils.throwSpecificError(500);
     });
 
     if (snapshot.empty) {
@@ -111,16 +122,15 @@ export class RequirementRepository {
 
     const requirementRef = doc(db, this.databaseName, uuid);
 
-    await updateDoc(requirementRef, requirementInfo)
-      .catch((error: any) => {
-        Logger.error(
-          `uuid = ${uuid} - error = ${error}`,
-          '',
-          `${this.className} - ${this.updateRequirementInfo.name}`,
-        );
+    await updateDoc(requirementRef, requirementInfo).catch((error: any) => {
+      Logger.error(
+        `uuid = ${uuid} - error = ${error}`,
+        '',
+        `${this.className} - ${this.updateRequirementInfo.name}`,
+      );
 
-        ErrorUtils.throwSpecificError(500);
-      });
+      ErrorUtils.throwSpecificError(500);
+    });
 
     Logger.log(
       `uuid = ${uuid} - SUCCESS`,
@@ -131,16 +141,15 @@ export class RequirementRepository {
   public async deleteRequirementByUuid(uuid: string): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.deleteRequirementByUuid.name}`);
 
-    await deleteDoc(doc(db, this.databaseName, uuid))
-      .catch((error: any) => {
-        Logger.error(
-          `uuid = ${uuid} - error = ${error}`,
-          '',
-          `${this.className} - ${this.deleteRequirementByUuid.name}`,
-        );
+    await deleteDoc(doc(db, this.databaseName, uuid)).catch((error: any) => {
+      Logger.error(
+        `uuid = ${uuid} - error = ${error}`,
+        '',
+        `${this.className} - ${this.deleteRequirementByUuid.name}`,
+      );
 
-        ErrorUtils.throwSpecificError(500);
-      });
+      ErrorUtils.throwSpecificError(500);
+    });
 
     Logger.log(
       `uuid = ${uuid} - SUCCESS`,

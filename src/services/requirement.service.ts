@@ -30,7 +30,7 @@ export class RequirementService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    if(requirement.typeOfRequirement === 'investment') {
+    if (requirement.typeOfRequirement === 'investment') {
       requirement.obtainedMoney = 0;
     }
 
@@ -39,7 +39,7 @@ export class RequirementService {
 
     await Promise.all([
       this.requirementRepository.registerRequirement(requirement),
-      this.linkRequirementToAStartup(startup, requirement)
+      this.linkRequirementToAStartup(startup, requirement),
     ]);
   }
 
@@ -82,9 +82,9 @@ export class RequirementService {
 
     const requirementsResolved = await Promise.all(requirements);
 
-    const removingNullReqs = requirementsResolved.filter(r => r);
+    const removingNullReqs = requirementsResolved.filter((r) => r);
 
-    if(!removingNullReqs.length) {
+    if (!removingNullReqs.length) {
       ErrorUtils.throwSpecificError(400);
     }
 
@@ -112,8 +112,8 @@ export class RequirementService {
     }
 
     if (
-      (requirement.obtainedMoney > 0 && requirementToUpdate.requiredMoney)
-      || requirement.status === 'concluded'
+      (requirement.obtainedMoney > 0 && requirementToUpdate.requiredMoney) ||
+      requirement.status === 'concluded'
     ) {
       ErrorUtils.throwSpecificError(403);
     }

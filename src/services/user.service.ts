@@ -12,7 +12,7 @@ export class UserService {
 
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly requirementRepository: RequirementRepository
+    private readonly requirementRepository: RequirementRepository,
   ) {}
 
   public async getUserInfos(uuid: string): Promise<User> {
@@ -21,25 +21,29 @@ export class UserService {
     const user = await this.userRepository.getUserByUuid(uuid);
 
     if (!user || !user.uuid) {
-      Logger.error(`uuid = ${uuid} - ERROR = User not found`,
+      Logger.error(
+        `uuid = ${uuid} - ERROR = User not found`,
         `${this.className} - ${this.getUserInfos.name}`,
       );
 
       ErrorUtils.throwSpecificError(404);
     }
 
-    Reflect.deleteProperty(user, 'password')
+    Reflect.deleteProperty(user, 'password');
 
-    if(user.typeOfUser === 'startup') {
+    if (user.typeOfUser === 'startup') {
       const [requirementsDetailsDev, requirementsDetailsInvest] = await Promise.all([
         this.getRequirementsDetails(user.developerRequirements as Array<string>),
-        this.getRequirementsDetails(user.investmentRequirements as Array<string>)
+        this.getRequirementsDetails(user.investmentRequirements as Array<string>),
       ]);
 
       Reflect.deleteProperty(user, 'investmentRequirements');
       Reflect.deleteProperty(user, 'developerRequirements');
 
-      user.investmentRaised = requirementsDetailsInvest.reduce((sum, invest) => sum + invest.obtainedMoney, 0);
+      user.investmentRaised = requirementsDetailsInvest.reduce(
+        (sum, invest) => sum + invest.obtainedMoney,
+        0,
+      );
 
       const allReq = requirementsDetailsInvest.concat(requirementsDetailsDev);
       user.requirements = Utils.orderRequirementsByDate(allReq);
@@ -54,7 +58,8 @@ export class UserService {
     const startup = await this.userRepository.getUserByUuid(uuid);
 
     if (!startup || !startup.uuid) {
-      Logger.error(`uuid = ${uuid} - ERROR = User not found`,
+      Logger.error(
+        `uuid = ${uuid} - ERROR = User not found`,
         `${this.className} - ${this.updateUser.name}`,
       );
 
@@ -76,7 +81,9 @@ export class UserService {
     await this.userRepository.deleteUserByUuid(uuid);
   }
 
-  private async getRequirementsDetails(uuidsByRequirements: Array<string>): Promise<Array<Requirement>> {
+  private async getRequirementsDetails(
+    uuidsByRequirements: Array<string>,
+  ): Promise<Array<Requirement>> {
     const requirements = [];
 
     uuidsByRequirements.forEach((uuid: string) => {
@@ -85,6 +92,6 @@ export class UserService {
 
     const requirementsResolved = await Promise.all(requirements);
 
-   return requirementsResolved.filter(r => r);
+    return requirementsResolved.filter((r) => r);
   }
 }
