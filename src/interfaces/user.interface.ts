@@ -36,6 +36,8 @@ export interface User extends Startup, Investor, Developer {
   phoneNumber: string;
   typeOfUser: 'startup' | 'developer' | 'investor';
   password: string;
+  oldPassword?: string;
+  newPassword?: string;
 }
 
 export interface AuthResponseInterface {

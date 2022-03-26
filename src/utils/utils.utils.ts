@@ -13,6 +13,10 @@ export class Utils {
     if (user.typeOfUser) {
       Reflect.deleteProperty(user, 'typeOfUser');
     }
+
+    if (user.password) {
+      Reflect.deleteProperty(user, 'password');
+    }
   }
 
   public static avoidIncorrectRequirementUpdate(requirement: Partial<Requirement>): void {

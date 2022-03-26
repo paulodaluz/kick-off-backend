@@ -55,6 +55,12 @@ export class UserService {
   public async updateUser(uuid: string, userInfo: Partial<User>): Promise<void> {
     Logger.log(`uuid = ${uuid}`, `${this.className} - ${this.updateUser.name}`);
 
+    Utils.avoidIncorrectUserUpdate(userInfo);
+
+    if (!Object.values(userInfo).length) {
+      ErrorUtils.throwSpecificError(400);
+    }
+
     const startup = await this.userRepository.getUserByUuid(uuid);
 
     if (!startup || !startup.uuid) {
@@ -66,10 +72,15 @@ export class UserService {
       ErrorUtils.throwSpecificError(404);
     }
 
-    Utils.avoidIncorrectUserUpdate(userInfo);
+    if (userInfo.newPassword && userInfo.oldPassword) {
+      if (!(await Utils.verifyPassword(userInfo.oldPassword, startup.password))) {
+        ErrorUtils.throwSpecificError(403);
+      }
 
-    if (!Object.values(userInfo).length) {
-      ErrorUtils.throwSpecificError(400);
+      userInfo.password = await Utils.encryptPassword(userInfo.newPassword);
+
+      Reflect.deleteProperty(userInfo, 'newPassword');
+      Reflect.deleteProperty(userInfo, 'oldPassword');
     }
 
     await this.userRepository.updateUserInfo(uuid, userInfo);
