@@ -1,10 +1,12 @@
+import { User } from 'src/interfaces/user.interface';
 import { Requirement } from '../../../src/interfaces/requirement.interface';
 import { Utils } from '../../../src/utils/utils.utils';
 
 const bcrypt = require('bcrypt');
 
 describe('Test Utils', () => {
-  it('should remove e-mail, typeOfUser and uuid by object on function avoidIncorrectRequirementUpdate', () => {
+  it(`should remove obtainedMoney, typeOfRequirement and
+      uuid by object on function avoidIncorrectRequirementUpdate`, () => {
     const requirement = {
       uuid: 'c8a35dda-8867-11ec-a8a3-0242ac120002',
       obtainedMoney: 10000,
@@ -16,6 +18,20 @@ describe('Test Utils', () => {
     expect(requirement.obtainedMoney).toBe(10000);
     expect(requirement.uuid).toBe(undefined);
     expect(requirement.typeOfRequirement).toBe(undefined);
+  });
+
+  it('should remove itens by object on function avoidIncorrectUserUpdate', () => {
+    const user = {
+      uuid: 'c8a35dda-8867-11ec-a8a3-0242ac1200',
+      typeOfUser: 'startup',
+      password: 'senha123',
+    };
+
+    Utils.avoidIncorrectUserUpdate(user as User);
+
+    expect(user.password).toBe(undefined);
+    expect(user.typeOfUser).toBe(undefined);
+    expect(user.uuid).toBe(undefined);
   });
 
   it('should remove e-mail, typeOfUser and uuid by object on function avoidIncorrectRequirementUpdate 2', () => {
