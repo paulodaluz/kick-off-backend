@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
+import { Utils } from '../utils/utils.utils';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import {
@@ -53,6 +54,8 @@ export class AuthService {
 
     user.uuid = uuidv4();
 
+    user.password = await Utils.encryptPassword(user.password);
+
     await this.userRepository.registerUser(user);
 
     const token = this.generateToken(user.uuid, user.email);
@@ -65,9 +68,9 @@ export class AuthService {
 
     const user = await this.userRepository.getUserByEmail(userToAuth.email);
 
-    if (!user || user.password !== userToAuth.password) {
+    if (!user || !(await Utils.verifyPassword(userToAuth.password, user.password))) {
       Logger.error(
-        `email = ${userToAuth.email} - ERROR = User not found`,
+        `email = ${userToAuth.email} - ERROR = User not found or password is wrong`,
         `${this.className} - ${this.login.name}`,
       );
 
