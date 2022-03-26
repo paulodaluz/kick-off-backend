@@ -1,3 +1,4 @@
+import { Utils } from '../../../src/utils/utils.utils';
 import { User } from '../../../src/interfaces/user.interface';
 import { UserRepository } from '../../../src/repository/user.repository';
 import { AuthService } from '../../../src/services/auth.service';
@@ -89,6 +90,7 @@ describe('AuthService test', () => {
 
   it('should return success by service AuthService on operation login', async () => {
     userRepository.getUserByEmail = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
+    jest.spyOn(Utils, 'verifyPassword').mockResolvedValueOnce(true);
 
     const result = await authService.login(mock.userToCreateStartup as User);
 
