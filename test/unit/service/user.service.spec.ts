@@ -79,14 +79,49 @@ describe('UserService test', () => {
   });
 
   it('should return success by service UserService on operation updateUser', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreatedTwo);
     userRepository.updateUserInfo = jest.fn().mockImplementation();
 
     const spy = jest.spyOn(userRepository, 'updateUserInfo').mockReturnValueOnce({} as any);
 
-    await userService.updateUser(mock.userStartupCreated.uuid, mock.userStartupCreated as User);
+    await userService.updateUser(
+      '10611d0d-93d3-414f-8a39-af350f54315f',
+      mock.userStartupCreated as User,
+    );
 
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return success by service UserService on update password', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(mock.userStartupCreatedToUpdatePassword);
+    userRepository.updateUserInfo = jest.fn().mockImplementation();
+
+    const spy = jest.spyOn(userRepository, 'updateUserInfo').mockReturnValueOnce({} as any);
+
+    await userService.updateUser('10611d0d-93d3-414f-8a39-af350f54315f', {
+      oldPassword: '135791',
+      newPassword: 'senha1234',
+    } as User);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return error on update user', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(mock.userStartupCreatedToUpdatePassword);
+
+    try {
+      await userService.updateUser('10611d0d-93d3-414f-8a39-af350f54315f', {
+        oldPassword: 'xxxx',
+        newPassword: 'senha1234',
+      } as User);
+    } catch (error) {
+      expect(error.status).toBe(403);
+      expect(error.response).toBe('Client does not have permission.');
+    }
   });
 
   it('should return error User not found, on operation updateUser', async () => {
