@@ -36,6 +36,7 @@ export class RequirementService {
 
     requirement.status = 'opened';
     requirement.creationDate = new Date().toString();
+    requirement.createdBy = uuidByStatup;
 
     await Promise.all([
       this.requirementRepository.registerRequirement(requirement),
@@ -98,7 +99,17 @@ export class RequirementService {
       ErrorUtils.throwSpecificError(400);
     }
 
-    return this.requirementRepository.getRequirementByType(typeOfRequirement);
+    const requeriments = await this.requirementRepository.getRequirementByType(typeOfRequirement);
+
+    const requirementsUpdated = requeriments.map(async (requeriment) => {
+      const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
+
+      requeriment.descriptionOfStartup = user.description;
+
+      return requeriment;
+    });
+
+    return Promise.all(requirementsUpdated);
   }
 
   public async updateRequirement(

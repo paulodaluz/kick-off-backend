@@ -20,4 +20,6 @@ export interface Requirement extends DeveloperRequirement, InvestmentRequirement
   description: string;
   creationDate: string;
   status: 'opened' | 'concluded';
+  createdBy?: string;
+  descriptionOfStartup?: string;
 }
