@@ -1,7 +1,7 @@
 import { IsString, IsEmail, IsOptional, IsArray, IsEnum, IsNumber } from 'class-validator';
 import { TypeOfUserEnum, User } from '../interfaces/user.interface';
 
-export class RegisterUserValidator implements User {
+export class RegisterUserValidator implements Partial<User> {
   @IsString()
   @IsOptional()
   uuid: string;

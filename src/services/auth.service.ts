@@ -53,7 +53,7 @@ export class AuthService {
     }
 
     user.uuid = uuidv4();
-
+    user.notifications = [];
     user.password = await Utils.encryptPassword(user.password);
 
     await this.userRepository.registerUser(user);
@@ -98,10 +98,12 @@ export class AuthService {
 
   private validateDeveloper(developer: Developer): void {
     developer.workInProgress = [];
+    developer.requirementsWaitingApproval = [];
   }
 
   private validateInvestor(investor: Investor): void {
     investor.investedStartups = [];
+    investor.requirementsWaitingApproval = [];
   }
 
   private generateToken(uuid: string, email: string): string {

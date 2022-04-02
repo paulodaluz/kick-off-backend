@@ -1,5 +1,5 @@
 import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
-import { AuthResponseInterface } from '../interfaces/user.interface';
+import { AuthResponseInterface, User } from '../interfaces/user.interface';
 import { AuthService } from '../services/auth.service';
 import { RegisterUserValidator } from '../validators/registerUser.validator';
 import { LoginValidator } from '../validators/login.validator';
@@ -12,7 +12,7 @@ export class AuthController {
   async registerUser(
     @Body(new ValidationPipe()) body: RegisterUserValidator,
   ): Promise<AuthResponseInterface> {
-    return this.authService.registerUser(body);
+    return this.authService.registerUser(body as User);
   }
 
   @Post('login')

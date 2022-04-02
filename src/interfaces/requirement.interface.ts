@@ -1,12 +1,14 @@
 export interface DeveloperRequirement {
   languagesOfDevelop: string;
   payment: number;
+  developers?: Array<string>;
 }
 
 export interface InvestmentRequirement {
   requiredMoney: number;
   obtainedMoney: number;
   partnerParticipation: string;
+  investor?: string;
 }
 
 export enum TypeOfRequirementEnum {

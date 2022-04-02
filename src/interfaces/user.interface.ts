@@ -16,17 +16,24 @@ export interface Startup {
 export interface Investor {
   cpf: string;
   investedStartups: Array<string>;
+  requirementsWaitingApproval: Array<string>;
 }
 
 export interface Developer {
   cpf: string;
   workInProgress: Array<string>;
+  requirementsWaitingApproval: Array<string>;
 }
 
 export enum TypeOfUserEnum {
   startup,
   developer,
   investor,
+}
+
+interface Notification {
+  message: string;
+  uuidSender: string;
 }
 
 export interface User extends Startup, Investor, Developer {
@@ -38,6 +45,7 @@ export interface User extends Startup, Investor, Developer {
   password: string;
   oldPassword?: string;
   newPassword?: string;
+  notifications: Array<Notification>;
 }
 
 export interface AuthResponseInterface {
