@@ -31,9 +31,10 @@ export enum TypeOfUserEnum {
   investor,
 }
 
-interface Notification {
+export interface Notification {
+  uuid: string;
   message: string;
-  uuidSender: string;
+  uuidOfGenerator: string;
 }
 
 export interface User extends Startup, Investor, Developer {

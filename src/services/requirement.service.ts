@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Requirement } from '../interfaces/requirement.interface';
-import { Startup } from '../interfaces/user.interface';
+import { Notification, Startup } from '../interfaces/user.interface';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
@@ -110,6 +110,62 @@ export class RequirementService {
     });
 
     return Promise.all(requirementsUpdated);
+  }
+
+  public async linkRequirementToCustomer(
+    uuidByRequirement: string,
+    uuidByCustomer: string, // Investor or Developer
+    uuidByStartupProprietress: string,
+  ): Promise<void> {
+    const [customer, startupProprietressOfReq] = await Promise.all([
+      this.userRepository.getUserByUuid(uuidByCustomer),
+      this.userRepository.getUserByUuid(uuidByStartupProprietress),
+    ]);
+
+    const requirementsWaitingApprovalUpdated =
+      customer.requirementsWaitingApproval.concat(uuidByRequirement);
+
+    const notificationsStartupUpdated = this.concatNotifications(
+      uuidByCustomer,
+      customer.typeOfUser,
+      startupProprietressOfReq.notifications,
+    );
+
+    await Promise.all([
+      this.userRepository.updateUserInfo(uuidByCustomer, {
+        requirementsWaitingApproval: requirementsWaitingApprovalUpdated,
+      }),
+
+      this.userRepository.updateUserInfo(uuidByStartupProprietress, {
+        notifications: notificationsStartupUpdated,
+      }),
+    ]);
+  }
+
+  private concatNotifications(
+    uuidGenerator: string,
+    typeOfGenerator: string,
+    oldNotifications: Array<Notification>,
+  ): Array<Notification> {
+    return oldNotifications.concat([
+      {
+        uuid: uuidv4(),
+        message: `Sua requisição tem um ${
+          typeOfGenerator === 'investor' ? 'investidor' : 'desenvolvedor'
+        } aguardando análise!`,
+        uuidOfGenerator: uuidGenerator,
+      },
+    ]);
+  }
+
+  public async assessCustomerInteraction() {
+    /*
+    TODO
+      - Remover o requerimento na lista de espera do dev/investidor
+      - Adicionar o requerimento na lista de requerimentos do dev/investidor
+      - Vincular investidor/dev ao requerimento
+      - Mandar notificaçao pra o investidor
+    */
   }
 
   public async updateRequirement(

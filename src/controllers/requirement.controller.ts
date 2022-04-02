@@ -39,9 +39,17 @@ export class RequirementController {
     return this.requirementService.getRequirementsByType(typeOfRequirement);
   }
 
-  @Patch('add-investment/:identifier')
-  async addInvestmentInOneRequirement(): Promise<void> {
-    // Recebe um valor e qual o uuid do requerimento
+  @Patch('add-investment/requirement/:requirement/customer/:customer')
+  async linkRequirementToCustomer(
+    @Param('requirement') uuidByRequirement: string,
+    @Param('customer') uuidByCustomer: string,
+    @Body('uuidByStartupProprietress') uuidByStartupProprietress: string,
+  ): Promise<void> {
+    await this.requirementService.linkRequirementToCustomer(
+      uuidByRequirement,
+      uuidByCustomer,
+      uuidByStartupProprietress,
+    );
   }
 
   @Put('update-info/requirement/:identifier')
