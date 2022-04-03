@@ -41,6 +41,7 @@ export default {
     phoneNumber: '(54) 99108-3039',
     cnpj: '98.828.768/0001-52',
     password: 'senha123',
+    description: 'Startup que planeja entregar gás em todo o Brasil, via helicóptero.',
     investmentRequirements: [],
     developerRequirements: [],
   },

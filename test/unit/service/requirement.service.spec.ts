@@ -1,3 +1,4 @@
+import userMock from '../../mock/user.mock';
 import { RequirementRepository } from '../../../src/repository/requeriment.repository';
 import { RequirementService } from '../../../src/services/requirement.service';
 import { UserRepository } from '../../../src/repository/user.repository';
@@ -115,6 +116,8 @@ describe('RequirementService test', () => {
     requirementRepository.getRequirementByType = jest
       .fn()
       .mockResolvedValue([Mock.developerRequirement]);
+
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(userMock.userStartupCreated);
 
     const resonse = await requirementService.getRequirementsByType('development');
 

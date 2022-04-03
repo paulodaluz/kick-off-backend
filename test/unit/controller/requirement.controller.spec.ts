@@ -65,12 +65,6 @@ describe('UserController test', () => {
       });
   });
 
-  it('/PATCH deletarRequerimento with 200 ok', async () => {
-    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
-
-    return request(app.getHttpServer()).patch(`/requirement/add-investment/XXX`).expect(200);
-  });
-
   it('/PUT updateRequirements with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     requirementService.updateRequirement = jest.fn().mockImplementation();
