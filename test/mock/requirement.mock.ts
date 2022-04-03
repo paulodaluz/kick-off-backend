@@ -18,6 +18,7 @@ export default {
     payment: 5000,
     typeOfRequirement: 'development',
     status: 'opened',
+    createdBy: '10611d0d-93d3-414f-8a39-af350f54315f',
   },
   inevestmentRequirement: {
     uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e361',

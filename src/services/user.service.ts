@@ -49,6 +49,21 @@ export class UserService {
       user.requirements = Utils.orderRequirementsByDate(allReq);
     }
 
+    if (user.typeOfUser === 'investor') {
+      const [investedStartups, requirementsWaitingApproval] = await Promise.all([
+        this.getRequirementsDetails(user.investedStartups as Array<string>),
+        this.getRequirementsDetails(user.requirementsWaitingApproval as Array<string>),
+      ]);
+
+      Reflect.deleteProperty(user, 'investedStartups');
+      Reflect.deleteProperty(user, 'requirementsWaitingApproval');
+
+      user.investedStartups = Utils.orderRequirementsByDate(investedStartups) as any;
+      user.requirementsWaitingApproval = Utils.orderRequirementsByDate(
+        requirementsWaitingApproval,
+      ) as any;
+    }
+
     return user;
   }
 

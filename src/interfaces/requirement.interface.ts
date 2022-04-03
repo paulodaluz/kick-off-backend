@@ -1,12 +1,14 @@
 export interface DeveloperRequirement {
   languagesOfDevelop: string;
   payment: number;
+  developers?: Array<string>;
 }
 
 export interface InvestmentRequirement {
   requiredMoney: number;
   obtainedMoney: number;
   partnerParticipation: string;
+  investor?: string;
 }
 
 export enum TypeOfRequirementEnum {
@@ -20,4 +22,6 @@ export interface Requirement extends DeveloperRequirement, InvestmentRequirement
   description: string;
   creationDate: string;
   status: 'opened' | 'concluded';
+  createdBy?: string;
+  descriptionOfStartup?: string;
 }

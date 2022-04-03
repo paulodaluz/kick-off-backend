@@ -1,3 +1,4 @@
+import userMock from '../../mock/user.mock';
 import { RequirementRepository } from '../../../src/repository/requeriment.repository';
 import { RequirementService } from '../../../src/services/requirement.service';
 import { UserRepository } from '../../../src/repository/user.repository';
@@ -115,6 +116,8 @@ describe('RequirementService test', () => {
     requirementRepository.getRequirementByType = jest
       .fn()
       .mockResolvedValue([Mock.developerRequirement]);
+
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(userMock.userStartupCreated);
 
     const resonse = await requirementService.getRequirementsByType('development');
 
@@ -291,5 +294,37 @@ describe('RequirementService test', () => {
       expect(error.status).toBe(403);
       expect(error.message).toBe('Client does not have permission.');
     }
+  });
+
+  it('should return success on operation linkRequirementToCustomer to investor customer', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(userMock.mockUserInvestorCreated)
+      .mockResolvedValueOnce(userMock.userStartupCreated);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any)
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.linkRequirementToCustomer('xxx', 'xxx', 'xxx');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(2);
+  });
+
+  it('should return success on operation linkRequirementToCustomer to developer customer', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(userMock.mockUserDeveloperCreated)
+      .mockResolvedValueOnce(userMock.userStartupCreated);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any)
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.linkRequirementToCustomer('xxx', 'xxx', 'xxx');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(2);
   });
 });
