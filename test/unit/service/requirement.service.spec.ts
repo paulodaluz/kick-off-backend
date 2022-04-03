@@ -295,4 +295,36 @@ describe('RequirementService test', () => {
       expect(error.message).toBe('Client does not have permission.');
     }
   });
+
+  it('should return success on operation linkRequirementToCustomer to investor customer', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(userMock.mockUserInvestorCreated)
+      .mockResolvedValueOnce(userMock.userStartupCreated);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any)
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.linkRequirementToCustomer('xxx', 'xxx', 'xxx');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(2);
+  });
+
+  it('should return success on operation linkRequirementToCustomer to developer customer', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(userMock.mockUserDeveloperCreated)
+      .mockResolvedValueOnce(userMock.userStartupCreated);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any)
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.linkRequirementToCustomer('xxx', 'xxx', 'xxx');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(2);
+  });
 });

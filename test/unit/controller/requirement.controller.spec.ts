@@ -65,6 +65,17 @@ describe('UserController test', () => {
       });
   });
 
+  it('/PATCH should link requirement with a dev or investor and return status 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
+    requirementService.linkRequirementToCustomer = jest.fn().mockImplementation();
+
+    return request(app.getHttpServer())
+      .patch('/requirement/add-investment/requirement/XXX/customer/XXX')
+      .set('Content-type', 'application/json')
+      .send({ uuidByStartupProprietress: '10611d0d-93d3-414f-8a39-af350f54315f' })
+      .expect(200);
+  });
+
   it('/PUT updateRequirements with 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     requirementService.updateRequirement = jest.fn().mockImplementation();

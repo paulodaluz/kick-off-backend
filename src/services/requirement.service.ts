@@ -158,15 +158,15 @@ export class RequirementService {
     ]);
   }
 
-  public async assessCustomerInteraction() {
-    /*
+  /* public async assessCustomerInteraction() {
+
     TODO
       - Remover o requerimento na lista de espera do dev/investidor
       - Adicionar o requerimento na lista de requerimentos do dev/investidor
       - Vincular investidor/dev ao requerimento
       - Mandar notificaçao pra o investidor
-    */
-  }
+
+  } */
 
   public async updateRequirement(
     uuid: string,

@@ -15,7 +15,7 @@ describe('UserService test', () => {
     jest.resetModules();
   });
 
-  it('should return success on operation getUserInfos', async () => {
+  it('should return success on operation getUserInfos from Startup', async () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.userStartupCreated);
 
     const result = await userService.getUserInfos(mock.userStartupCreated.uuid);
@@ -29,6 +29,26 @@ describe('UserService test', () => {
     expect(result.typeOfUser).toBe('startup');
     expect(result.phoneNumber).toBe('(54) 99108-3039');
     expect(result.cnpj).toBe('98.828.768/0001-52');
+  });
+
+  it('should return success on operation getUserInfos from Investor', async () => {
+    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.mockUserInvestorCreated);
+
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(mock.mockRequirementWaitingToApproval)
+      .mockResolvedValueOnce([]);
+
+    const result = await userService.getUserInfos('1c9b8694-9581-4c5e-92ce-ac41da534b6f');
+
+    expect(result.phoneNumber).toBe('(54) 99108-3039');
+    expect(result.typeOfUser).toBe('investor');
+    expect(result.notifications.length).toBe(0);
+    expect(result.uuid).toBe('1c9b8694-9581-4c5e-92ce-ac41da534b6f');
+    expect(result.name).toBe('Paulão Investidor da Luz');
+    expect(result.email).toBe('paulo.daluzjr@investor.com');
+    expect(result.investedStartups.length).toBe(0);
+    expect(result.requirementsWaitingApproval.length).toBe(1);
   });
 
   it('should return success on operation getUserInfos with requirements details', async () => {
