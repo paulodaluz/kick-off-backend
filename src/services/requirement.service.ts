@@ -105,7 +105,13 @@ export class RequirementService {
 
     const openedReqs = requeriments.filter((requirement) => requirement.status === 'opened');
 
-    const requirementsUpdated = openedReqs.map(async (requeriment) => {
+    const requirementsUpdated = await this.getDescriptionOfStartup(openedReqs);
+
+    return requirementsUpdated;
+  }
+
+  private async getDescriptionOfStartup(requirements: Array<Requirement>): Promise<Requirement[]> {
+    const requirementsComplete = requirements.map(async (requeriment) => {
       const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
 
       requeriment.descriptionOfStartup = user.description;
@@ -113,7 +119,7 @@ export class RequirementService {
       return requeriment;
     });
 
-    return Promise.all(requirementsUpdated);
+    return Promise.all(requirementsComplete);
   }
 
   public async linkRequirementToCustomer(
