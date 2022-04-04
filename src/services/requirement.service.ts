@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Requirement } from '../interfaces/requirement.interface';
-import { Notification, Startup } from '../interfaces/user.interface';
+import { Startup } from '../interfaces/user.interface';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
+import { NotificationService } from './notifications.service';
 
 @Injectable()
 export class RequirementService {
@@ -14,6 +15,7 @@ export class RequirementService {
   constructor(
     private readonly requirementRepository: RequirementRepository,
     private readonly userRepository: UserRepository,
+    private readonly notificationService: NotificationService,
   ) {}
 
   public async registerRequirement(uuidByStatup: string, requirement: Requirement): Promise<void> {
@@ -125,36 +127,19 @@ export class RequirementService {
     const requirementsWaitingApprovalUpdated =
       customer.requirementsWaitingApproval.concat(uuidByRequirement);
 
-    const notificationsStartupUpdated = this.concatNotifications(
-      uuidByCustomer,
-      customer.typeOfUser,
-      startupProprietressOfReq.notifications,
-    );
-
     await Promise.all([
       this.userRepository.updateUserInfo(uuidByCustomer, {
         requirementsWaitingApproval: requirementsWaitingApprovalUpdated,
       }),
 
-      this.userRepository.updateUserInfo(uuidByStartupProprietress, {
-        notifications: notificationsStartupUpdated,
-      }),
-    ]);
-  }
-
-  private concatNotifications(
-    uuidGenerator: string,
-    typeOfGenerator: string,
-    oldNotifications: Array<Notification>,
-  ): Array<Notification> {
-    return oldNotifications.concat([
-      {
-        uuid: uuidv4(),
-        message: `Sua requisição tem um ${
-          typeOfGenerator === 'investor' ? 'investidor' : 'desenvolvedor'
+      this.notificationService.registerNotification(
+        uuidByCustomer,
+        uuidByStartupProprietress,
+        `Sua requisição tem um ${
+          customer.typeOfUser === 'investor' ? 'investidor' : 'desenvolvedor'
         } aguardando análise!`,
-        uuidOfGenerator: uuidGenerator,
-      },
+        startupProprietressOfReq.notifications,
+      ),
     ]);
   }
 
