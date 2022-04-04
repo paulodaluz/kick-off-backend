@@ -103,7 +103,9 @@ export class RequirementService {
 
     const requeriments = await this.requirementRepository.getRequirementByType(typeOfRequirement);
 
-    const requirementsUpdated = requeriments.map(async (requeriment) => {
+    const openedReqs = requeriments.filter((requirement) => requirement.status === 'opened');
+
+    const requirementsUpdated = openedReqs.map(async (requeriment) => {
       const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
 
       requeriment.descriptionOfStartup = user.description;
@@ -149,8 +151,10 @@ export class RequirementService {
       - Remover o requerimento na lista de espera do dev/investidor
       - Adicionar o requerimento na lista de requerimentos do dev/investidor
       - Vincular investidor/dev ao requerimento
-      - Mandar notificaçao pra o investidor
-
+      - Mandar notificaçao pra o investidor/dev
+      - Deletar notificação da startup
+      - Mudar obtained money para o mesmo que o Required money
+      - Fechar requerimento
   } */
 
   public async updateRequirement(
