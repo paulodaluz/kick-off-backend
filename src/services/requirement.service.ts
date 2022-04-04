@@ -1,11 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Requirement } from '../interfaces/requirement.interface';
-import { Notification, Startup } from '../interfaces/user.interface';
+import { Startup } from '../interfaces/user.interface';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
+import { NotificationService } from './notifications.service';
 
 @Injectable()
 export class RequirementService {
@@ -14,6 +15,7 @@ export class RequirementService {
   constructor(
     private readonly requirementRepository: RequirementRepository,
     private readonly userRepository: UserRepository,
+    private readonly notificationService: NotificationService,
   ) {}
 
   public async registerRequirement(uuidByStatup: string, requirement: Requirement): Promise<void> {
@@ -101,7 +103,15 @@ export class RequirementService {
 
     const requeriments = await this.requirementRepository.getRequirementByType(typeOfRequirement);
 
-    const requirementsUpdated = requeriments.map(async (requeriment) => {
+    const openedReqs = requeriments.filter((requirement) => requirement.status === 'opened');
+
+    const requirementsUpdated = await this.getDescriptionOfStartup(openedReqs);
+
+    return requirementsUpdated;
+  }
+
+  private async getDescriptionOfStartup(requirements: Array<Requirement>): Promise<Requirement[]> {
+    const requirementsComplete = requirements.map(async (requeriment) => {
       const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
 
       requeriment.descriptionOfStartup = user.description;
@@ -109,7 +119,7 @@ export class RequirementService {
       return requeriment;
     });
 
-    return Promise.all(requirementsUpdated);
+    return Promise.all(requirementsComplete);
   }
 
   public async linkRequirementToCustomer(
@@ -125,36 +135,19 @@ export class RequirementService {
     const requirementsWaitingApprovalUpdated =
       customer.requirementsWaitingApproval.concat(uuidByRequirement);
 
-    const notificationsStartupUpdated = this.concatNotifications(
-      uuidByCustomer,
-      customer.typeOfUser,
-      startupProprietressOfReq.notifications,
-    );
-
     await Promise.all([
       this.userRepository.updateUserInfo(uuidByCustomer, {
         requirementsWaitingApproval: requirementsWaitingApprovalUpdated,
       }),
 
-      this.userRepository.updateUserInfo(uuidByStartupProprietress, {
-        notifications: notificationsStartupUpdated,
-      }),
-    ]);
-  }
-
-  private concatNotifications(
-    uuidGenerator: string,
-    typeOfGenerator: string,
-    oldNotifications: Array<Notification>,
-  ): Array<Notification> {
-    return oldNotifications.concat([
-      {
-        uuid: uuidv4(),
-        message: `Sua requisição tem um ${
-          typeOfGenerator === 'investor' ? 'investidor' : 'desenvolvedor'
+      this.notificationService.registerNotification(
+        uuidByCustomer,
+        uuidByStartupProprietress,
+        `Sua requisição tem um ${
+          customer.typeOfUser === 'investor' ? 'investidor' : 'desenvolvedor'
         } aguardando análise!`,
-        uuidOfGenerator: uuidGenerator,
-      },
+        startupProprietressOfReq.notifications,
+      ),
     ]);
   }
 
@@ -164,8 +157,10 @@ export class RequirementService {
       - Remover o requerimento na lista de espera do dev/investidor
       - Adicionar o requerimento na lista de requerimentos do dev/investidor
       - Vincular investidor/dev ao requerimento
-      - Mandar notificaçao pra o investidor
-
+      - Mandar notificaçao pra o investidor/dev
+      - Deletar notificação da startup
+      - Mudar obtained money para o mesmo que o Required money
+      - Fechar requerimento
   } */
 
   public async updateRequirement(

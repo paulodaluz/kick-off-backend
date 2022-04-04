@@ -1,3 +1,4 @@
+import { NotificationService } from '../../../src/services/notifications.service';
 import userMock from '../../mock/user.mock';
 import { RequirementRepository } from '../../../src/repository/requeriment.repository';
 import { RequirementService } from '../../../src/services/requirement.service';
@@ -7,7 +8,12 @@ import { Requirement } from '../../../src/interfaces/requirement.interface';
 
 const requirementRepository = new RequirementRepository();
 const userRepository = new UserRepository();
-const requirementService = new RequirementService(requirementRepository, userRepository);
+const notificationService = new NotificationService(userRepository);
+const requirementService = new RequirementService(
+  requirementRepository,
+  userRepository,
+  notificationService,
+);
 
 describe('RequirementService test', () => {
   beforeEach(async () => {

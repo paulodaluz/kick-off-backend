@@ -162,6 +162,5 @@ export default {
     obtainedMoney: 0,
     typeOfRequirement: 'investment',
     partnerParticipation: '3,90%',
-    notifications: [],
   },
 };
