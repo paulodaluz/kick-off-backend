@@ -44,6 +44,38 @@ export class NotificationService {
     });
   }
 
+  public async deleteNotification(
+    notificationUuid: string,
+    userUuid: string,
+    userNotifications?: Array<Notification>,
+  ): Promise<void> {
+    let oldNotifications: Array<Notification>;
+
+    Logger.log(
+      `notificationUuid = ${notificationUuid} - userUuid = ${userUuid} -
+        userNotifications ${userNotifications?.length}`,
+      `${this.className} - ${this.deleteNotification.name}`,
+    );
+
+    if (userNotifications) {
+      oldNotifications = userNotifications;
+    }
+
+    if (!userNotifications) {
+      const user = await this.userRepository.getUserByUuid(userUuid);
+
+      oldNotifications = user.notifications;
+    }
+
+    const notificationsUpdated = oldNotifications.filter(
+      (notification: Notification) => notification.uuid !== notificationUuid,
+    );
+
+    await this.userRepository.updateUserInfo(userUuid, {
+      notifications: notificationsUpdated,
+    });
+  }
+
   private concatNotifications(
     newNotification: Notification,
     oldNotifications: Array<Notification>,
