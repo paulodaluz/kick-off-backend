@@ -32,12 +32,15 @@ describe('UserService test', () => {
   });
 
   it('should return success on operation getUserInfos from Investor', async () => {
-    userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.mockUserInvestorCreated);
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockReturnValueOnce(mock.mockUserInvestorCreated)
+      .mockReturnValueOnce({ uuid: '', description: 'A good startup' });
 
     requirementRepository.getRequirementByUuid = jest
       .fn()
-      .mockResolvedValueOnce(mock.mockRequirementWaitingToApproval)
-      .mockResolvedValueOnce([]);
+      .mockReturnValueOnce(mock.mockRequirementWaitingToApproval)
+      .mockReturnValueOnce(null);
 
     const result = await userService.getUserInfos('1c9b8694-9581-4c5e-92ce-ac41da534b6f');
 

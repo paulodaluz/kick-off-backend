@@ -58,9 +58,14 @@ export class UserService {
       Reflect.deleteProperty(user, 'investedStartups');
       Reflect.deleteProperty(user, 'requirementsWaitingApproval');
 
-      user.investedStartups = Utils.orderRequirementsByDate(investedStartups) as any;
-      user.requirementsWaitingApproval = Utils.orderRequirementsByDate(
+      const completeInvestedStartupsInfo = await this.getDescriptionOfStartup(investedStartups);
+      const completeRequirementsWaintingApproval = await this.getDescriptionOfStartup(
         requirementsWaitingApproval,
+      );
+
+      user.investedStartups = Utils.orderRequirementsByDate(completeInvestedStartupsInfo) as any;
+      user.requirementsWaitingApproval = Utils.orderRequirementsByDate(
+        completeRequirementsWaintingApproval,
       ) as any;
     }
 
@@ -119,5 +124,17 @@ export class UserService {
     const requirementsResolved = await Promise.all(requirements);
 
     return requirementsResolved.filter((r) => r);
+  }
+
+  public async getDescriptionOfStartup(requirements: Array<Requirement>): Promise<Requirement[]> {
+    const requirementsComplete = requirements.map(async (requeriment) => {
+      const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
+
+      requeriment.descriptionOfStartup = user.description;
+
+      return requeriment;
+    });
+
+    return Promise.all(requirementsComplete);
   }
 }
