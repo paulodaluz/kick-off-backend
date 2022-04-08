@@ -123,8 +123,8 @@ export class RequirementService {
   }
 
   public async linkRequirementToCustomer(
-    uuidByRequirement: string,
     uuidByCustomer: string, // Investor or Developer
+    uuidByRequirement: string,
     uuidByStartupProprietress: string,
   ): Promise<void> {
     const [customer, startupProprietressOfReq] = await Promise.all([
@@ -147,21 +147,68 @@ export class RequirementService {
           customer.typeOfUser === 'investor' ? 'investidor' : 'desenvolvedor'
         } aguardando análise!`,
         startupProprietressOfReq.notifications,
+        uuidByRequirement,
       ),
     ]);
   }
 
-  /* public async assessCustomerInteraction() {
+  public async assessCustomerInteraction(
+    uuidByCustomer: string, // dev or investor
+    uuidByRequirement: string,
+    uuidByStartupProprietress: string,
+    notificationUuid: string,
+  ): Promise<void> {
+    const [customer, startupProprietressOfReq, requeriment] = await Promise.all([
+      this.userRepository.getUserByUuid(uuidByCustomer),
+      this.userRepository.getUserByUuid(uuidByStartupProprietress),
+      this.requirementRepository.getRequirementByUuid(uuidByRequirement),
+    ]);
 
-    TODO
-      - Remover o requerimento na lista de espera do dev/investidor
-      - Adicionar o requerimento na lista de requerimentos do dev/investidor
-      - Vincular investidor/dev ao requerimento
-      - Mandar notificaçao pra o investidor/dev
-      - Deletar notificação da startup
-      - Mudar obtained money para o mesmo que o Required money
-      - Fechar requerimento
-  } */
+    const reqsWaitingApprovalUpdated = customer.requirementsWaitingApproval.filter(
+      (req) => req !== uuidByRequirement,
+    );
+    const investedStartupsUpdated = customer.investedStartups.concat(uuidByRequirement);
+
+    Promise.all([
+      this.userRepository.updateUserInfo(uuidByCustomer, {
+        requirementsWaitingApproval: reqsWaitingApprovalUpdated,
+        investedStartups: investedStartupsUpdated,
+      }),
+      this.notificationService.registerNotification(
+        uuidByStartupProprietress,
+        uuidByCustomer,
+        'Parabéns sua foi aceita pela Startup, você pode consulta-la em `Investimentos e contratos recentes`',
+        customer.notifications,
+      ),
+      this.notificationService.deleteNotification(
+        notificationUuid,
+        uuidByStartupProprietress,
+        startupProprietressOfReq.notifications,
+      ),
+      this.requirementRepository.updateRequirementInfo(
+        uuidByRequirement,
+        this.getTypeOfRequirementToLinkWithCustomer(requeriment, uuidByCustomer),
+      ),
+    ]);
+  }
+
+  private getTypeOfRequirementToLinkWithCustomer(
+    requeriment: Requirement,
+    uuidByCustomer: string,
+  ): Partial<Requirement> {
+    if (requeriment.typeOfRequirement === 'investment') {
+      return {
+        status: 'concluded',
+        obtainedMoney: requeriment.requiredMoney,
+        investor: uuidByCustomer,
+      };
+    }
+
+    return {
+      status: 'concluded',
+      developer: uuidByCustomer,
+    };
+  }
 
   public async updateRequirement(
     uuid: string,
