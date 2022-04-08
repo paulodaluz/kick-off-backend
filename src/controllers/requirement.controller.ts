@@ -5,11 +5,12 @@ import {
   Get,
   Headers,
   Param,
-  Patch,
   Post,
   Put,
   ValidationPipe,
 } from '@nestjs/common';
+import { AddInvestmentValidator } from '../validators/addInvestment.validator';
+import { AssessCustomerInteractionValidator } from '../validators/assessCustomerInteraction.validator';
 import { Requirement } from '../interfaces/requirement.interface';
 import { RegisterRequirementValidator } from '../validators/registerRequirement.validator';
 import { RequirementService } from '../services/requirement.service';
@@ -39,16 +40,26 @@ export class RequirementController {
     return this.requirementService.getRequirementsByType(typeOfRequirement);
   }
 
-  @Patch('add-investment/requirement/:requirement/customer/:customer')
+  @Post('link-requirement-to-customer')
   async linkRequirementToCustomer(
-    @Param('requirement') uuidByRequirement: string,
-    @Param('customer') uuidByCustomer: string,
-    @Body('uuidByStartupProprietress') uuidByStartupProprietress: string,
+    @Body(new ValidationPipe()) body: AddInvestmentValidator,
   ): Promise<void> {
     await this.requirementService.linkRequirementToCustomer(
-      uuidByRequirement,
-      uuidByCustomer,
-      uuidByStartupProprietress,
+      body.uuidByCustomer,
+      body.uuidByRequirement,
+      body.uuidByStartupProprietress,
+    );
+  }
+
+  @Post('assess-customer-interaction')
+  async assessCustomerInteraction(
+    @Body(new ValidationPipe()) body: AssessCustomerInteractionValidator,
+  ): Promise<void> {
+    await this.requirementService.assessCustomerInteraction(
+      body.uuidByCustomer,
+      body.uuidByRequirement,
+      body.uuidByStartupProprietress,
+      body.notificationId,
     );
   }
 
