@@ -1,7 +1,7 @@
 export interface DeveloperRequirement {
   languagesOfDevelop: string;
   payment: number;
-  developers?: Array<string>;
+  developer?: string;
 }
 
 export interface InvestmentRequirement {
