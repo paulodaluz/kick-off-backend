@@ -32,9 +32,10 @@ export enum TypeOfUserEnum {
 }
 
 export interface Notification {
-  uuid: string;
+  id: string;
   message: string;
-  uuidOfGenerator: string;
+  trigger: string; // Disparador
+  uuidTarget?: string; // Requirement
 }
 
 export interface User extends Startup, Investor, Developer {

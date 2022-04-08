@@ -14,6 +14,7 @@ export class NotificationService {
     receiverUuid: string,
     message: string,
     oldNotifications?: Array<Notification>,
+    uuidTarget?: string,
   ): Promise<void> {
     Logger.log(
       `senderUuid = ${senderUuid} - receiverUuid = ${receiverUuid} -
@@ -24,10 +25,14 @@ export class NotificationService {
     let notificationsStartupUpdated: Array<Notification>;
 
     const notification = {
-      uuid: uuidv4() as string,
+      id: uuidv4() as string,
       message,
-      uuidOfGenerator: senderUuid,
+      trigger: senderUuid,
     };
+
+    if (uuidTarget) {
+      Object.assign(notification, { uuidTarget });
+    }
 
     if (!oldNotifications) {
       const user = await this.userRepository.getUserByUuid(receiverUuid);
@@ -45,14 +50,14 @@ export class NotificationService {
   }
 
   public async deleteNotification(
-    notificationUuid: string,
+    notificationId: string,
     userUuid: string,
     userNotifications?: Array<Notification>,
   ): Promise<void> {
     let oldNotifications: Array<Notification>;
 
     Logger.log(
-      `notificationUuid = ${notificationUuid} - userUuid = ${userUuid} -
+      `notificationId = ${notificationId} - userUuid = ${userUuid} -
         userNotifications ${userNotifications?.length}`,
       `${this.className} - ${this.deleteNotification.name}`,
     );
@@ -68,7 +73,7 @@ export class NotificationService {
     }
 
     const notificationsUpdated = oldNotifications.filter(
-      (notification: Notification) => notification.uuid !== notificationUuid,
+      (notification: Notification) => notification.id !== notificationId,
     );
 
     await this.userRepository.updateUserInfo(userUuid, {
