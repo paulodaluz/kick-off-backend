@@ -115,6 +115,7 @@ export class RequirementService {
       const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
 
       requeriment.descriptionOfStartup = user.description;
+      requeriment.nameOfStartup = user.name;
 
       return requeriment;
     });
