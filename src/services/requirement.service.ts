@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Requirement } from '../interfaces/requirement.interface';
-import { Startup } from '../interfaces/user.interface';
+import { Startup, User } from '../interfaces/user.interface';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
@@ -158,6 +158,7 @@ export class RequirementService {
     uuidByRequirement: string,
     uuidByStartupProprietress: string,
     notificationUuid: string,
+    interactionStatus: 'accept' | 'reject',
   ): Promise<void> {
     const [customer, startupProprietressOfReq, requeriment] = await Promise.all([
       this.userRepository.getUserByUuid(uuidByCustomer),
@@ -165,16 +166,30 @@ export class RequirementService {
       this.requirementRepository.getRequirementByUuid(uuidByRequirement),
     ]);
 
+    const { typeOfUser } = customer;
+    let requirementByClientUpdated;
+
     const reqsWaitingApprovalUpdated = customer.requirementsWaitingApproval.filter(
       (req) => req !== uuidByRequirement,
     );
-    const investedStartupsUpdated = customer.investedStartups.concat(uuidByRequirement);
+
+    if (typeOfUser === 'developer') {
+      requirementByClientUpdated = customer.workInProgress.concat(uuidByRequirement);
+    }
+
+    if (typeOfUser === 'investor') {
+      requirementByClientUpdated = customer.investedStartups.concat(uuidByRequirement);
+    }
 
     Promise.all([
-      this.userRepository.updateUserInfo(uuidByCustomer, {
-        requirementsWaitingApproval: reqsWaitingApprovalUpdated,
-        investedStartups: investedStartupsUpdated,
-      }),
+      this.userRepository.updateUserInfo(
+        uuidByCustomer,
+        this.getDataOfUserToUpdate(
+          typeOfUser,
+          reqsWaitingApprovalUpdated,
+          requirementByClientUpdated,
+        ),
+      ),
       this.notificationService.registerNotification(
         uuidByStartupProprietress,
         uuidByCustomer,
@@ -188,12 +203,12 @@ export class RequirementService {
       ),
       this.requirementRepository.updateRequirementInfo(
         uuidByRequirement,
-        this.getTypeOfRequirementToLinkWithCustomer(requeriment, uuidByCustomer),
+        this.getDataOfRequirementToUpdate(requeriment, uuidByCustomer),
       ),
     ]);
   }
 
-  private getTypeOfRequirementToLinkWithCustomer(
+  private getDataOfRequirementToUpdate(
     requeriment: Requirement,
     uuidByCustomer: string,
   ): Partial<Requirement> {
@@ -208,6 +223,24 @@ export class RequirementService {
     return {
       status: 'concluded',
       developer: uuidByCustomer,
+    };
+  }
+
+  private getDataOfUserToUpdate(
+    typeOfUser: string,
+    reqsWaitingApprovalUpdated: Array<string>,
+    workInProgressUpdated: Array<string>,
+  ): Partial<User> {
+    if (typeOfUser === 'investor') {
+      return {
+        requirementsWaitingApproval: reqsWaitingApprovalUpdated,
+        investedStartups: workInProgressUpdated,
+      };
+    }
+
+    return {
+      requirementsWaitingApproval: reqsWaitingApprovalUpdated,
+      workInProgress: workInProgressUpdated,
     };
   }
 

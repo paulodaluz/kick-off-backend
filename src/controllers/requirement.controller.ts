@@ -60,6 +60,7 @@ export class RequirementController {
       body.uuidByRequirement,
       body.uuidByStartupProprietress,
       body.notificationId,
+      body.interactionStatus,
     );
   }
 
