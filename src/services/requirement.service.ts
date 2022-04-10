@@ -77,6 +77,11 @@ export class RequirementService {
   public async getRequirementsByUuid(
     uuidsByRequirements: Array<string>,
   ): Promise<Array<Requirement>> {
+    Logger.log(
+      `uuidsByRequirements = ${JSON.stringify(uuidsByRequirements)}`,
+      `${this.className} - ${this.getRequirementsByUuid.name}`,
+    );
+
     const requirements = [];
 
     uuidsByRequirements.forEach((uuid) => {
@@ -97,6 +102,11 @@ export class RequirementService {
   public async getRequirementsByType(
     typeOfRequirement: 'development' | 'investment',
   ): Promise<Array<Requirement>> {
+    Logger.log(
+      `typeOfRequirement = ${typeOfRequirement}`,
+      `${this.className} - ${this.getRequirementsByType.name}`,
+    );
+
     if (typeOfRequirement !== 'development' && typeOfRequirement !== 'investment') {
       ErrorUtils.throwSpecificError(400);
     }
@@ -128,6 +138,12 @@ export class RequirementService {
     uuidByRequirement: string,
     uuidByStartupProprietress: string,
   ): Promise<void> {
+    Logger.log(
+      `uuidByCustomer = ${uuidByCustomer} - uuidByRequirement = ${uuidByRequirement}
+        - uuidByStartupProprietress = ${uuidByStartupProprietress}`,
+      `${this.className} - ${this.linkRequirementToCustomer.name}`,
+    );
+
     const [customer, startupProprietressOfReq] = await Promise.all([
       this.userRepository.getUserByUuid(uuidByCustomer),
       this.userRepository.getUserByUuid(uuidByStartupProprietress),
@@ -160,6 +176,13 @@ export class RequirementService {
     notificationUuid: string,
     interactionStatus: 'accept' | 'reject',
   ): Promise<void> {
+    Logger.log(
+      `uuidByCustomer = ${uuidByCustomer} - uuidByRequirement = ${uuidByRequirement}
+        - uuidByStartupProprietress = ${uuidByStartupProprietress} - notificationUuid = ${notificationUuid}
+        - interactionStatus = ${interactionStatus}`,
+      `${this.className} - ${this.assessCustomerInteraction.name}`,
+    );
+
     const [customer, startupProprietressOfReq, requeriment] = await Promise.all([
       this.userRepository.getUserByUuid(uuidByCustomer),
       this.userRepository.getUserByUuid(uuidByStartupProprietress),
@@ -248,6 +271,11 @@ export class RequirementService {
     uuid: string,
     requirementToUpdate: Partial<Requirement>,
   ): Promise<void> {
+    Logger.log(
+      `uuid = ${uuid} - requirementToUpdate = ${requirementToUpdate}`,
+      `${this.className} - ${this.updateRequirement.name}`,
+    );
+
     const requirement = await this.requirementRepository.getRequirementByUuid(uuid);
 
     if (!requirement || !requirement.uuid) {
