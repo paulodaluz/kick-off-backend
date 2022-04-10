@@ -134,6 +134,74 @@ describe('RequirementService test', () => {
     expect(resonse[0].typeOfRequirement).toBe('development');
   });
 
+  it('should return success on operation assessCustomerInteraction to developer customer', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(Mock.investorMockToAssessCustomerInteraction)
+      .mockResolvedValueOnce(Mock.startupMockToAssessCustomerInteraction);
+
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(Mock.requirementInvestmentMockToAssessCustomerInteraction);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any);
+
+    const spyRegisterNotification = jest
+      .spyOn(notificationService, 'registerNotification')
+      .mockReturnValueOnce({} as any);
+
+    const spyDeleteNotification = jest
+      .spyOn(notificationService, 'deleteNotification')
+      .mockReturnValueOnce({} as any);
+
+    const spyUpdateRequirement = jest
+      .spyOn(requirementRepository, 'updateRequirementInfo')
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.assessCustomerInteraction('xxx', 'xxx', 'xxx', 'xxx', 'accept');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(1);
+    expect(spyRegisterNotification).toHaveBeenCalledTimes(1);
+    expect(spyDeleteNotification).toHaveBeenCalledTimes(1);
+    expect(spyUpdateRequirement).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return success on operation assessCustomerInteraction to developer customer w', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(Mock.developerMockToAssessCustomerInteraction)
+      .mockResolvedValueOnce(Mock.startupMockToAssessCustomerInteraction);
+
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(Mock.requirementDevelopmentMockToAssessCustomerInteraction);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any);
+
+    const spyRegisterNotification = jest
+      .spyOn(notificationService, 'registerNotification')
+      .mockReturnValueOnce({} as any);
+
+    const spyDeleteNotification = jest
+      .spyOn(notificationService, 'deleteNotification')
+      .mockReturnValueOnce({} as any);
+
+    const spyUpdateRequirement = jest
+      .spyOn(requirementRepository, 'updateRequirementInfo')
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.assessCustomerInteraction('xxx', 'xxx', 'xxx', 'xxx', 'accept');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(1);
+    expect(spyRegisterNotification).toHaveBeenCalledTimes(1);
+    expect(spyDeleteNotification).toHaveBeenCalledTimes(1);
+    expect(spyUpdateRequirement).toHaveBeenCalledTimes(1);
+  });
+
   it('should return error on operation updateRequirement(404)', async () => {
     requirementRepository.getRequirementByUuid = jest.fn().mockResolvedValue(null);
 

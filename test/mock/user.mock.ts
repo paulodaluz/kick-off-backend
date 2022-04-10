@@ -163,4 +163,37 @@ export default {
     typeOfRequirement: 'investment',
     partnerParticipation: '3,90%',
   },
+  startupMockToAssessCustomerInteraction: {
+    notifications: [
+      {
+        id: '40b3e828-44d3-4737-855a-42e01f4027e1',
+        message:
+          'Parabéns sua foi aceita pela Startup, você pode consulta-la em `Investimentos e contratos recentes`',
+        trigger: '10611d0d-93d3-414f-8a39-af350f54315f',
+      },
+      {
+        trigger: '10611d0d-93d3-414f-8a39-af350f54315f',
+        message:
+          'Parabéns sua foi aceita pela Startup, você pode consulta-la em `Investimentos e contratos recentes`',
+        id: '765686cd-bcf9-4327-a453-4cc0a13a4b94',
+      },
+      {
+        trigger: '10611d0d-93d3-414f-8a39-af350f54315f',
+        message:
+          'Parabéns sua foi aceita pela Startup, você pode consulta-la em `Investimentos e contratos recentes`',
+        id: '58aebfa4-90f9-40bf-9abf-e0f859a75bc9',
+      },
+    ],
+    uuid: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
+    typeOfUser: 'investor',
+    phoneNumber: '(54) 99108-3039',
+    email: 'paulo.daluzjr@investor.com',
+    name: 'Paulão Investidor da Luz',
+    investedStartups: ['0a549be6-27cc-487e-af6c-3f26a9550b8b'],
+    requirementsWaitingApproval: [
+      '778a7d9d-6855-4d65-a771-f6f405817d64',
+      '472aa7b9-3e0a-469d-b762-845d9ddf981d',
+      '4c662cb9-02ef-40c9-b238-68374f138acb',
+    ],
+  },
 };

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Requirement } from '../interfaces/requirement.interface';
-import { Startup } from '../interfaces/user.interface';
+import { Startup, User } from '../interfaces/user.interface';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { UserRepository } from '../repository/user.repository';
 import { ErrorUtils } from '../utils/error.utils';
@@ -77,6 +77,11 @@ export class RequirementService {
   public async getRequirementsByUuid(
     uuidsByRequirements: Array<string>,
   ): Promise<Array<Requirement>> {
+    Logger.log(
+      `uuidsByRequirements = ${JSON.stringify(uuidsByRequirements)}`,
+      `${this.className} - ${this.getRequirementsByUuid.name}`,
+    );
+
     const requirements = [];
 
     uuidsByRequirements.forEach((uuid) => {
@@ -97,6 +102,11 @@ export class RequirementService {
   public async getRequirementsByType(
     typeOfRequirement: 'development' | 'investment',
   ): Promise<Array<Requirement>> {
+    Logger.log(
+      `typeOfRequirement = ${typeOfRequirement}`,
+      `${this.className} - ${this.getRequirementsByType.name}`,
+    );
+
     if (typeOfRequirement !== 'development' && typeOfRequirement !== 'investment') {
       ErrorUtils.throwSpecificError(400);
     }
@@ -115,6 +125,7 @@ export class RequirementService {
       const user = await this.userRepository.getUserByUuid(requeriment.createdBy);
 
       requeriment.descriptionOfStartup = user.description;
+      requeriment.nameOfStartup = user.name;
 
       return requeriment;
     });
@@ -123,10 +134,16 @@ export class RequirementService {
   }
 
   public async linkRequirementToCustomer(
-    uuidByRequirement: string,
     uuidByCustomer: string, // Investor or Developer
+    uuidByRequirement: string,
     uuidByStartupProprietress: string,
   ): Promise<void> {
+    Logger.log(
+      `uuidByCustomer = ${uuidByCustomer} - uuidByRequirement = ${uuidByRequirement}
+        - uuidByStartupProprietress = ${uuidByStartupProprietress}`,
+      `${this.className} - ${this.linkRequirementToCustomer.name}`,
+    );
+
     const [customer, startupProprietressOfReq] = await Promise.all([
       this.userRepository.getUserByUuid(uuidByCustomer),
       this.userRepository.getUserByUuid(uuidByStartupProprietress),
@@ -147,26 +164,119 @@ export class RequirementService {
           customer.typeOfUser === 'investor' ? 'investidor' : 'desenvolvedor'
         } aguardando análise!`,
         startupProprietressOfReq.notifications,
+        uuidByRequirement,
       ),
     ]);
   }
 
-  /* public async assessCustomerInteraction() {
+  public async assessCustomerInteraction(
+    uuidByCustomer: string, // dev or investor
+    uuidByRequirement: string,
+    uuidByStartupProprietress: string,
+    notificationUuid: string,
+    interactionStatus: 'accept' | 'reject',
+  ): Promise<void> {
+    Logger.log(
+      `uuidByCustomer = ${uuidByCustomer} - uuidByRequirement = ${uuidByRequirement}
+        - uuidByStartupProprietress = ${uuidByStartupProprietress} - notificationUuid = ${notificationUuid}
+        - interactionStatus = ${interactionStatus}`,
+      `${this.className} - ${this.assessCustomerInteraction.name}`,
+    );
 
-    TODO
-      - Remover o requerimento na lista de espera do dev/investidor
-      - Adicionar o requerimento na lista de requerimentos do dev/investidor
-      - Vincular investidor/dev ao requerimento
-      - Mandar notificaçao pra o investidor/dev
-      - Deletar notificação da startup
-      - Mudar obtained money para o mesmo que o Required money
-      - Fechar requerimento
-  } */
+    const [customer, startupProprietressOfReq, requeriment] = await Promise.all([
+      this.userRepository.getUserByUuid(uuidByCustomer),
+      this.userRepository.getUserByUuid(uuidByStartupProprietress),
+      this.requirementRepository.getRequirementByUuid(uuidByRequirement),
+    ]);
+
+    const { typeOfUser } = customer;
+    let requirementByClientUpdated;
+
+    const reqsWaitingApprovalUpdated = customer.requirementsWaitingApproval.filter(
+      (req) => req !== uuidByRequirement,
+    );
+
+    if (typeOfUser === 'developer') {
+      requirementByClientUpdated = customer.workInProgress.concat(uuidByRequirement);
+    }
+
+    if (typeOfUser === 'investor') {
+      requirementByClientUpdated = customer.investedStartups.concat(uuidByRequirement);
+    }
+
+    Promise.all([
+      this.userRepository.updateUserInfo(
+        uuidByCustomer,
+        this.getDataOfUserToUpdate(
+          typeOfUser,
+          reqsWaitingApprovalUpdated,
+          requirementByClientUpdated,
+        ),
+      ),
+      this.notificationService.registerNotification(
+        uuidByStartupProprietress,
+        uuidByCustomer,
+        `Parabéns seu apoio foi aceito pela Startup ${startupProprietressOfReq.name}
+          , você pode consulta-la em 'Investimentos e contratos recentes'`,
+        customer.notifications,
+      ),
+      this.notificationService.deleteNotification(
+        notificationUuid,
+        uuidByStartupProprietress,
+        startupProprietressOfReq.notifications,
+      ),
+      this.requirementRepository.updateRequirementInfo(
+        uuidByRequirement,
+        this.getDataOfRequirementToUpdate(requeriment, uuidByCustomer),
+      ),
+    ]);
+  }
+
+  private getDataOfRequirementToUpdate(
+    requeriment: Requirement,
+    uuidByCustomer: string,
+  ): Partial<Requirement> {
+    if (requeriment.typeOfRequirement === 'investment') {
+      return {
+        status: 'concluded',
+        obtainedMoney: requeriment.requiredMoney,
+        investor: uuidByCustomer,
+      };
+    }
+
+    return {
+      status: 'concluded',
+      developer: uuidByCustomer,
+    };
+  }
+
+  private getDataOfUserToUpdate(
+    typeOfUser: string,
+    reqsWaitingApprovalUpdated: Array<string>,
+    workInProgressUpdated: Array<string>,
+  ): Partial<User> {
+    if (typeOfUser === 'investor') {
+      return {
+        requirementsWaitingApproval: reqsWaitingApprovalUpdated,
+        investedStartups: workInProgressUpdated,
+      };
+    }
+
+    return {
+      requirementsWaitingApproval: reqsWaitingApprovalUpdated,
+      workInProgress: workInProgressUpdated,
+    };
+  }
 
   public async updateRequirement(
     uuid: string,
     requirementToUpdate: Partial<Requirement>,
   ): Promise<void> {
+    Logger.log(
+      `uuid = ${uuid} - requirementToUpdate = ${requirementToUpdate}`,
+      `${this.className} - ${this.updateRequirement.name}`,
+    );
+
     const requirement = await this.requirementRepository.getRequirementByUuid(uuid);
 
     if (!requirement || !requirement.uuid) {
@@ -190,6 +300,11 @@ export class RequirementService {
   }
 
   public async deleteRequirement(uuidByRequirement: string, uuidByStatup: string): Promise<void> {
+    Logger.log(
+      `uuidByRequirement = ${uuidByRequirement} - uuidByStatup = ${uuidByStatup}`,
+      `${this.className} - ${this.deleteRequirement.name}`,
+    );
+
     const [requirement, startup] = await Promise.all([
       this.requirementRepository.getRequirementByUuid(uuidByRequirement),
       this.userRepository.getUserByUuid(uuidByStatup),

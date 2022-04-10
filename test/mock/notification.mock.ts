@@ -11,23 +11,23 @@ export default {
   },
   mockNotifications: [
     {
-      uuidOfGenerator: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
+      trigger: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
       message: 'Sua requisição tem um investidor aguardando análise!',
-      uuid: 'e570f489-f5b2-4827-88f3-9861b345285c',
+      id: 'e570f489-f5b2-4827-88f3-9861b345285c',
     },
     {
-      uuidOfGenerator: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
+      trigger: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
       message: 'Sua requisição tem um investidor aguardando análise!',
-      uuid: '5a7c961d-c72a-43f0-9e1a-b3393ffe95a0',
+      id: '5a7c961d-c72a-43f0-9e1a-b3393ffe95a0',
     },
     {
-      uuidOfGenerator: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
-      uuid: '47a1992c-56d5-40dc-849b-1596b3b2b7fe',
+      trigger: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
+      id: '47a1992c-56d5-40dc-849b-1596b3b2b7fe',
       message: 'Sua requisição tem um investidor aguardando análise!',
     },
     {
-      uuid: '58ece574-e2ea-4439-8570-5cedd56c5555',
-      uuidOfGenerator: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
+      id: '58ece574-e2ea-4439-8570-5cedd56c5555',
+      trigger: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
       message: 'Sua requisição tem um investidor aguardando análise!',
     },
   ],

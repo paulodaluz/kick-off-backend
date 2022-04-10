@@ -65,15 +65,36 @@ describe('UserController test', () => {
       });
   });
 
-  it('/PATCH should link requirement with a dev or investor and return status 200 ok', async () => {
+  it('/POST should link requirement with a dev or investor and return status 200 ok', async () => {
     jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
     requirementService.linkRequirementToCustomer = jest.fn().mockImplementation();
 
     return request(app.getHttpServer())
-      .patch('/requirement/add-investment/requirement/XXX/customer/XXX')
+      .post('/requirement/link-requirement-to-customer')
       .set('Content-type', 'application/json')
-      .send({ uuidByStartupProprietress: '10611d0d-93d3-414f-8a39-af350f54315f' })
-      .expect(200);
+      .send({
+        uuidByCustomer: '472aa7b9-3e0a-469d-b762-845d9ddf981a',
+        uuidByRequirement: '472aa7b9-3e0a-469d-b762-845d9ddf981g',
+        uuidByStartupProprietress: '472aa7b9-3e0a-469d-b762-845d9ddf982o',
+      })
+      .expect(201);
+  });
+
+  it('/POST should accept a link requirement with a dev or investor and return status 200 ok', async () => {
+    jest.spyOn(jwt, 'verify').mockReturnValueOnce({} as any);
+    requirementService.assessCustomerInteraction = jest.fn().mockImplementation();
+
+    return request(app.getHttpServer())
+      .post('/requirement/assess-customer-interaction')
+      .set('Content-type', 'application/json')
+      .send({
+        uuidByCustomer: '472aa7b9-3e0a-469d-b762-845d9ddf981f',
+        uuidByRequirement: '472aa7b9-3e0a-469d-b762-845d9ddf981x',
+        uuidByStartupProprietress: '472aa7b9-3e0a-469d-b762-845d9ddf981d',
+        notificationId: '472aa7b9-3e0a-469d-b762-845d9ddf98xx',
+        interactionStatus: 'accept',
+      })
+      .expect(201);
   });
 
   it('/PUT updateRequirements with 200 ok', async () => {
