@@ -194,40 +194,61 @@ export class RequirementService {
       (req) => req !== uuidByRequirement,
     );
 
-    if (typeOfUser === 'developer') {
+    if (typeOfUser === 'developer' && interactionStatus === 'accept') {
       requirementByClientUpdated = customer.workInProgress.concat(uuidByRequirement);
     }
 
-    if (typeOfUser === 'investor') {
+    if (typeOfUser === 'investor' && interactionStatus === 'accept') {
       requirementByClientUpdated = customer.investedStartups.concat(uuidByRequirement);
     }
 
-    Promise.all([
+    const operationsToDo = [
       this.userRepository.updateUserInfo(
         uuidByCustomer,
         this.getDataOfUserToUpdate(
           typeOfUser,
           reqsWaitingApprovalUpdated,
           requirementByClientUpdated,
+          interactionStatus,
         ),
       ),
+
       this.notificationService.registerNotification(
         uuidByStartupProprietress,
         uuidByCustomer,
-        `Parabéns seu apoio foi aceito pela Startup ${startupProprietressOfReq.name}
-          , você pode consulta-la em 'Investimentos e contratos recentes'`,
+        this.getMessageToCustomer(interactionStatus, startupProprietressOfReq.name),
         customer.notifications,
       ),
+
       this.notificationService.deleteNotification(
         notificationUuid,
         uuidByStartupProprietress,
         startupProprietressOfReq.notifications,
       ),
-      this.requirementRepository.updateRequirementInfo(
-        uuidByRequirement,
-        this.getDataOfRequirementToUpdate(requeriment, uuidByCustomer),
-      ),
-    ]);
+    ];
+
+    if (interactionStatus === 'accept') {
+      operationsToDo.push(
+        this.requirementRepository.updateRequirementInfo(
+          uuidByRequirement,
+          this.getDataOfRequirementToUpdate(requeriment, uuidByCustomer),
+        ),
+      );
+    }
+
+    await Promise.all(operationsToDo);
+  }
+
+  private getMessageToCustomer(
+    interactionStatus: 'accept' | 'reject',
+    nameOfStartup: string,
+  ): string {
+    if (interactionStatus === 'accept') {
+      return `Parabéns seu apoio foi aceito pela Startup ${nameOfStartup}
+      , você pode consulta-la em 'Investimentos e contratos recentes'`;
+    }
+
+    return `No momento seu apoio não foi aceito pela Startup ${nameOfStartup}!`;
   }
 
   private getDataOfRequirementToUpdate(
@@ -252,7 +273,12 @@ export class RequirementService {
     typeOfUser: string,
     reqsWaitingApprovalUpdated: Array<string>,
     workInProgressUpdated: Array<string>,
+    interactionStatus: 'accept' | 'reject',
   ): Partial<User> {
+    if (interactionStatus === 'reject') {
+      return { requirementsWaitingApproval: reqsWaitingApprovalUpdated };
+    }
+
     if (typeOfUser === 'investor') {
       return {
         requirementsWaitingApproval: reqsWaitingApprovalUpdated,
