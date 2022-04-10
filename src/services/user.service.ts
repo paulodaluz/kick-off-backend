@@ -33,8 +33,8 @@ export class UserService {
 
     if (user.typeOfUser === 'startup') {
       const [requirementsDetailsDev, requirementsDetailsInvest] = await Promise.all([
-        this.getRequirementsDetails(user.developerRequirements as Array<string>),
-        this.getRequirementsDetails(user.investmentRequirements as Array<string>),
+        this.getRequirementsDetails(user.developerRequirements),
+        this.getRequirementsDetails(user.investmentRequirements),
       ]);
 
       Reflect.deleteProperty(user, 'investmentRequirements');
@@ -51,8 +51,8 @@ export class UserService {
 
     if (user.typeOfUser === 'investor') {
       const [investedStartups, requirementsWaitingApproval] = await Promise.all([
-        this.getRequirementsDetails(user.investedStartups as Array<string>),
-        this.getRequirementsDetails(user.requirementsWaitingApproval as Array<string>),
+        this.getRequirementsDetails(user.investedStartups),
+        this.getRequirementsDetails(user.requirementsWaitingApproval),
       ]);
 
       Reflect.deleteProperty(user, 'investedStartups');
