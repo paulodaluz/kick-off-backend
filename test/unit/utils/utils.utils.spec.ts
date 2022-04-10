@@ -49,7 +49,7 @@ describe('Test Utils', () => {
   it('should return a encrypted password', async () => {
     jest
       .spyOn(bcrypt, 'hash')
-      .mockImplementation((pass, salt, cb: any) => cb(null, 'hashPassword'));
+      .mockImplementation((_pass, _salt, cb: any) => cb(null, 'hashPassword'));
 
     const response = await Utils.encryptPassword('senha123');
 
@@ -59,7 +59,7 @@ describe('Test Utils', () => {
   it('should return a error on encrypted password', async () => {
     jest
       .spyOn(bcrypt, 'hash')
-      .mockImplementation((pass, salt, cb: any) => cb('Não foi possivel encryptar', null));
+      .mockImplementation((_pass, _salt, cb: any) => cb('Não foi possivel encryptar', null));
 
     try {
       await Utils.encryptPassword('senha123');
@@ -88,7 +88,9 @@ describe('Test Utils', () => {
   it('should return a error on verifyPassword', async () => {
     jest
       .spyOn(bcrypt, 'compare')
-      .mockImplementation((pass, salt, cb: any) => cb('Não foi possivel verificar a senha', null));
+      .mockImplementation((_pass, _salt, cb: any) =>
+        cb('Não foi possivel verificar a senha', null),
+      );
 
     try {
       await Utils.verifyPassword('senha123', 'xxx');

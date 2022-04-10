@@ -25,7 +25,7 @@ export class NotificationService {
     let notificationsStartupUpdated: Array<Notification>;
 
     const notification = {
-      id: uuidv4() as string,
+      id: uuidv4(),
       message,
       trigger: senderUuid,
     };
