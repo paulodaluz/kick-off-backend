@@ -216,7 +216,8 @@ export class RequirementService {
       this.notificationService.registerNotification(
         uuidByStartupProprietress,
         uuidByCustomer,
-        'Parabéns sua foi aceita pela Startup, você pode consulta-la em `Investimentos e contratos recentes`',
+        `Parabéns seu apoio foi aceito pela Startup ${startupProprietressOfReq.name}
+          , você pode consulta-la em 'Investimentos e contratos recentes'`,
         customer.notifications,
       ),
       this.notificationService.deleteNotification(
@@ -299,6 +300,11 @@ export class RequirementService {
   }
 
   public async deleteRequirement(uuidByRequirement: string, uuidByStatup: string): Promise<void> {
+    Logger.log(
+      `uuidByRequirement = ${uuidByRequirement} - uuidByStatup = ${uuidByStatup}`,
+      `${this.className} - ${this.deleteRequirement.name}`,
+    );
+
     const [requirement, startup] = await Promise.all([
       this.requirementRepository.getRequirementByUuid(uuidByRequirement),
       this.userRepository.getUserByUuid(uuidByStatup),
