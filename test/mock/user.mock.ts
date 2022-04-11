@@ -101,6 +101,7 @@ export default {
     name: 'Startup Name',
     email: 'email@gmail.com',
     description: 'A good startup',
+    notifications: [],
   },
   devRequirement: {
     uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e360',

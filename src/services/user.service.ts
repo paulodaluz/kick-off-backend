@@ -4,7 +4,7 @@ import { UserRepository } from '../repository/user.repository';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
-import { User } from '../interfaces/user.interface';
+import { Notification, User } from '../interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -30,6 +30,13 @@ export class UserService {
     }
 
     Reflect.deleteProperty(user, 'password');
+
+    user.notifications.forEach((notification: Notification) => {
+      notification.createdSomeTimeAgo = Utils.calcHowMuchTimeWasSendNotification(
+        new Date(notification.creationDate),
+        new Date(),
+      );
+    });
 
     switch (user.typeOfUser) {
       case 'startup':

@@ -28,6 +28,7 @@ export class NotificationService {
       id: uuidv4(),
       message,
       trigger: senderUuid,
+      creationDate: new Date().toString(),
     };
 
     if (uuidTarget) {
