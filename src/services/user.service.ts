@@ -4,7 +4,7 @@ import { UserRepository } from '../repository/user.repository';
 import { RequirementRepository } from '../repository/requeriment.repository';
 import { ErrorUtils } from '../utils/error.utils';
 import { Utils } from '../utils/utils.utils';
-import { User } from '../interfaces/user.interface';
+import { Notification, User } from '../interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -31,43 +31,83 @@ export class UserService {
 
     Reflect.deleteProperty(user, 'password');
 
-    if (user.typeOfUser === 'startup') {
-      const [requirementsDetailsDev, requirementsDetailsInvest] = await Promise.all([
-        this.getRequirementsDetails(user.developerRequirements),
-        this.getRequirementsDetails(user.investmentRequirements),
-      ]);
-
-      Reflect.deleteProperty(user, 'investmentRequirements');
-      Reflect.deleteProperty(user, 'developerRequirements');
-
-      user.investmentRaised = requirementsDetailsInvest.reduce(
-        (sum, invest) => sum + invest.obtainedMoney,
-        0,
+    user.notifications.forEach((notification: Notification) => {
+      notification.createdSomeTimeAgo = Utils.calcHowMuchTimeWasSendNotification(
+        new Date(notification.creationDate),
+        new Date(),
       );
+    });
 
-      const allReq = requirementsDetailsInvest.concat(requirementsDetailsDev);
-      user.requirements = Utils.orderRequirementsByDate(allReq);
+    switch (user.typeOfUser) {
+      case 'startup':
+        return this.getStartupInfos(user);
+      case 'investor':
+        return this.getInvestorInfos(user);
+      default:
+        return this.getDeveloperInfos(user);
     }
+  }
 
-    if (user.typeOfUser === 'investor') {
-      const [investedStartups, requirementsWaitingApproval] = await Promise.all([
-        this.getRequirementsDetails(user.investedStartups),
-        this.getRequirementsDetails(user.requirementsWaitingApproval),
-      ]);
+  private async getStartupInfos(user: User): Promise<User> {
+    const [requirementsDetailsDev, requirementsDetailsInvest] = await Promise.all([
+      this.getRequirementsDetails(user.developerRequirements),
+      this.getRequirementsDetails(user.investmentRequirements),
+    ]);
 
-      Reflect.deleteProperty(user, 'investedStartups');
-      Reflect.deleteProperty(user, 'requirementsWaitingApproval');
+    Reflect.deleteProperty(user, 'investmentRequirements');
+    Reflect.deleteProperty(user, 'developerRequirements');
 
-      const completeInvestedStartupsInfo = await this.getDescriptionOfStartup(investedStartups);
-      const completeRequirementsWaintingApproval = await this.getDescriptionOfStartup(
-        requirementsWaitingApproval,
-      );
+    user.investmentRaised = requirementsDetailsInvest.reduce(
+      (sum, invest) => sum + invest.obtainedMoney,
+      0,
+    );
 
-      user.investedStartups = Utils.orderRequirementsByDate(completeInvestedStartupsInfo) as any;
-      user.requirementsWaitingApproval = Utils.orderRequirementsByDate(
-        completeRequirementsWaintingApproval,
-      ) as any;
-    }
+    const allReq = requirementsDetailsInvest.concat(requirementsDetailsDev);
+    user.requirements = Utils.orderRequirementsByDate(allReq);
+
+    return user;
+  }
+
+  private async getDeveloperInfos(user: User): Promise<User> {
+    const [workInProgress, requirementsWaitingApproval] = await Promise.all([
+      this.getRequirementsDetails(user.workInProgress),
+      this.getRequirementsDetails(user.requirementsWaitingApproval),
+    ]);
+
+    Reflect.deleteProperty(user, 'workInProgress');
+    Reflect.deleteProperty(user, 'requirementsWaitingApproval');
+
+    const completeWorkInProgress = await this.getDescriptionOfStartup(workInProgress);
+    const completeRequirementsWaintingApproval = await this.getDescriptionOfStartup(
+      requirementsWaitingApproval,
+    );
+
+    user.workInProgress = Utils.orderRequirementsByDate(completeWorkInProgress) as any;
+    user.requirementsWaitingApproval = Utils.orderRequirementsByDate(
+      completeRequirementsWaintingApproval,
+    ) as any;
+
+    return user;
+  }
+
+  private async getInvestorInfos(user: User): Promise<User> {
+    const [investedStartups, requirementsWaitingApproval] = await Promise.all([
+      this.getRequirementsDetails(user.investedStartups),
+      this.getRequirementsDetails(user.requirementsWaitingApproval),
+    ]);
+
+    Reflect.deleteProperty(user, 'investedStartups');
+    Reflect.deleteProperty(user, 'requirementsWaitingApproval');
+
+    const completeInvestedStartupsInfo = await this.getDescriptionOfStartup(investedStartups);
+    const completeRequirementsWaintingApproval = await this.getDescriptionOfStartup(
+      requirementsWaitingApproval,
+    );
+
+    user.investedStartups = Utils.orderRequirementsByDate(completeInvestedStartupsInfo) as any;
+    user.requirementsWaitingApproval = Utils.orderRequirementsByDate(
+      completeRequirementsWaintingApproval,
+    ) as any;
 
     return user;
   }

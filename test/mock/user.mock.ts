@@ -101,6 +101,7 @@ export default {
     name: 'Startup Name',
     email: 'email@gmail.com',
     description: 'A good startup',
+    notifications: [],
   },
   devRequirement: {
     uuid: '9114197b-dbac-42bf-9a9c-a7f197d0e360',
@@ -142,6 +143,34 @@ export default {
     investedStartups: [],
     requirementsWaitingApproval: ['0a549be6-27cc-487e-af6c-3f26a9550b8b'],
   },
+  mockUserDeveloperCreatedToGetInfos: {
+    email: 'paulo.daluzjr@developer.com',
+    name: 'Paulinho Developer',
+    phoneNumber: '(54) 99108-3039',
+    uuid: '770489a4-f9a4-408c-8e45-bb4d036848ac',
+    typeOfUser: 'developer',
+    workInProgress: [],
+    requirementsWaitingApproval: ['xxx'],
+    notifications: [
+      {
+        message: 'Sua requisição tem um investidor aguardando análise!',
+        uuid: '58ece574-e2ea-4439-8570-5cedd56c5555',
+        creationDate: 'Sun Apr 10 2022 20:44:52 GMT-0300 (Horário Padrão de Brasília)',
+        uuidOfGenerator: '1c9b8694-9581-4c5e-92ce-ac41da534b6f',
+      },
+    ],
+  },
+  mockRequirementWaitingToApproval: {
+    requiredMoney: 90000,
+    creationDate: 'Fri Feb 25 2022 23:46:15 GMT+0000 (Coordinated Universal Time)',
+    createdBy: '10611d0d-93d3-414f-8a39-af350f54315f',
+    status: 'opened',
+    uuid: '0a549be6-27cc-487e-af6c-3f26a9550b8b',
+    description: 'Pagar os desenvolvedores.',
+    obtainedMoney: 0,
+    typeOfRequirement: 'investment',
+    partnerParticipation: '3,90%',
+  },
   mockUserDeveloperCreated: {
     email: 'paulo.daluzjr@developer.com',
     name: 'Paulinho Developer',
@@ -152,16 +181,15 @@ export default {
     requirementsWaitingApproval: [],
     notifications: [],
   },
-  mockRequirementWaitingToApproval: {
-    requiredMoney: 90000,
+  mockRequirementDevWaitingToApproval: {
     creationDate: 'Fri Feb 25 2022 23:46:15 GMT+0000 (Coordinated Universal Time)',
     createdBy: '10611d0d-93d3-414f-8a39-af350f54315f',
     status: 'opened',
     uuid: '0a549be6-27cc-487e-af6c-3f26a9550b8b',
-    description: 'Pagar as puta pros desenvolvedores.',
+    description: 'Crud simples',
     obtainedMoney: 0,
-    typeOfRequirement: 'investment',
-    partnerParticipation: '3,90%',
+    typeOfRequirement: 'development',
+    payment: 0,
   },
   startupMockToAssessCustomerInteraction: {
     notifications: [

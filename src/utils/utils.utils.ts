@@ -57,4 +57,24 @@ export class Utils {
       });
     });
   }
+
+  public static calcHowMuchTimeWasSendNotification(dateOfCreation: Date, now: Date): string {
+    const diff = Math.abs(dateOfCreation.getTime() - now.getTime());
+
+    const minutes = Math.ceil(diff / (1000 * 60));
+
+    if (minutes < 60) {
+      return `${minutes} minutos atrás`;
+    }
+
+    const hours = Math.ceil(diff / (1000 * 60 * 60));
+
+    if (hours < 24) {
+      return `${hours} horas atrás`;
+    }
+
+    const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    return `${days} dias atrás`;
+  }
 }

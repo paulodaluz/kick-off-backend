@@ -36,6 +36,8 @@ export interface Notification {
   message: string;
   trigger: string; // Disparador
   uuidTarget?: string; // Requirement
+  creationDate: string;
+  createdSomeTimeAgo?: string;
 }
 
 export interface User extends Startup, Investor, Developer {

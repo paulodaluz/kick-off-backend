@@ -54,6 +54,29 @@ describe('UserService test', () => {
     expect(result.requirementsWaitingApproval.length).toBe(1);
   });
 
+  it('should return success on operation getUserInfos from developer', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockReturnValueOnce(mock.mockUserDeveloperCreatedToGetInfos)
+      .mockReturnValueOnce({ uuid: '', description: 'A good startup' });
+
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockReturnValueOnce(mock.mockRequirementDevWaitingToApproval)
+      .mockReturnValueOnce(null);
+
+    const result = await userService.getUserInfos('1c9b8694-9581-4c5e-92ce-ac41da534b6f');
+
+    expect(result.phoneNumber).toBe('(54) 99108-3039');
+    expect(result.typeOfUser).toBe('developer');
+    expect(result.notifications.length).toBe(1);
+    expect(result.uuid).toBe('770489a4-f9a4-408c-8e45-bb4d036848ac');
+    expect(result.name).toBe('Paulinho Developer');
+    expect(result.email).toBe('paulo.daluzjr@developer.com');
+    expect(result.workInProgress.length).toBe(0);
+    expect(result.requirementsWaitingApproval.length).toBe(1);
+  });
+
   it('should return success on operation getUserInfos with requirements details', async () => {
     userRepository.getUserByUuid = jest.fn().mockResolvedValueOnce(mock.completeUserStartup);
     requirementRepository.getRequirementByUuid = jest

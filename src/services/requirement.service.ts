@@ -187,26 +187,21 @@ export class RequirementService {
       this.requirementRepository.getRequirementByUuid(uuidByRequirement),
     ]);
 
-    const { typeOfUser } = customer;
-    let requirementByClientUpdated;
-
     const reqsWaitingApprovalUpdated = customer.requirementsWaitingApproval.filter(
       (req) => req !== uuidByRequirement,
     );
 
-    if (typeOfUser === 'developer' && interactionStatus === 'accept') {
-      requirementByClientUpdated = customer.workInProgress.concat(uuidByRequirement);
-    }
-
-    if (typeOfUser === 'investor' && interactionStatus === 'accept') {
-      requirementByClientUpdated = customer.investedStartups.concat(uuidByRequirement);
-    }
+    const requirementByClientUpdated = this.getRequirementByClientUpdated(
+      interactionStatus,
+      customer,
+      uuidByRequirement,
+    );
 
     const operationsToDo = [
       this.userRepository.updateUserInfo(
         uuidByCustomer,
         this.getDataOfUserToUpdate(
-          typeOfUser,
+          customer.typeOfUser,
           reqsWaitingApprovalUpdated,
           requirementByClientUpdated,
           interactionStatus,
@@ -237,6 +232,20 @@ export class RequirementService {
     }
 
     await Promise.all(operationsToDo);
+  }
+
+  private getRequirementByClientUpdated(
+    interactionStatus: 'accept' | 'reject',
+    customer: User,
+    uuidByRequirement: string,
+  ): Array<string> | null {
+    if (interactionStatus === 'reject') return null;
+
+    if (customer.typeOfUser === 'investor') {
+      return customer.investedStartups.concat(uuidByRequirement);
+    }
+
+    return customer.workInProgress.concat(uuidByRequirement);
   }
 
   private getMessageToCustomer(
