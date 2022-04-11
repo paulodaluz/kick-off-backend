@@ -43,10 +43,8 @@ export class UserService {
         return this.getStartupInfos(user);
       case 'investor':
         return this.getInvestorInfos(user);
-      case 'developer':
-        return this.getDeveloperInfos(user);
       default:
-        return ErrorUtils.throwSpecificError(400);
+        return this.getDeveloperInfos(user);
     }
   }
 
