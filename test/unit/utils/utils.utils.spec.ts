@@ -100,4 +100,37 @@ describe('Test Utils', () => {
       expect(error.message).toBe('Unknown server error. Typically a server bug.');
     }
   });
+
+  it('should return 2 minuts', async () => {
+    const dateOfCreation = new Date(
+      'Fri Feb 26 2022 23:46:15 GMT+0000 (Coordinated Universal Time)',
+    );
+    const now = new Date('Fri Feb 26 2022 23:48:15 GMT+0000 (Coordinated Universal Time)');
+
+    const response = Utils.calcHowMuchTimeWasSendNotification(dateOfCreation, now);
+
+    expect(response).toBe('2 minutos atrás');
+  });
+
+  it('should return 2 hours', async () => {
+    const dateOfCreation = new Date(
+      'Fri Feb 26 2022 21:46:15 GMT+0000 (Coordinated Universal Time)',
+    );
+    const now = new Date('Fri Feb 26 2022 23:46:15 GMT+0000 (Coordinated Universal Time)');
+
+    const response = Utils.calcHowMuchTimeWasSendNotification(dateOfCreation, now);
+
+    expect(response).toBe('2 horas atrás');
+  });
+
+  it('should return 2 days', async () => {
+    const dateOfCreation = new Date(
+      'Fri Feb 26 2022 23:46:15 GMT+0000 (Coordinated Universal Time)',
+    );
+    const now = new Date('Fri Feb 28 2022 23:46:15 GMT+0000 (Coordinated Universal Time)');
+
+    const response = Utils.calcHowMuchTimeWasSendNotification(dateOfCreation, now);
+
+    expect(response).toBe('2 dias atrás');
+  });
 });
