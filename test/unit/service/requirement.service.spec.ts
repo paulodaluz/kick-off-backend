@@ -202,7 +202,7 @@ describe('RequirementService test', () => {
     expect(spyUpdateRequirement).toHaveBeenCalledTimes(0);
   });
 
-  it('should return success on operation assessCustomerInteraction to developer customer', async () => {
+  it('should return success on operation assessCustomerInteraction to developer customer accept', async () => {
     userRepository.getUserByUuid = jest
       .fn()
       .mockResolvedValueOnce(Mock.developerMockToAssessCustomerInteraction)
@@ -234,6 +234,40 @@ describe('RequirementService test', () => {
     expect(spyRegisterNotification).toHaveBeenCalledTimes(1);
     expect(spyDeleteNotification).toHaveBeenCalledTimes(1);
     expect(spyUpdateRequirement).toHaveBeenCalledTimes(1);
+  });
+
+  it('should return success on operation assessCustomerInteraction to developer customer reject', async () => {
+    userRepository.getUserByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(Mock.developerMockToAssessCustomerInteraction)
+      .mockResolvedValueOnce(Mock.startupMockToAssessCustomerInteraction);
+
+    requirementRepository.getRequirementByUuid = jest
+      .fn()
+      .mockResolvedValueOnce(Mock.requirementDevelopmentMockToAssessCustomerInteraction);
+
+    const spyUpdateUser = jest
+      .spyOn(userRepository, 'updateUserInfo')
+      .mockReturnValueOnce({} as any);
+
+    const spyRegisterNotification = jest
+      .spyOn(notificationService, 'registerNotification')
+      .mockReturnValueOnce({} as any);
+
+    const spyDeleteNotification = jest
+      .spyOn(notificationService, 'deleteNotification')
+      .mockReturnValueOnce({} as any);
+
+    const spyUpdateRequirement = jest
+      .spyOn(requirementRepository, 'updateRequirementInfo')
+      .mockReturnValueOnce({} as any);
+
+    await requirementService.assessCustomerInteraction('xxx', 'xxx', 'xxx', 'xxx', 'reject');
+
+    expect(spyUpdateUser).toHaveBeenCalledTimes(1);
+    expect(spyRegisterNotification).toHaveBeenCalledTimes(1);
+    expect(spyDeleteNotification).toHaveBeenCalledTimes(1);
+    expect(spyUpdateRequirement).toHaveBeenCalledTimes(0);
   });
 
   it('should return error on operation updateRequirement(404)', async () => {
