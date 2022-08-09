@@ -23,6 +23,27 @@ export interface Developer {
   cpf: string;
   workInProgress: Array<string>;
   requirementsWaitingApproval: Array<string>;
+  aboutMe: string;
+  experience: {
+    jobRole: string;
+    company: string;
+    tempo: string;
+  };
+  formation: {
+    course: string;
+    institution: string;
+    duration: string;
+  };
+  skill: Array<string>;
+  languages: Array<string>;
+  github: {
+    user: string;
+    charge: string;
+  };
+  linkedin: {
+    user: string;
+    charge: string;
+  };
 }
 
 export enum TypeOfUserEnum {
